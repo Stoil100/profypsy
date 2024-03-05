@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { HeaderT, HeadersT } from "@/models/header";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 
-const headers = [
+const headers: HeadersT = [
     {
         image: "/person.png",
         title: "For you",
@@ -29,25 +30,34 @@ export default function Home() {
                         Choose your therapist and begin
                         <br /> your session now
                     </h3>
-                    <Button className="h-fit  rounded-full  bg-white hover:bg-white hover:scale-[1.1] transition-transform duration-500">
-                        <p className="bg-gradient-to-b from-[#23A53D] to-[#6DD864] bg-clip-text text-3xl text-light text-transparent">
+                    <Button className="h-fit rounded-full bg-white transition-transform duration-500 hover:scale-[1.1] hover:bg-white">
+                        <p className="text-light bg-gradient-to-b from-[#23A53D] to-[#6DD864] bg-clip-text text-3xl text-transparent">
                             Get Started
                         </p>
                     </Button>
                 </div>
-                <div className="flex justify-center items-center gap-10">
-                  {headers.map(header => (
-                    <div className="w-full flex justify-between items-center flex-col bg-[#B2D3A8] p-3 rounded-3xl gap-2 hover:scale-105 transition-transform cursor-pointer">
-                      <img src={header.image} className="size-72"/>
-                      <div className="w-full flex justify-between items-center">
-                        <h4 className="text-lg ">{header.title}</h4>
-                        <ChevronRight/>
-                      </div>
-                    </div>
-
-                  ))}
+                <div className="flex items-center justify-center gap-10">
+                    {headers.map((header, index) => (
+                        <HeaderCard
+                            key={index}
+                            title={header.title}
+                            image={header.image}
+                        />
+                    ))}
                 </div>
             </section>
         </main>
+    );
+}
+
+function HeaderCard({ title, image }: HeaderT) {
+    return (
+        <div className="flex w-full cursor-pointer flex-col items-center justify-between gap-2 rounded-3xl bg-[#B2D3A8] p-3 transition-transform hover:scale-105">
+            <Image src={image} alt={title} width={250} height={250} />
+            <div className="flex w-full items-center justify-between">
+                <h4 className="text-lg">{title}</h4>
+                <ChevronRight />
+            </div>
+        </div>
     );
 }
