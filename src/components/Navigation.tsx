@@ -12,7 +12,7 @@ import { Menu } from "lucide-react";
 
 export default function Navigation() {
     return (
-        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white">
+        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white bg-green-600">
             <div className="flex items-center gap-4">
                 <Button
                     variant="outline"
