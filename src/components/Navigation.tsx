@@ -12,7 +12,7 @@ import { Menu } from "lucide-react";
 
 export default function Navigation() {
     return (
-        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white bg-green-600">
+        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white bg-green-600 z-[100]">
             <div className="flex items-center gap-4">
                 <Button
                     variant="outline"
@@ -22,7 +22,7 @@ export default function Navigation() {
                 </Button>
                 <h3 className="font-openSans font-thin">For you</h3>
             </div>
-            <h1 className="font-playfairDSC text-4xl font-thin capitalize">
+            <h1 className="font-playfairDSC text-4xl font-thin uppercase drop-shadow-md">
                 Profypsy
             </h1>
             <div className="flex items-center gap-4">
