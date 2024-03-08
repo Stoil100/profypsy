@@ -19,7 +19,7 @@ export default function GradientButton({
         <Button
             onClick={onClick}
             className={cn(
-                "h-fit rounded-full bg-white transition-transform duration-300 hover:scale-[1.1] hover:bg-white",
+                "h-fit rounded-full bg-white transition-transform duration-300 hover:scale-[1.1] hover:bg-white drop-shadow-lg",
                 buttonClassName,
             )}
         >
