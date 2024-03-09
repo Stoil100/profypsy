@@ -33,39 +33,40 @@ import { HeaderT, HeadersT } from "@/models/header";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 const carouselItems = [
     {
-        image: "/avatar.png",
+        image: "/homepage/avatar.png",
         profession: "Psychologist",
         quote: "“Lorem ipsum dolor sit amet consectetur. Laoreet pretium amet ipsum faucibus ultricies porttitor nibh.”",
         name: "Test Testov",
         experience: "10+ year of practical experience",
     },
     {
-        image: "/avatar.png",
+        image: "/homepage/avatar.png",
         profession: "Psychologist",
         quote: "“Lorem ipsum dolor sit amet consectetur. Laoreet pretium amet ipsum faucibus ultricies porttitor nibh.”",
         name: "Test Testov",
         experience: "10+ year of practical experience",
     },
     {
-        image: "/avatar.png",
+        image: "/homepage/avatar.png",
         profession: "Psychologist",
         quote: "“Lorem ipsum dolor sit amet consectetur. Laoreet pretium amet ipsum faucibus ultricies porttitor nibh.”",
         name: "Test Testov",
         experience: "10+ year of practical experience",
     },
     {
-        image: "/avatar.png",
+        image: "/homepage/avatar.png",
         profession: "Psychologist",
         quote: "“Lorem ipsum dolor sit amet consectetur. Laoreet pretium amet ipsum faucibus ultricies porttitor nibh.”",
         name: "Test Testov",
         experience: "10+ year of practical experience",
     },
     {
-        image: "/avatar.png",
+        image: "/homepage/avatar.png",
         profession: "Psychologist",
         quote: "“Lorem ipsum dolor sit amet consectetur. Laoreet pretium amet ipsum faucibus ultricies porttitor nibh.”",
         name: "Test Testov",
@@ -97,14 +98,16 @@ function HeroSection() {
                     Choose your therapist and begin
                     <br /> your session now
                 </h3>
-                <GradientButton className="text-3xl">
-                    Get Started
-                </GradientButton>
+                <Link href={"/login"}>
+                    <GradientButton className="text-3xl">
+                        Get Started
+                    </GradientButton>
+                </Link>
             </div>
             <div className="flex items-center justify-center gap-10">
-                <HeaderCard title="For you" image="/person.png" />
-                <HeaderCard title="For couples" image="/couples.png" />
-                <HeaderCard title="For families" image="/families.png" />
+                <HeaderCard title="For you" image="/homepage/person.png" />
+                <HeaderCard title="For couples" image="/homepage/couples.png" />
+                <HeaderCard title="For families" image="/homepage/families.png" />
             </div>
         </section>
     );
@@ -118,7 +121,11 @@ function TherapistsSection() {
                     <br />
                     <span className="text-[#128665]">Based on Your Needs</span>
                 </p>
-                <GradientButton className="text-xl">Get Started</GradientButton>
+                <Link href={"/login"}>
+                    <GradientButton className="text-xl">
+                        Get Started
+                    </GradientButton>
+                </Link>
             </div>
             <Carousel className="max-w-[70vw]" opts={{ loop: true }}>
                 <CarouselContent className="-ml-2 md:-ml-4">
@@ -167,7 +174,7 @@ function ReviewsSection() {
         <section className="w-full space-y-5">
             <div className="flex items-center justify-center gap-2">
                 {Array.from({ length: 5 }).map((_, index) => (
-                    <img src="/star.png" alt="star" key={index} width={32} />
+                    <img src="/homepage/star.png" alt="star" key={index} width={32} />
                 ))}
             </div>
             <h2 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent">
@@ -215,7 +222,7 @@ function ReviewsSection() {
                                     <p className="absolute p-2 text-xl text-white">
                                         Alex
                                     </p>
-                                    <img src="/reviews.png" alt="reviews" />
+                                    <img src="/homepage/reviews.png" alt="reviews" />
                                 </div>
                             </div>
                         </CarouselItem>
@@ -287,13 +294,17 @@ function ApproachSection() {
                     </div>
                 </div>
                 <img
-                    src="/approach.png"
+                    src="/homepage/approach.png"
                     alt="how profypsy works"
                     className="h-[400px]"
                 />
             </div>
             <div className="px-4">
-                <GradientButton className="text-2xl">Start Now</GradientButton>
+                <Link href={"/login"}>
+                    <GradientButton className="text-2xl">
+                        Start Now
+                    </GradientButton>
+                </Link>
             </div>
             <BottomLine />
         </section>
@@ -333,7 +344,11 @@ function FaQSection() {
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
-                <GradientButton className="text-2xl">Begin Now</GradientButton>
+                <Link href={"/login"}>
+                    <GradientButton className="text-2xl">
+                        Begin Now
+                    </GradientButton>
+                </Link>
             </div>
             <BottomLine />
         </section>
@@ -344,7 +359,7 @@ function JoinSection() {
     return (
         <section className="flex w-full items-center justify-between px-[200px] py-5">
             <img
-                src="/join.png"
+                src="/homepage/join.png"
                 alt="join as a psychologist"
                 className="h-[500px]"
             />
@@ -394,7 +409,11 @@ function JoinSection() {
                         </div>
                     </div>
                 </div>
-                <GradientButton className="text-3xl">Apply Now</GradientButton>
+                <Link href={"/login"}>
+                    <GradientButton className="text-3xl">
+                        Apply Now
+                    </GradientButton>
+                </Link>
             </div>
         </section>
     );

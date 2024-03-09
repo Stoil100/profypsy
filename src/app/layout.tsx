@@ -1,32 +1,23 @@
 import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-
-// export const fontSans = FontSans({
-//   subsets: ["latin"],
-//   variable: "--font-sans",
-// });
+import { AuthContextProvider } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Profypsy",
-  description: "Your own comfort place",
-  // icons: [{ rel: 'icon', url: Favicon.src }],
+    title: "Profypsy",
+    description: "Your own comfort place",
+    // icons: [{ rel: 'icon', url: Favicon.src }],
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body>
-        <Navigation/>
-        {children}
-        <Footer/>
-        </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body>
+                <AuthContextProvider>{children}</AuthContextProvider>
+            </body>
+        </html>
+    );
 }
