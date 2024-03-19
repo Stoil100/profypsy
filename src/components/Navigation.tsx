@@ -9,11 +9,12 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
+import Link from "next/link";
 
 export default function Navigation() {
     return (
-        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white bg-green-600 z-[100]">
-            <div className="flex items-center gap-4">
+        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white z-[100]">
+            <div className="flex items-center gap-4 flex-1">
                 <Button
                     variant="outline"
                     className="font-openSans h-fit rounded-full bg-transparent px-4"
@@ -22,13 +23,13 @@ export default function Navigation() {
                 </Button>
                 <h3 className="font-openSans font-thin">For you</h3>
             </div>
-            <h1 className="font-playfairDSC text-4xl font-thin uppercase drop-shadow-md">
+            <h1 className="font-playfairDSC text-4xl font-thin uppercase drop-shadow-md flex-1 text-center">
                 Profypsy
             </h1>
-            <div className="flex items-center gap-4">
-                <h4 className="font-nunito font-thin">
+            <div className="flex items-center gap-4 flex-1 justify-end">
+                <Link href={"/appliance"} className="font-nunito font-thin">
                     Join as a psychologist
-                </h4>
+                </Link>
                 <Sheet>
                     <SheetTrigger className="">
                         <Menu />

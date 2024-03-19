@@ -6,7 +6,7 @@ type Props = {
     children: React.ReactNode;
     className?: string;
     buttonClassName?: string;
-    onClick?: () => {};
+    onClick?: () => void | (()=>{})|Function;
 };
 
 export default function GradientButton({
@@ -25,7 +25,7 @@ export default function GradientButton({
         >
             <p
                 className={cn(
-                    "text-light bg-gradient-to-b from-[#23A53D] to-[#6DD864] bg-clip-text text-transparent",
+                    "text-light text-[#25BA9E]",
                     className,
                 )}
             >
