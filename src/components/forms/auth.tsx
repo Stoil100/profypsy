@@ -24,7 +24,7 @@ type FormVariant = {
     variant: "register" | "login";
 };
 
-const AuthForm = ({ variant }: FormVariant) => {
+const AuthForm = ({ variant="login" }: FormVariant) => {
     const formSchema = z
         .object({
             email: z
@@ -234,9 +234,6 @@ const AuthForm = ({ variant }: FormVariant) => {
             </p>
         </div>
     );
-};
-AuthForm.defaultProps = {
-    variant: "login"
 };
 
 export default AuthForm;
