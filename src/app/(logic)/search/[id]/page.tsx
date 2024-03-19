@@ -882,7 +882,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <div className="space-y-4">
                     <h4 className="text-3xl">My personal quote:</h4>
                     <p className="rounded-2xl bg-[#FCFBF4] text-xl italic">
-                        "{profile?.quote}"
+                    &quot;{profile?.quote}&quot;
                     </p>
                 </div>
                 <div className="space-x-4 space-y-4">

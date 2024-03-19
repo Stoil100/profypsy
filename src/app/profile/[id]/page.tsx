@@ -206,7 +206,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                     <p>Quote:</p>
                                     <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-full border-2  border-dashed border-black p-2 ">
                                         <p className="italic">
-                                            "{profile.quote}"
+                                        &quot;{profile.quote}&quot;
                                         </p>
                                     </div>
                                 </div>
