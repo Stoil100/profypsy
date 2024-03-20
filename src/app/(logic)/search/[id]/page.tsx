@@ -550,7 +550,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             clientUid:profile?.uid!
         }
         const psychologistProfileDocRef = doc(db, "psychologists", profile!.uid);
-        const userProfileDocRef = doc(db, "users", profile!.uid);
+        const userProfileDocRef = doc(db, "users", user!.uid!);
         try {
             // Update the document by adding the new appointment to the `appointments` array
             // If `appointments` does not exist, it will be created with `tempValues` as its first item
@@ -882,7 +882,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 <div className="space-y-4">
                     <h4 className="text-3xl">My personal quote:</h4>
                     <p className="rounded-2xl bg-[#FCFBF4] text-xl italic">
-                    &quot;{profile?.quote}&quot;
+                    &quot;{profile?.quote}&quot;    
                     </p>
                 </div>
                 <div className="space-x-4 space-y-4">

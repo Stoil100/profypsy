@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useAuth } from "@/components/Providers";
 
 // This is the general profile page component that redirects to a specific profile
