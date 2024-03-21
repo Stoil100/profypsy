@@ -136,7 +136,7 @@ export default function Chat({ senderUid, receiverUid,receiverUsername }: ChatPr
         batch.update(senderDocRef, userUpdate);
         batch.update(receiverDocRef, userUpdate);
     
-        // Commit the batch
+        form.reset();
         try {
             await batch.commit();
         } catch (error) {
