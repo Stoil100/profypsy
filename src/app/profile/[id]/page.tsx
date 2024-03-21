@@ -56,11 +56,11 @@ type ProfileT = PsychologistProfile & AppointmentT;
 export default function Page({ params }: { params: { id: string } }) {
     const { user, logOut } = useAuth();
     const [profile, setProfile] = useState<ProfileT>();
-    const [chatProps,setChatProps] = useState({userUid:"",profileUid:""});
+    const [chatProps,setChatProps] = useState({senderUid:"",receiverUid:"",receiverUsername:{firstName:"",lastName:""}});
     const router = useRouter();
     useEffect(() => {
         if (!user?.uid || user.uid !== params.id) {
-            router.push(`/profile!/${user?.uid}`);
+            router.push(`/profile/${user?.uid}`);
         } else if (!user?.uid) {
             router.push("/login");
         }
@@ -85,8 +85,9 @@ export default function Page({ params }: { params: { id: string } }) {
         getUserData();
     }, []);
 
-    function toggleChat(userUid:string,profileUid:string){
-        setChatProps({userUid,profileUid })
+    function toggleChat(senderUid:string,receiverUid:string,receiverUsername:{firstName:string,lastName:string}){
+        console.log(senderUid,receiverUid);
+        setChatProps({senderUid,receiverUid,receiverUsername })
     }
     console.log(user);
     return (
@@ -104,14 +105,16 @@ export default function Page({ params }: { params: { id: string } }) {
                         Profile
                     </h2>
                     <div className="flex items-center gap-2">
-                        {profile!.image?
-
-                        <img
-                            src={profile!.image!}
-                            className="size-32 rounded-full border-4 border-[#25BA9E] p-1 shadow-2xl"
-                           
-                        />: <div className="p-4 border-2 rounded-full"><User size={42}/></div>
-}
+                        {profile!.image ? (
+                            <img
+                                src={profile!.image!}
+                                className="size-32 rounded-full border-4 border-[#25BA9E] p-1 shadow-2xl"
+                            />
+                        ) : (
+                            <div className="rounded-full border-2 p-4">
+                                <User size={42} />
+                            </div>
+                        )}
                         <div>
                             {profile!.userName && (
                                 <h2 className="text-3xl">
@@ -389,7 +392,9 @@ export default function Page({ params }: { params: { id: string } }) {
                                                         onClick={() => {
                                                             toggleChat(
                                                                 user.uid!,
-                                                                appointment!.clientUid,
+                                                                appointment!
+                                                                    .psychologistUid,
+                                                                appointment.userName,
                                                             );
                                                         }}
                                                     >
@@ -401,20 +406,29 @@ export default function Page({ params }: { params: { id: string } }) {
                                     ),
                                 )}
                             </Accordion>
-                            {chatProps.userUid !== "" && (
+                            {chatProps.senderUid !== "" && (
                                 <Dialog
-                                    open={chatProps.userUid !== ""}
+                                    open={chatProps.senderUid !== ""}
                                     onOpenChange={() => {
                                         setChatProps({
-                                            userUid: "",
-                                            profileUid: "",
+                                            senderUid: "",
+                                            receiverUid: "",
+                                            receiverUsername:{lastName: "", firstName: ""}
                                         });
                                     }}
                                 >
-                                    <DialogContent>
+                                    <DialogContent
+                                        className={cn(
+                                            " bg-gradient-to-b max-w-[550px]",
+                                            user.role === "psychologist"
+                                                ? "from-[#40916C] to-[#52B788]"
+                                                : "from-[#F7F4E0] to-[#F1ECCC]",
+                                        )}
+                                    >
                                         <ChatInterface
-                                            senderUid={chatProps.userUid}
-                                            receiverUid={chatProps.profileUid}
+                                            senderUid={chatProps.senderUid}
+                                            receiverUid={chatProps.receiverUid}
+                                            receiverUsername={chatProps.receiverUsername}
                                         />
                                     </DialogContent>
                                 </Dialog>
@@ -516,8 +530,9 @@ export default function Page({ params }: { params: { id: string } }) {
                                                         buttonClassName="w-full border-[#25BA9E] border-2"
                                                         onClick={() => {
                                                             toggleChat(
-                                                                appointment.clientUid!,
                                                                 user!.uid!,
+                                                                appointment.clientUid!,
+                                                                appointment.userName
                                                             );
                                                         }}
                                                     >
@@ -529,20 +544,28 @@ export default function Page({ params }: { params: { id: string } }) {
                                     ),
                                 )}
                             </Accordion>
-                            {chatProps.userUid !== "" && (
+                            {chatProps.senderUid !== "" && (
                                 <Dialog
-                                    open={chatProps.userUid !== ""}
+                                    open={chatProps.senderUid !== ""}
                                     onOpenChange={() => {
                                         setChatProps({
-                                            userUid: "",
-                                            profileUid: "",
+                                            senderUid: "",
+                                            receiverUid: "",
+                                            receiverUsername:{firstName: "", lastName: ""}
                                         });
                                     }}
                                 >
-                                    <DialogContent>
-                                        <ChatInterface
-                                            senderUid={chatProps.userUid}
-                                            receiverUid={chatProps.profileUid}
+                                      <DialogContent
+                                        className={cn(
+                                            " bg-gradient-to-b max-w-[550px]",
+                                            user.role === "psychologist"
+                                                ? "from-[#40916C] to-[#52B788]"
+                                                : "from-[#F7F4E0] to-[#F1ECCC]",
+                                        )}
+                                    > <ChatInterface
+                                            senderUid={chatProps.senderUid}
+                                            receiverUid={chatProps.receiverUid}
+                                            receiverUsername={chatProps.receiverUsername}
                                         />
                                     </DialogContent>
                                 </Dialog>

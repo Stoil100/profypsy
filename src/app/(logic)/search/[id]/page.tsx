@@ -498,6 +498,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
 interface AppointmentT extends z.infer<typeof formSchema>{
     selectedDate:string;
     clientUid:string;
+    psychologistUid:string;
 }
 
 export type{AppointmentT};
@@ -538,6 +539,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             ...values,
             selectedDate: selectedAppointmentTime!,
             clientUid: user!.uid!,
+            psychologistUid:profile?.uid!,
         };
         const tempUserValues:AppointmentT = {
             userName:profile?.userName!,
@@ -547,7 +549,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             session:values.session!,
             age:profile?.age!,
             selectedDate: selectedAppointmentTime!,
-            clientUid:profile?.uid!
+            clientUid:user?.uid!,
+            psychologistUid:profile!.uid!
         }
         const psychologistProfileDocRef = doc(db, "psychologists", profile!.uid);
         const userProfileDocRef = doc(db, "users", user!.uid!);

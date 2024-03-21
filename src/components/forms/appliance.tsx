@@ -268,6 +268,7 @@ export default function ApplianceForm({ className }: Props) {
                     email: user.email,
                     uid: user.uid,
                     role: "psychologist",
+                    appointments: user.appointments,
                 });
                 router.push(`/profile/${user.uid}`);
             } catch (error) {
