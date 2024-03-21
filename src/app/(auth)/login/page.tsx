@@ -10,7 +10,7 @@ export default function Login() {
     const router = useRouter();
     useEffect(() => {
         if (user?.uid) {
-            router.push(`/profile/${user.uid}`);
+            router.push(`/profile`);
         }
     }, [user, router]);
     return (
