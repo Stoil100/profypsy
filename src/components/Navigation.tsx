@@ -1,51 +1,30 @@
-import React from "react";
-import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "./ui/button";
-import { Menu } from "lucide-react";
+"use client"
+
+import { HomeIcon } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Menu from "./Menu";
+import { useAuth } from "./Providers";
+import LanguageButton from "./LanguageButton";
 
 export default function Navigation() {
+    const {user}=useAuth();
+    const router=useRouter();
     return (
-        <header className="fixed top-0 flex w-full items-center justify-between p-3 text-white z-[100]">
-            <div className="flex items-center gap-4 flex-1">
-                <Button
-                    variant="outline"
-                    className="font-openSans h-fit rounded-full bg-transparent px-4"
+        <header className="fixed top-0 z-[100] flex w-full items-center justify-between bg-[#40916C] p-3  text-white">
+            <div className="flex flex-1 items-center gap-4">
+                <Link
+                    href={user.uid ? "/search" : "/login"}
+                    className="h-fit rounded-full bg-transparent px-4 font-openSans"
                 >
-                    Log in
-                </Button>
-                <h3 className="font-openSans font-thin">For you</h3>
+                    {user.uid ? <HomeIcon /> : "Log in"}
+                </Link>
             </div>
-            <h1 className="font-playfairDSC text-4xl font-thin uppercase drop-shadow-md flex-1 text-center">
+            <h1 className="flex-1 text-center font-playfairDSC text-4xl font-thin uppercase drop-shadow-md">
                 Profypsy
             </h1>
-            <div className="flex items-center gap-4 flex-1 justify-end">
-                <Link href={"/appliance"} className="font-nunito font-thin">
-                    Join as a psychologist
-                </Link>
-                <Sheet>
-                    <SheetTrigger className="">
-                        <Menu />
-                    </SheetTrigger>
-                    <SheetContent side="left">
-                        <SheetHeader>
-                            <SheetTitle>Are you absolutely sure?</SheetTitle>
-                            <SheetDescription>
-                                This action cannot be undone. This will
-                                permanently delete your account and remove your
-                                data from our servers.
-                            </SheetDescription>
-                        </SheetHeader>
-                    </SheetContent>
-                </Sheet>
-            </div>
+            {user.uid? <Menu/>:<div className="flex flex-1 justify-end"><LanguageButton/></div>}
+            
         </header>
     );
 }
