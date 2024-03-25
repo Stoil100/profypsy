@@ -22,13 +22,8 @@ import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { AuthT } from "@/models/auth";
 import { useRouter } from "next/navigation";
 import { AppointmentT } from "@/app/(logic)/search/[id]/page";
+import { UserType } from "@/models/user";
 
-interface UserType {
-    email: string | null;
-    uid: string | null;
-    role: string | null;
-    appointments: AppointmentT[] | null;
-}
 
 interface AuthContextType {
     user: UserType;
@@ -302,3 +297,4 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         </AuthContext.Provider>
     );
 };
+
