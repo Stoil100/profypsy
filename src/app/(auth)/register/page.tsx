@@ -17,7 +17,7 @@ export default function Register() {
         <>
             {!user.uid && (
                 <main className="flex h-screen max-h-screen items-center justify-around overflow-y-hidden bg-[#FCFBF4]">
-                    <div className="relative flex h-full w-1/2 flex-col items-center justify-center gap-8 ">
+                    <div className="relative  h-full w-1/2 flex-col items-center justify-center gap-8 none md:flex">
                         <img
                             src="/auth/session.png"
                             className=" z-10 mr-10 h-auto max-h-[550px] drop-shadow-lg"

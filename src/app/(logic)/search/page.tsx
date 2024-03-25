@@ -15,11 +15,12 @@ import { Slider } from "@/components/ui/slider";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 // import { ListProfile, ListProfiles } from "@/models/listProfile";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { ChevronRight, Pin, SearchCheck } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { PsychologistProfile } from "@/components/forms/appliance";
+import Image from "next/image";
 interface OptionProps {
     name: string;
     iconSrc: string;
@@ -521,7 +522,10 @@ const Page: React.FC = () => {
         setFinnishedOptions(true);
         setIsLoading(true);
 
-        const q = query(collection(db, "psychologists"));
+        const q = query(
+            collection(db, "psychologists"),
+            where("approved", "==", true),
+        );
 
         const querySnapshot = await getDocs(q);
         let tempValues: PsychologistProfile[] = [];
@@ -532,11 +536,13 @@ const Page: React.FC = () => {
         setIsLoading(false);
     }
 
+   
+
     return (
         <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans">
             {!finnishedOptions && <OptionsSection fetchItems={fetchItems} />}
             {isLoading && <Loader />}
-            {psychologists.length !== 0 && (
+            {psychologists.length !== 0 ? (
                 <>
                     <section className="flex min-h-screen w-full flex-col items-center justify-center gap-14">
                         <div className="mt-20 flex flex-col items-center justify-center gap-4">
@@ -621,6 +627,22 @@ const Page: React.FC = () => {
                         </section>
                     )}
                 </>
+            ) : (
+                finnishedOptions && (
+                    <div className="flex flex-col items-center justify-center gap-2 p-2">
+                        {" "}
+                        <Image
+                            src={"/logic/notfound.svg"}
+                            alt="Search failed"
+                            width={500}
+                            height={500}
+                        />
+                        <p className="text-3xl text-center">
+                            Oops! We couldn't find a match for you at the
+                            moment!
+                        </p>
+                    </div>
+                )
             )}
         </main>
     );

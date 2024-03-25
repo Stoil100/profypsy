@@ -91,14 +91,14 @@ export default function Page() {
     return (
         <main
             className={cn(
-                "flex h-fit min-h-screen items-center justify-center bg-gradient-to-b py-4",
+                "flex h-fit min-h-screen items-center justify-center bg-gradient-to-b py-4 pt-[10vh]",
                 user.role === "psychologist"
                     ? "from-[#40916C] to-[#52B788]"
                     : "from-[#F7F4E0] to-[#F1ECCC]",
             )}
         >
             {user.uid && profile! && (
-                <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl bg-white p-4 sm:w-[500px]">
+                <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl bg-white p-4 sm:w-[600px]">
                     <h2 className="font-playfairDSC text-4xl font-bold ">
                         Profile
                     </h2>
@@ -143,7 +143,7 @@ export default function Page() {
                             )}
                         </div>
                     </div>
-                    <Tabs defaultValue="settings" className="">
+                    <Tabs defaultValue="settings" >
                         <TabsList className="w-full">
                             <TabsTrigger value="settings">
                                 <Settings className="sm:mr-2" />
@@ -385,8 +385,7 @@ export default function Page() {
                                                         </div>
                                                     </div>
                                                     <GradientButton
-                                                        className="text-xl"
-                                                        buttonClassName="w-full border-[#25BA9E] border-2"
+                                                        className="text-xl w-full border-[#25BA9E] border-2"
                                                         onClick={() => {
                                                             toggleChat(
                                                                 user.uid!,
@@ -524,8 +523,7 @@ export default function Page() {
                                                         </div>
                                                     </div>
                                                     <GradientButton
-                                                        className="text-xl"
-                                                        buttonClassName="w-full border-[#25BA9E] border-2"
+                                                        className="text-xl w-full border-[#25BA9E] border-2"
                                                         onClick={() => {
                                                             toggleChat(
                                                                 user!.uid!,

@@ -1,5 +1,7 @@
 import Footer from "@/components/Footer";
+// import Menu from "@/components/Menu";
 import Navigation from "@/components/Navigation";
+import { ChevronLeft } from "lucide-react";
 
 export default function PublicLayout({
     children,
@@ -8,34 +10,12 @@ export default function PublicLayout({
 }) {
     return (
         <section className="bg-[#F7F4E0]">
+            {/* <header className="flex p-2">
+                <div className="flex-1"><ChevronLeft/></div>
+                <div className="flex-1 flex justify-center text-4xl font-playfairDSC">Profypsy</div>
+               <Menu/>
+            </header> */}
             {children}
         </section>
     );
 }
-{/* <Dialog>
-<DialogTrigger>
-    <GradientButton className="text-3xl">
-        Book Now
-    </GradientButton>
-</DialogTrigger>
-<DialogContent>
-    <Carousel>
-        <CarouselContent>
-            <CarouselItem>
-                <Carousel>
-                    <CarouselContent>
-                        <CarouselItem>...</CarouselItem>
-                        <CarouselItem>...</CarouselItem>
-                        <CarouselItem>...</CarouselItem>
-                    </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
-                </Carousel>
-            </CarouselItem>
-            <CarouselItem>...</CarouselItem>
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-    </Carousel>
-</DialogContent>
-</Dialog> */}
