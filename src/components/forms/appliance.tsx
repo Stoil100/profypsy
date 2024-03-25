@@ -57,6 +57,7 @@ import { FirestoreError, doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import { AppointmentT } from "@/app/(logic)/search/[id]/page";
+import { toast } from "../ui/use-toast";
 
 type LanguageT = {
     icon: ReactNode;
@@ -195,7 +196,7 @@ export default function ApplianceForm({ className }: Props) {
         if (!user.uid) {
             router.push("/login");
         } else if (user.role == "psychologist") {
-            router.push(`/profile/${user.uid}`);
+            router.push(`/profile`);
         }
     }, []);
     const [tab, setTab] = useState("info");
@@ -203,7 +204,6 @@ export default function ApplianceForm({ className }: Props) {
     const [submitCV, setSubmitCV] = useState("");
     const [submitDiploma, setSubmitDiploma] = useState("");
     const [submitLetter, setSubmitLetter] = useState("");
-    const [submitValues, setSubmitValues] = useState<SubmitValues>();
     const [selectedSubscription, setSelectedSubscription] = useState<
         "Basic" | "Premium" | "Deluxe"
     >("Premium");
@@ -257,26 +257,30 @@ export default function ApplianceForm({ className }: Props) {
             approved: false,
             uid: user.uid!,
         };
-        setSubmitValues(tempValues);
-        submitData();
+        submitData(tempValues);
     };
-    const submitData = async () => {
+    const submitData = async (values:SubmitValues) => {
         if (user.uid) {
             try {
-                await setDoc(doc(db, "psychologists", user.uid!), submitValues);
+                await setDoc(doc(db, "psychologists", user.uid!), values);
                 await setDoc(doc(db, "users", user.uid!), {
                     email: user.email,
                     uid: user.uid,
                     role: "psychologist",
                     appointments: user.appointments,
                 });
-                router.push(`/profile/${user.uid}`);
+                toast({
+                    title: "Thanks for applying to Profypsy",
+                    description: `We will reach out to you soon via ${values.email}`,
+                });
+                router.push(`/profile`);
             } catch (error) {
                 const firestoreError = error as FirestoreError;
-                console.error(
-                    "Error uploading document:",
-                    firestoreError.message,
-                );
+                toast({
+                    title: "Error uploading document",
+                    description: `${firestoreError.message}`,
+                });
+                router.push("/")
             }
         }
     };
@@ -350,7 +354,7 @@ export default function ApplianceForm({ className }: Props) {
                             id="term-1"
                             checked
                             disabled
-                            className="border-[#00A3FF] !bg-white !text-[#00A3FF] !opacity-100"
+                            className="border-[#25BA9E] !bg-white !text-[#25BA9E] !opacity-100"
                         />
                         <label
                             htmlFor="term-1"
@@ -364,7 +368,7 @@ export default function ApplianceForm({ className }: Props) {
                             id="term-2"
                             checked
                             disabled
-                            className="border-[#00A3FF] !bg-white !text-[#00A3FF] !opacity-100"
+                            className="border-[#25BA9E] !bg-white !text-[#25BA9E] !opacity-100"
                         />
                         <label
                             htmlFor="term-2"
@@ -383,7 +387,7 @@ export default function ApplianceForm({ className }: Props) {
                             className={cn(
                                 "!bg-white !opacity-100",
                                 variant === "Premium" || variant === "Deluxe"
-                                    ? "border-[#00A3FF] !text-[#00A3FF]"
+                                    ? "border-[#25BA9E] !text-[#25BA9E]"
                                     : "border-[#FF5B2E]",
                             )}
                         />
@@ -402,7 +406,7 @@ export default function ApplianceForm({ className }: Props) {
                             className={cn(
                                 "!bg-white !opacity-100",
                                 variant === "Deluxe"
-                                    ? "border-[#00A3FF] !text-[#00A3FF]"
+                                    ? "border-[#25BA9E] !text-[#25BA9E]"
                                     : "border-[#FF5B2E]",
                             )}
                         />
@@ -476,7 +480,7 @@ export default function ApplianceForm({ className }: Props) {
                                 className={cn(
                                     "flex flex-col items-center justify-center gap-2 sm:flex-row",
                                     tab === "info" &&
-                                        "rounded-full !bg-[#0082FF80] !text-white",
+                                        "rounded-full !bg-[#25BA9E99] !text-white",
                                 )}
                                 onClick={() => {
                                     setTab("info");
@@ -490,7 +494,7 @@ export default function ApplianceForm({ className }: Props) {
                                 className={cn(
                                     "flex flex-col items-center justify-center gap-2 sm:flex-row",
                                     tab === "education" &&
-                                        "rounded-full !bg-[#0082FF80] !text-white",
+                                        "rounded-full !bg-[#25BA9E80] !text-white",
                                 )}
                                 onClick={() => {
                                     setTab("education");
@@ -504,7 +508,7 @@ export default function ApplianceForm({ className }: Props) {
                                 className={cn(
                                     "flex flex-col items-center justify-center gap-2 sm:flex-row",
                                     tab === "experience" &&
-                                        "rounded-full !bg-[#0082FF80] !text-white",
+                                        "rounded-full !bg-[#25BA9E80] !text-white",
                                 )}
                                 onClick={() => {
                                     setTab("experience");
@@ -737,7 +741,7 @@ export default function ApplianceForm({ className }: Props) {
                                             />
                                             <p>
                                                 Drag and drop,{" "}
-                                                <span className="text-[#00A3FF]">
+                                                <span className="text-[#25BA9E]">
                                                     or choose a file
                                                 </span>
                                             </p>
@@ -787,7 +791,7 @@ export default function ApplianceForm({ className }: Props) {
                                                         (value, index) => (
                                                             <p
                                                                 key={index}
-                                                                className=" w-full rounded-xl border-2 border-[#00A3FF] px-2 text-center text-xl text-[#00A3FF]"
+                                                                className=" w-full rounded-xl border-2 border-[#25BA9E] px-2 text-center text-xl text-[#25BA9E]"
                                                             >
                                                                 {value}
                                                             </p>
@@ -884,7 +888,7 @@ export default function ApplianceForm({ className }: Props) {
                             <div className="flex justify-center border-t-2 border-black py-2">
                                 <Button
                                     type="button"
-                                    className="rounded-full bg-[#00A3FF] text-xl"
+                                    className="rounded-full bg-[#25BA9E] text-xl"
                                     onClick={() => {
                                         setTab("education");
                                     }}
@@ -897,7 +901,7 @@ export default function ApplianceForm({ className }: Props) {
                             <div className="mt-10 flex h-full w-full flex-col items-center rounded-2xl border-2 border-black">
                                 <Button
                                     type="button"
-                                    className="size-10 -translate-y-1/2 rounded-full border-[#00A3FF] text-2xl text-[#00A3FF]"
+                                    className="size-10 -translate-y-1/2 rounded-full border-[#25BA9E] text-2xl text-[#25BA9E]"
                                     variant="outline"
                                     onClick={() => {
                                         appendEducation({
@@ -935,7 +939,7 @@ export default function ApplianceForm({ className }: Props) {
 
                                         <Button
                                             type="button"
-                                            className="size-10 -translate-y-1/2 rounded-full border-[#00A3FF] text-2xl text-[#00A3FF]"
+                                            className="size-10 -translate-y-1/2 rounded-full border-[#25BA9E] text-2xl text-[#25BA9E]"
                                             variant="outline"
                                             onClick={() => {
                                                 removeEducation(index);
@@ -965,7 +969,7 @@ export default function ApplianceForm({ className }: Props) {
                                             />
                                             <p>
                                                 Drag and drop,{" "}
-                                                <span className="text-[#00A3FF]">
+                                                <span className="text-[#25BA9E]">
                                                     or choose a file
                                                 </span>
                                             </p>
@@ -1006,7 +1010,7 @@ export default function ApplianceForm({ className }: Props) {
                                 <Button
                                     variant="outline"
                                     type="button"
-                                    className="rounded-full border-2 border-[#00A3FF] text-xl text-[#00A3FF]"
+                                    className="rounded-full border-2 border-[#25BA9E] text-xl text-[#25BA9E]"
                                     onClick={() => {
                                         setTab("info");
                                     }}
@@ -1015,7 +1019,7 @@ export default function ApplianceForm({ className }: Props) {
                                 </Button>
                                 <Button
                                     type="button"
-                                    className="rounded-full bg-[#00A3FF] text-xl"
+                                    className="rounded-full bg-[#25BA9E] text-xl"
                                     onClick={() => {
                                         setTab("experience");
                                     }}
@@ -1028,7 +1032,7 @@ export default function ApplianceForm({ className }: Props) {
                             <div className="mt-10 flex h-full w-full flex-col items-center rounded-2xl border-2 border-black">
                                 <Button
                                     type="button"
-                                    className="size-10 -translate-y-1/2 rounded-full border-[#00A3FF] text-2xl text-[#00A3FF]"
+                                    className="size-10 -translate-y-1/2 rounded-full border-[#25BA9E] text-2xl text-[#25BA9E]"
                                     variant="outline"
                                     onClick={() => {
                                         appendExperience({
@@ -1066,7 +1070,7 @@ export default function ApplianceForm({ className }: Props) {
 
                                         <Button
                                             type="button"
-                                            className="size-10 -translate-y-1/2 rounded-full border-[#00A3FF] text-2xl text-[#00A3FF]"
+                                            className="size-10 -translate-y-1/2 rounded-full border-[#25BA9E] text-2xl text-[#25BA9E]"
                                             variant="outline"
                                             onClick={() => {
                                                 removeExperience(index);
@@ -1093,7 +1097,7 @@ export default function ApplianceForm({ className }: Props) {
                                                         (value, index) => (
                                                             <p
                                                                 key={index}
-                                                                className=" w-full rounded-xl border-2 border-[#00A3FF] px-2 text-center text-xl text-[#00A3FF]"
+                                                                className=" w-full rounded-xl border-2 border-[#25BA9E] px-2 text-center text-xl text-[#25BA9E]"
                                                             >
                                                                 {value}
                                                             </p>
@@ -1327,7 +1331,7 @@ export default function ApplianceForm({ className }: Props) {
                                             />
                                             <p>
                                                 Drag and drop,{" "}
-                                                <span className="text-[#00A3FF]">
+                                                <span className="text-[#25BA9E]">
                                                     or choose a file
                                                 </span>
                                             </p>
@@ -1368,7 +1372,7 @@ export default function ApplianceForm({ className }: Props) {
                                 <Button
                                     variant="outline"
                                     type="submit"
-                                    className="rounded-full border-2 border-[#00A3FF] text-xl  text-[#00A3FF]"
+                                    className="rounded-full border-2 border-[#25BA9E] text-xl  text-[#25BA9E]"
                                     onClick={() => {
                                         setTab("education");
                                     }}
@@ -1378,7 +1382,7 @@ export default function ApplianceForm({ className }: Props) {
                                 <Button
                                     variant="outline"
                                     type="submit"
-                                    className="rounded-full bg-[#00A3FF] text-xl text-white"
+                                    className="rounded-full bg-[#25BA9E] text-xl text-white"
                                 >
                                     Submit
                                 </Button>
@@ -1399,13 +1403,13 @@ export default function ApplianceForm({ className }: Props) {
                         >
                             <TabsTrigger
                                 value="monthly"
-                                className="rounded-full  data-[state=active]:bg-[#00A3FF] data-[state=active]:text-white"
+                                className="rounded-full  data-[state=active]:bg-[#25BA9E] data-[state=active]:text-white"
                             >
                                 Monthly
                             </TabsTrigger>
                             <TabsTrigger
                                 value="yearly"
-                                className="rounded-full  data-[state=active]:bg-[#00A3FF] data-[state=active]:text-white"
+                                className="rounded-full  data-[state=active]:bg-[#25BA9E] data-[state=active]:text-white"
                             >
                                 Yearly
                             </TabsTrigger>
@@ -1416,7 +1420,7 @@ export default function ApplianceForm({ className }: Props) {
                         >
                             <h4 className="italic">
                                 First month is{" "}
-                                <span className="text-[#00A3FF]">
+                                <span className="text-[#25BA9E]">
                                     free of charges
                                 </span>
                             </h4>
@@ -1475,8 +1479,8 @@ export default function ApplianceForm({ className }: Props) {
                                 time
                             </p>
                             <div className="flex w-full justify-between border-t-2 py-2 border-black/70">
-                                <Button variant="outline" className="text-[#00A3FF] border-[#00A3FF] bg-white rounded-full text-xl py-1" onClick={()=>{setIsPaying(false)}}>Back</Button>
-                                <Button className="bg-[#00A3FF] text-xl  rounded-full py-1 text-white" onClick={()=>{submitData("montly")}}>Send</Button>
+                                <Button variant="outline" className="text-[#25BA9E] border-[#25BA9E] bg-white rounded-full text-xl py-1" onClick={()=>{setIsPaying(false)}}>Back</Button>
+                                <Button className="bg-[#25BA9E] text-xl  rounded-full py-1 text-white" onClick={()=>{submitData("montly")}}>Send</Button>
                             </div>
                         </TabsContent>
                         <TabsContent
@@ -1485,7 +1489,7 @@ export default function ApplianceForm({ className }: Props) {
                         >
                             <h4 className="italic">
                                 First month is{" "}
-                                <span className="text-[#00A3FF]">
+                                <span className="text-[#25BA9E]">
                                     free of charges
                                 </span>
                             </h4>
@@ -1544,8 +1548,8 @@ export default function ApplianceForm({ className }: Props) {
                                 time
                             </p>
                             <div className="flex w-full justify-between border-t-2 py-2 border-black/70">
-                                <Button variant="outline" className="text-[#00A3FF] border-[#00A3FF] bg-white rounded-full text-xl py-1" onClick={()=>{setIsPaying(false)}}>Back</Button>
-                                <Button className="bg-[#00A3FF] text-xl  rounded-full py-1 text-white" onClick={()=>{submitData("yearly")}}>Send</Button>
+                                <Button variant="outline" className="text-[#25BA9E] border-[#25BA9E] bg-white rounded-full text-xl py-1" onClick={()=>{setIsPaying(false)}}>Back</Button>
+                                <Button className="bg-[#25BA9E] text-xl  rounded-full py-1 text-white" onClick={()=>{submitData("yearly")}}>Send</Button>
                             </div>
                         </TabsContent>
                     </Tabs>
