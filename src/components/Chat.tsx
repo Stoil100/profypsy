@@ -153,19 +153,19 @@ export default function Chat({ senderUid, receiverUid,receiverUsername }: ChatPr
                     Private chat with {receiverUsername.firstName}{" "}
                     {receiverUsername.lastName}
                 </h2>
-                <div className="flex flex-col gap-2 rounded-xl border bg-white p-2">
+                <div className="flex flex-col gap-2 rounded-xl border bg-white p-2 max-h-[50vh] overflow-y-auto">
                     {messages.map((message, index) => (
                         <p
                             key={index}
                             className={cn(
-                                "min-w-[50px] rounded-2xl px-2 text-center text-xl break-all",
+                                "min-w-[50px] rounded-2xl px-2 text-xl break-all",
                                 user.role === "psychologist"
                                     ? message.senderUid === senderUid
-                                        ? "self-end bg-[#40916C] text-white"
-                                        : "self-start border-2 border-[#40916C] text-[#40916C]"
+                                        ? "self-end bg-[#40916C] text-white text-right"
+                                        : "self-start border-2 border-[#40916C] text-[#40916C] text-left"
                                     : message.senderUid === senderUid
-                                      ? "self-end bg-[#40916C] text-white"
-                                      : "self-start border-2 border-[#40916C] text-[#40916C]",
+                                      ? "self-end bg-[#40916C] text-white text-right"
+                                      : "self-start border-2 border-[#40916C] text-[#40916C] text-right",
                             )}
                         >
                             {message.content}
