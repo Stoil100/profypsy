@@ -103,8 +103,8 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
     return (
         <div
             className={clsx(
-                "flex min-h-[33vh] flex-wrap items-start justify-center gap-14 py-10 text-xl font-thin text-white",
-                variant === "footer" ? "bg-[#525174]" : "bg-transparent",
+                "flex min-h-[33vh] flex-wrap items-start justify-center gap-14 py-10 text-xl font-thin text-white w-full",
+                variant === "footer" ? "bg-[#525174]" : "bg-transparent justify-evenly",
             )}
         >
             <div className="flex flex-col gap-2 font-openSans text-white">
