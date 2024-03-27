@@ -158,7 +158,7 @@ export default function Chat({ senderUid, receiverUid,receiverUsername }: ChatPr
                         <p
                             key={index}
                             className={cn(
-                                "min-w-[50px] rounded-full px-2 text-center text-xl",
+                                "min-w-[50px] rounded-2xl px-2 text-center text-xl break-all",
                                 user.role === "psychologist"
                                     ? message.senderUid === senderUid
                                         ? "self-end bg-[#40916C] text-white"
