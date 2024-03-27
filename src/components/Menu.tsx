@@ -14,7 +14,7 @@ import GradientButton from "./GradientButton";
 import { useAuth } from "./Providers";
 import { Button } from "./ui/button";
 import { UserType } from "@/models/user";
-
+import { Guidance } from "./Guidance";
 interface MenuItemProps {
     href: string;
     icon: React.ElementType;
@@ -43,47 +43,48 @@ const MenuItem: React.FC<MenuItemProps> = ({ href, icon: IconComponent, title })
     const {user,logOut}=useAuth();
     return (
         
-        <div className="w-full space-y-3 divide-y-[3px] rounded-2xl bg-[#40916C] p-4 px-10 text-center text-white">
-            <MenuItem href="/profile" icon={User} title="Profile" />
-            <MenuItem
-                href="/search"
-                icon={CalendarCheck}
-                title="Book a session"
-            />
-            <MenuItem href="/articles" icon={Palette} title="Articles" />
-            <Button
-                onClick={() => {
-                    logOut();
-                }}
-                variant="ghost"
-                className="flex w-full items-center justify-between rounded-none px-0 pt-7 pb-4 transition-all hover:scale-110 hover:bg-transparent hover:text-white"
-            >
-                <div className="flex size-10 items-center justify-center rounded-full border-2">
-                    <LogOutIcon />
-                </div>
-                <p className="text-xl">Logout</p>
-                <ChevronRight />
-            </Button>
-            <div className="space-y-2 pt-3">
-                {user.role !== "psychologist" && (
-                    <>
-                        <div>
-                            <GradientButton
-                                onClick={() => {
-                                    router.push("/appliance");
-                                }}
-                                className="w-full justify-between gap-2 rounded-sm"
-                            >
-                                Join our psychologists team
-                            </GradientButton>
-                        </div>
-                    </>
-                )}
-                <GradientButton className="w-full justify-between gap-2 rounded-sm">
-                    Subscribe to our newsletter
-                </GradientButton>
-            </div>
-        </div>
+        // <div className="w-full space-y-3 divide-y-[3px] rounded-2xl bg-[#40916C] p-4 px-10 text-center text-white">
+        //     <MenuItem href="/profile" icon={User} title="Profile" />
+        //     <MenuItem
+        //         href="/search"
+        //         icon={CalendarCheck}
+        //         title="Book a session"
+        //     />
+        //     <MenuItem href="/articles" icon={Palette} title="Articles" />
+        //     <Button
+        //         onClick={() => {
+        //             logOut();
+        //         }}
+        //         variant="ghost"
+        //         className="flex w-full items-center justify-between rounded-none px-0 pt-7 pb-4 transition-all hover:scale-110 hover:bg-transparent hover:text-white"
+        //     >
+        //         <div className="flex size-10 items-center justify-center rounded-full border-2">
+        //             <LogOutIcon />
+        //         </div>
+        //         <p className="text-xl">Logout</p>
+        //         <ChevronRight />
+        //     </Button>
+        //     <div className="space-y-2 pt-3">
+        //         {user.role !== "psychologist" && (
+        //             <>
+        //                 <div>
+        //                     <GradientButton
+        //                         onClick={() => {
+        //                             router.push("/appliance");
+        //                         }}
+        //                         className="w-full justify-between gap-2 rounded-sm"
+        //                     >
+        //                         Join our psychologists team
+        //                     </GradientButton>
+        //                 </div>
+        //             </>
+        //         )}
+        //         <GradientButton className="w-full justify-between gap-2 rounded-sm">
+        //             Subscribe to our newsletter
+        //         </GradientButton>
+        //     </div>
+        // </div>
+        <Guidance variant="navigation"/>
     );
   };
 
@@ -92,13 +93,13 @@ export default function Menu(){
     
     
     return (
-        <div className="flex flex-1 items-center justify-end gap-4">
+        <div className="flex flex-1 items-center justify-end gap-4 text-inherit">
             <Sheet>
-                <SheetTrigger className="text-white">
+                <SheetTrigger className="text-inherit">
                     <MenuIcon />
                 </SheetTrigger>
                 <SheetContent
-                    side="left"
+                    side="top"
                     className="z-[110] flex w-full flex-col items-center justify-between bg-gradient-to-b from-[#40916C] to-[#52B788] text-white sm:w-auto"
                 >
                     <SheetHeader>

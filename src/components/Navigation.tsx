@@ -1,11 +1,12 @@
 "use client"
 
-import { HomeIcon } from "lucide-react";
+import { HomeIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Menu from "./Menu";
 import { useAuth } from "./Providers";
 import LanguageButton from "./LanguageButton";
+import clsx from "clsx";
 
 export default function Navigation() {
     const {user}=useAuth();
@@ -15,16 +16,21 @@ export default function Navigation() {
             <div className="flex flex-1 items-center gap-4">
                 <Link
                     href={user.uid ? "/search" : "/login"}
-                    className="h-fit rounded-full bg-transparent px-4 font-openSans"
+                    className={clsx("h-fit rounded-full bg-transparent px-2 py-1 font-openSans ",!user.uid&&"border")}
                 >
-                    {user.uid ? <HomeIcon /> : "Log in"}
+                    {user.uid ? <SearchIcon /> : "Log in"}
                 </Link>
             </div>
-            <h1 className="flex-1 text-center font-playfairDSC text-4xl font-thin uppercase drop-shadow-md">
+            <Link href={"/"} className="flex-1 text-center font-playfairDSC text-4xl font-thin uppercase drop-shadow-md">
                 Profypsy
-            </h1>
-            {user.uid? <Menu/>:<div className="flex flex-1 justify-end"><LanguageButton/></div>}
-            
+            </Link>
+            {user.uid ? (
+                <Menu />
+            ) : (
+                <div className="flex flex-1 justify-end">
+                    <LanguageButton />
+                </div>
+            )}
         </header>
     );
 }
