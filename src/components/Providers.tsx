@@ -133,7 +133,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
     const handleUserAfterAuth = async (user: UserType) => {
         await createUserDocument(user);
-        router.push(`/profile/${user.uid}`);
+        router.push(`/profile`);
     };
 
     const signUp = async (values: AuthT): Promise<boolean | AuthError> => {
@@ -172,7 +172,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 role: docSnap.data()!.role,
                 appointments: docSnap.data()!.appointments,
             });
-            router.push(`/profile/${userCredential.user.uid}`);
+            router.push(`/profile`);
         } catch (error) {
             return error as AuthError;
         }
@@ -231,7 +231,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                     role: docSnap.data()!.role,
                     appointments: docSnap.data()!.appointments,
                 });
-                router.push(`/profile/${result.user.uid}`);
+                router.push(`/profile`);
             }
         } catch (error) {
             return error as AuthError;
@@ -261,7 +261,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                     role: docSnap.data()!.role,
                     appointments: docSnap.data()!.appointments,
                 });
-                router.push(`/profile/${result.user.uid}`);
+                router.push(`/profile`);
             }
         } catch (error) {
             return error as AuthError;

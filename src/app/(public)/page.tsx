@@ -79,13 +79,13 @@ const BottomLine = () => (
 function HeroSection() {
     function HeaderCard({ title, image }: HeaderT) {
         return (
-            <div className="flex w-full cursor-pointer flex-col items-center justify-between gap-2 rounded-3xl bg-[#B2D3A8] p-3 transition-transform hover:scale-105">
+            <Link href={"/search"} className="flex w-full cursor-pointer flex-col items-center justify-between gap-2 rounded-3xl bg-[#B2D3A8] p-3 transition-transform hover:scale-105">
                 <Image src={image} alt={title} width={250} height={250} />
                 <div className="flex w-full items-center justify-between">
                     <h4 className="text-lg">{title}</h4>
                     <ChevronRight />
                 </div>
-            </div>
+            </Link>
         );
     }
     return (
