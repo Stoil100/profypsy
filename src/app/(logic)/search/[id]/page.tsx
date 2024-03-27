@@ -6,12 +6,9 @@ import {
     Carousel,
     CarouselApi,
     CarouselContent,
-    CarouselItem
+    CarouselItem,
 } from "@/components/ui/carousel";
-import {
-    Dialog,
-    DialogContent
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import { useAuth } from "@/components/Providers";
 import { PsychologistProfile } from "@/components/forms/appliance";
@@ -39,12 +36,7 @@ import { toast } from "@/components/ui/use-toast";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    arrayUnion,
-    doc,
-    getDoc,
-    updateDoc
-} from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import { ArrowLeft, ArrowRight, SearchCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -105,7 +97,7 @@ const Loader = () => (
 //         </Button>
 //     </div>
 // );
-type BookingDialogProps ={
+type BookingDialogProps = {
     isOpen: boolean;
     onClose: () => void;
     profile: PsychologistProfile | null;
@@ -114,18 +106,21 @@ type BookingDialogProps ={
         uid: string | null;
         role: string | null;
     };
-}
-type BookingDatesProps={
+};
+type BookingDatesProps = {
     profile: PsychologistProfile | null;
     setSelectedAppointmentTime: (value: string) => void;
     selectedAppointmentTime: string | null;
-}
+};
 const formSchema = z.object({
     userName: z.object({
         firstName: z.string().min(1, "Enter a valid name"),
         lastName: z.string().min(1, "Enter a valid last name"),
     }),
-    info: z.string().min(2,"Enter some information about your case").max(500,"Limit is 500 characters"),
+    info: z
+        .string()
+        .min(2, "Enter some information about your case")
+        .max(500, "Limit is 500 characters"),
     session: z.string().min(1, "Please select an option."),
     phone: z
         .string()
@@ -143,40 +138,48 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     selectedAppointmentTime,
 }) => {
     const [currentWeek, setCurrentWeek] = useState(0);
-  const [availableSlots, setAvailableSlots] = useState<{ [key: string]: boolean }>({});
-  const daysAvailable: string[] = profile?.cost?.dates ?? [];
+    const [availableSlots, setAvailableSlots] = useState<{
+        [key: string]: boolean;
+    }>({});
+    const daysAvailable: string[] = profile?.cost?.dates ?? [];
 
-  const fetchAvailability = async (dates: Date[]) => {
-    const profileDocRef = doc(db, "psychologists", profile!.uid);
-    try {
-      const docSnap = await getDoc(profileDocRef);
-      if (docSnap.exists()) {
-        const { appointments } = docSnap.data() as { appointments: { selectedDate: string }[] };
-        const availability: { [key: string]: boolean } = {};
-        dates.forEach(date => {
-            const slotsForDate = generateTimeSlotsForDate(date);
-            const dateStr = date.toDateString();
-            const slots = slotsForDate[dateStr];
-            
-            if (slots) {
-              slots.forEach((slot: string) => {
-                const selectedDateTime = `${dateStr} ${slot}`;
-                availability[selectedDateTime] = !appointments.some(appointment => appointment.selectedDate === selectedDateTime);
-                console.log(availability)
-              });
+    const fetchAvailability = async (dates: Date[]) => {
+        const profileDocRef = doc(db, "psychologists", profile!.uid);
+        try {
+            const docSnap = await getDoc(profileDocRef);
+            if (docSnap.exists()) {
+                const { appointments } = docSnap.data() as {
+                    appointments: { selectedDate: string }[];
+                };
+                const availability: { [key: string]: boolean } = {};
+                dates.forEach((date) => {
+                    const slotsForDate = generateTimeSlotsForDate(date);
+                    const dateStr = date.toDateString();
+                    const slots = slotsForDate[dateStr];
+
+                    if (slots) {
+                        slots.forEach((slot: string) => {
+                            const selectedDateTime = `${dateStr} ${slot}`;
+                            availability[selectedDateTime] = !appointments.some(
+                                (appointment) =>
+                                    appointment.selectedDate ===
+                                    selectedDateTime,
+                            );
+                            console.log(availability);
+                        });
+                    }
+                });
+                setAvailableSlots(availability);
             }
-          });
-        setAvailableSlots(availability);
-      }
-    } catch (error) {
-      console.error("Error fetching availability: ", error);
-    }
-  };
+        } catch (error) {
+            console.error("Error fetching availability: ", error);
+        }
+    };
 
-  useEffect(() => {
-    const dates = getDatesForWeek(currentWeek);
-    fetchAvailability(dates);
-  }, [currentWeek, profile!.uid]);
+    useEffect(() => {
+        const dates = getDatesForWeek(currentWeek);
+        fetchAvailability(dates);
+    }, [currentWeek, profile!.uid]);
 
     function dayNamesToNumbers(dayName: string): number {
         const days: string[] = [
@@ -197,7 +200,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
         const dateStr = date.toDateString();
         const slots: string[] = [];
         const startTime = 11;
-        const endTime = 18; 
+        const endTime = 18;
 
         for (let hour = startTime; hour < endTime; hour++) {
             const time = `${hour}:00 - ${hour + 1}:00`;
@@ -236,7 +239,6 @@ const BookingDates: React.FC<BookingDatesProps> = ({
         );
     }
 
-
     return (
         <>
             <div className="flex items-center justify-center gap-10">
@@ -261,7 +263,9 @@ const BookingDates: React.FC<BookingDatesProps> = ({
                                         !availableSlots[`${date} ${slot}`]
                                             ? "border-gray-400 text-gray-400"
                                             : "border-[#52B788] text-[#52B788] hover:bg-[#52B788] hover:text-white",
-                                            selectedAppointmentTime===`${date} ${slot}`&&"bg-[#52B788] text-white"
+                                        selectedAppointmentTime ===
+                                            `${date} ${slot}` &&
+                                            "bg-[#52B788] text-white",
                                     )}
                                     onClick={() =>
                                         setSelectedAppointmentTime(
@@ -298,10 +302,10 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     );
 };
 
-interface AppointmentT extends z.infer<typeof formSchema>{
-    selectedDate:string;
-    clientUid:string;
-    psychologistUid:string;
+interface AppointmentT extends z.infer<typeof formSchema> {
+    selectedDate: string;
+    clientUid: string;
+    psychologistUid: string;
 }
 
 export type { AppointmentT };
@@ -315,8 +319,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     const [api, setApi] = useState<CarouselApi>();
     const [selectedAppointmentTime, setSelectedAppointmentTime] = useState<
         string | null
-    >(null); 
-   const router=useRouter();
+    >(null);
+    const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -332,44 +336,45 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     });
     if (!isOpen) return null;
 
-    
     const scrollSlide = (page: number) => api?.scrollTo(page);
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         if (!user) return;
-        const tempPsychologistValues:AppointmentT = {
+        const tempPsychologistValues: AppointmentT = {
             ...values,
             selectedDate: selectedAppointmentTime!,
             clientUid: user!.uid!,
-            psychologistUid:profile?.uid!,
+            psychologistUid: profile?.uid!,
         };
-        const tempUserValues:AppointmentT = {
-            userName:profile?.userName!,
-            email:profile?.email!,
-            phone:profile?.phone!,
-            info:values.info!,
-            session:values.session!,
-            age:profile?.age!,
+        const tempUserValues: AppointmentT = {
+            userName: profile?.userName!,
+            email: profile?.email!,
+            phone: profile?.phone!,
+            info: values.info!,
+            session: values.session!,
+            age: profile?.age!,
             selectedDate: selectedAppointmentTime!,
-            clientUid:user?.uid!,
-            psychologistUid:profile!.uid!
-        }
-        const psychologistProfileDocRef = doc(db, "psychologists", profile!.uid);
+            clientUid: user?.uid!,
+            psychologistUid: profile!.uid!,
+        };
+        const psychologistProfileDocRef = doc(
+            db,
+            "psychologists",
+            profile!.uid,
+        );
         const userProfileDocRef = doc(db, "users", user!.uid!);
         try {
             await updateDoc(psychologistProfileDocRef, {
                 appointments: arrayUnion(tempPsychologistValues),
             });
-            await updateDoc(userProfileDocRef,{
-                appointments:arrayUnion(tempUserValues)
-                
+            await updateDoc(userProfileDocRef, {
+                appointments: arrayUnion(tempUserValues),
             }),
-            toast({
-                title: "Scheduled appointment for: ",
-                description: `${selectedAppointmentTime}`,
-
-              })
-           router.push("/search")
+                toast({
+                    title: "Scheduled appointment for: ",
+                    description: `${selectedAppointmentTime}`,
+                });
+            router.push("/search");
         } catch (error) {
             console.error("Error adding appointment: ", error);
         }
@@ -386,9 +391,17 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                 </h2>
                                 <p>Select a time slot:</p>
                             </div>
-                            <BookingDates profile={profile} setSelectedAppointmentTime={setSelectedAppointmentTime} selectedAppointmentTime={selectedAppointmentTime} />
-                              {selectedAppointmentTime && (
-                                <div className="w-full flex items-center justify-center">
+                            <BookingDates
+                                profile={profile}
+                                setSelectedAppointmentTime={
+                                    setSelectedAppointmentTime
+                                }
+                                selectedAppointmentTime={
+                                    selectedAppointmentTime
+                                }
+                            />
+                            {selectedAppointmentTime && (
+                                <div className="flex w-full items-center justify-center">
                                     <Button
                                         variant="outline"
                                         className="rounded-full border-2 border-[#52B788] text-xl text-[#52B788]"
@@ -396,9 +409,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                     >
                                         Next
                                     </Button>
-                                    </div>
-                                )}
-                                 
+                                </div>
+                            )}
                         </CarouselItem>
 
                         <CarouselItem className="ml-2 w-full  space-y-3 rounded-xl bg-white p-2">
@@ -669,38 +681,29 @@ export default function Page({ params }: { params: { id: string } }) {
     return (
         <>
             {!profile && <Loader />}
-            <section className="flex h-fit min-h-screen w-full flex-col items-center gap-5 px-[200px] py-10 text-center text-[#205041]">
-                <img
-                    src={profile?.image}
-                    alt={profile?.userName.firstName}
-                    className="size-32 rounded-full"
-                />
-                <h3 className="text-3xl">
-                    {profile?.userName.firstName} {profile?.userName.lastName}
-                </h3>
-                <div className="w-full space-y-4">
-                    <h4 className="text-3xl">About me:</h4>
-                    <p className="text-xl">{profile?.about}</p>
-                </div>
-                <div className="space-y-4">
-                    <h4 className="text-3xl">My personal quote:</h4>
-                    <p className="rounded-2xl bg-[#FCFBF4] text-xl italic">
-                    &quot;{profile?.quote}&quot;    
-                    </p>
-                </div>
-                <div className="space-x-4 space-y-4">
-                    <h4 className="text-3xl">Specializations:</h4>
-                    {profile?.specializations!.map((speciality,index) => (
-                        <Badge className="bg-[#FCFBF4] text-xl" key={index}>
-                            <div className="h-full w-full bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
-                                {speciality}
-                            </div>
-                        </Badge>
-                    ))}
-                </div>
-                <div className="space-y-4">
-                    <h4 className="text-3xl">Cost and Insurance</h4>
-                    <div className="rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] p-3">
+            <section className="flex min-h-screen w-full flex-col items-center justify-center gap-5 px-4 py-4 text-center text-[#205041]">
+                <div className="mt-20 flex w-full max-w-[90vw] flex-col items-center gap-8 px-2  sm:px-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+                    <div className="order-2 flex h-full w-full flex-col justify-center space-y-4 rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] p-2 shadow-2xl  md:col-span-1 lg:order-1">
+                        <h2 className="text-3xl text-white">
+                            Professional standarts:
+                        </h2>
+                        <h4 className="text-2xl text-white">
+                            Specializations:
+                        </h4>
+                        <div className="flex items-center justify-center gap-2">
+                            {profile?.specializations!.map(
+                                (speciality, index) => (
+                                    <Badge
+                                        className="bg-[#FCFBF4] text-xl"
+                                        key={index}
+                                    >
+                                        <div className="h-full w-full bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
+                                            {speciality}
+                                        </div>
+                                    </Badge>
+                                ),
+                            )}
+                        </div>
                         <div className="flex items-center justify-around divide-x-2 divide-black rounded-xl  bg-[#FCFBF4] p-2">
                             <div className="w-1/2 divide-y-2 divide-black">
                                 <p className="text-2xl">Duration</p>
@@ -714,36 +717,71 @@ export default function Page({ params }: { params: { id: string } }) {
                                 </p>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div className="space-y-4">
-                    <h4 className="text-3xl">Work experience:</h4>
-                    <div className="divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 text-left">
-                        {profile?.experiences!.map((exp,index) => (
-                            <p key={index} className="text-xl">{exp.experience}</p>
-                        ))}
-                    </div>
-                </div>
-                <div className="space-y-4">
-                    <h4 className="text-3xl">Education</h4>
-                    <div className="divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 text-left">
-                        {profile?.educations!.map((el,index) => (
-                            <p key={index} className="text-xl capitalize">{el.education}</p>
-                        ))}
-                    </div>
-                </div>
-                <div className="space-x-4 space-y-4">
-                    <h4 className="text-3xl">Languages</h4>
-                    {profile?.languages!.map((language,index) => (
-                        <Badge className="bg-[#FCFBF4] text-xl" key={index}>
-                            <div className="flex h-full w-full items-center gap-2 bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
-                                <img
-                                    src={`${language === "Bulgarian" ? "/logic/bg.png" : "/logic/en.png"}`}
-                                />
-                                <p className="capitalize">{language}</p>
+                        <div className="flex flex-col items-center justify-center gap-2">
+                            <h4 className="text-2xl text-white">Languages:</h4>
+                            <div className="flex items-center justify-center gap-2">
+                                {profile?.languages!.map((language, index) => (
+                                    <Badge
+                                        className="bg-[#FCFBF4] text-xl"
+                                        key={index}
+                                    >
+                                        <div className="flex h-full w-full items-center gap-2 bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
+                                            <img
+                                                src={`${language === "Bulgarian" ? "/logic/bg.png" : "/logic/en.png"}`}
+                                            />
+                                            <p className="capitalize">
+                                                {language}
+                                            </p>
+                                        </div>
+                                    </Badge>
+                                ))}
                             </div>
-                        </Badge>
-                    ))}
+                        </div>
+                    </div>
+                    <div className="order-1 flex h-full w-full flex-col items-center justify-center space-y-4 rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] p-2 text-white shadow-2xl lg:order-2">
+                        <h2 className="text-3xl">General info:</h2>
+                        <img
+                            src={profile?.image}
+                            alt={profile?.userName.firstName}
+                            className="h-32 w-32 rounded-full"
+                        />
+                        <h3 className="text-3xl">
+                            {profile?.userName.firstName}{" "}
+                            {profile?.userName.lastName}
+                        </h3>
+                        <h4 className="text-2xl">About me:</h4>
+                        <p className="text-xl">{profile?.about}</p>
+                        <h4 className="text-2xl">My personal quote:</h4>
+                        <p className="w-full rounded-2xl bg-[#FCFBF4] text-xl italic text-[#205041]">
+                            &quot;{profile?.quote}&quot;
+                        </p>
+                    </div>
+                    <div className="order-3 flex  h-full w-full flex-col justify-center  space-y-4 rounded-2xl bg-white bg-gradient-to-b from-[#40916C] to-[#52B788] p-2 shadow-2xl md:col-span-2 lg:col-span-1">
+                        <h2 className="text-3xl text-white">My experience:</h2>
+                        <div className="col-span-1 space-y-4">
+                            <h4 className="text-2xl text-white">
+                                Work experience:
+                            </h4>
+                            <ul className="list-decimal divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 pl-8 text-left">
+                                {profile?.experiences!.map((exp, index) => (
+                                    <li key={index} className="text-xl">
+                                        {exp.experience}
+                                    </li>
+                                ))}
+                            </ul>
+                            <h4 className="text-2xl text-white">Education</h4>
+                            <ul className="list-decimal divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 pl-8 text-left">
+                                {profile?.educations!.map((el, index) => (
+                                    <li
+                                        key={index}
+                                        className="text-xl capitalize"
+                                    >
+                                        {el.education}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 {selectedAppointmentTime && (
                     <p>You have selected: {selectedAppointmentTime}</p>

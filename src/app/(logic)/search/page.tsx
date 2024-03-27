@@ -142,10 +142,8 @@ const ProfileCard = ({
             ))}
             <p className="text-[#205041]">{about}</p>
         </div>
-        <Link href={`/search/${uid}`}>
-            <Button className="w-full bg-gradient-to-b from-[#40916C] to-[#52B788] text-white">
+        <Link href={`/search/${uid}`} className="w-full bg-gradient-to-b from-[#40916C] text-center py-2 rounded-xl hover:scale-110 transition-transform to-[#52B788] text-white">
                 Book Now
-            </Button>
         </Link>
     </div>
 );
@@ -164,7 +162,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
         <Carousel
             setApi={setApi}
             opts={{ watchDrag: false }}
-            className="fixed top-0 flex h-screen w-screen items-center"
+            className="fixed top-10 flex h-screen w-screen items-center"
         >
             <CarouselContent>
                 <CarouselItem className="p-1">
@@ -364,7 +362,7 @@ const Page: React.FC = () => {
    
 
     return (
-        <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans">
+        <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans ">
             {!finnishedOptions && <OptionsSection fetchItems={fetchItems} />}
             {isLoading && <Loader />}
             {psychologists.length !== 0 ? (
