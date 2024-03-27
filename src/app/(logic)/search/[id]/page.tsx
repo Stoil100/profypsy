@@ -2,47 +2,19 @@
 import GradientButton from "@/components/GradientButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
 import {
     Carousel,
     CarouselApi,
     CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
+    CarouselItem
 } from "@/components/ui/carousel";
-
-import { db } from "@/firebase/config";
-import { cn } from "@/lib/utils";
 import {
-    arrayUnion,
-    collection,
-    doc,
-    getDoc,
-    getDocs,
-    query,
-    setDoc,
-    updateDoc,
-    where,
-} from "firebase/firestore";
-import { ArrowLeft, ArrowRight, Pin, SearchCheck } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ListProfile } from "@/models/listProfile";
-import { PsychologistProfile } from "@/components/forms/appliance";
+    Dialog,
+    DialogContent
+} from "@/components/ui/dialog";
+
 import { useAuth } from "@/components/Providers";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { PsychologistProfile } from "@/components/forms/appliance";
 import {
     Form,
     FormControl,
@@ -64,185 +36,20 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
-const testProfiles = {
-    ultra: [
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-    ],
-    premium: [
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "1-2 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "1-2 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "1-2 years of experience",
-        },
-    ],
-    basic: [
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "1 year of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-    ],
-    trial: [
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-        {
-            name: "Test Testov",
-            location: "Varna",
-            picture: "/homepage/avatar.png",
-            description:
-                "Our whole life we go our way. On this path, there are smaller and larger crises",
-            experience: "2-5 years of experience",
-        },
-    ],
-};
-
+import { db } from "@/firebase/config";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    arrayUnion,
+    doc,
+    getDoc,
+    updateDoc
+} from "firebase/firestore";
+import { ArrowLeft, ArrowRight, SearchCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 const Loader = () => (
     <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#F1ECCC]">
         <SearchCheck className="animate-bounce text-[#205041]" size={90} />
@@ -330,8 +137,6 @@ const formSchema = z.object({
     age: z.string().min(1, "Please select a valid age"),
 });
 
-
-
 const BookingDates: React.FC<BookingDatesProps> = ({
     profile,
     setSelectedAppointmentTime,
@@ -340,7 +145,6 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     const [currentWeek, setCurrentWeek] = useState(0);
   const [availableSlots, setAvailableSlots] = useState<{ [key: string]: boolean }>({});
   const daysAvailable: string[] = profile?.cost?.dates ?? [];
-// Initialize Firestore
 
   const fetchAvailability = async (dates: Date[]) => {
     const profileDocRef = doc(db, "psychologists", profile!.uid);
@@ -350,14 +154,13 @@ const BookingDates: React.FC<BookingDatesProps> = ({
         const { appointments } = docSnap.data() as { appointments: { selectedDate: string }[] };
         const availability: { [key: string]: boolean } = {};
         dates.forEach(date => {
-            const slotsForDate = generateTimeSlotsForDate(date); // This returns an object
+            const slotsForDate = generateTimeSlotsForDate(date);
             const dateStr = date.toDateString();
-            const slots = slotsForDate[dateStr]; // Correctly accessing the array of slots
+            const slots = slotsForDate[dateStr];
             
             if (slots) {
-              slots.forEach((slot: string) => { // Explicitly declaring slot as a string
+              slots.forEach((slot: string) => {
                 const selectedDateTime = `${dateStr} ${slot}`;
-                // Check if the slot is not in the appointments
                 availability[selectedDateTime] = !appointments.some(appointment => appointment.selectedDate === selectedDateTime);
                 console.log(availability)
               });
@@ -393,8 +196,8 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     } {
         const dateStr = date.toDateString();
         const slots: string[] = [];
-        const startTime = 11; // 11 AM
-        const endTime = 18; // 6 PM
+        const startTime = 11;
+        const endTime = 18; 
 
         for (let hour = startTime; hour < endTime; hour++) {
             const time = `${hour}:00 - ${hour + 1}:00`;
@@ -406,7 +209,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
 
     function getDatesForWeek(week: number): Date[] {
         const now = new Date();
-        now.setDate(now.getDate() + 7 * week - now.getDay()); // Start from the first day of the given week
+        now.setDate(now.getDate() + 7 * week - now.getDay());
         let dates: Date[] = [];
 
         daysAvailable.forEach((day) => {
@@ -501,7 +304,7 @@ interface AppointmentT extends z.infer<typeof formSchema>{
     psychologistUid:string;
 }
 
-export type{AppointmentT};
+export type { AppointmentT };
 
 const BookingDialog: React.FC<BookingDialogProps> = ({
     isOpen,
@@ -514,7 +317,6 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         string | null
     >(null); 
    const router=useRouter();
-    // New state for managing the current week
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -555,8 +357,6 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
         const psychologistProfileDocRef = doc(db, "psychologists", profile!.uid);
         const userProfileDocRef = doc(db, "users", user!.uid!);
         try {
-            // Update the document by adding the new appointment to the `appointments` array
-            // If `appointments` does not exist, it will be created with `tempValues` as its first item
             await updateDoc(psychologistProfileDocRef, {
                 appointments: arrayUnion(tempPsychologistValues),
             });

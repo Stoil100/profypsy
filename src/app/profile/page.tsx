@@ -1,56 +1,34 @@
 "use client";
 // pages/profile!/[uid].tsx
-import { GetServerSideProps, NextPage } from "next";
-import { DocumentData, doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
-import { useEffect, useState } from "react";
-import { useAuth } from "@/components/Providers";
-import { useRouter } from "next/navigation";
-import { PsychologistProfile } from "@/components/forms/appliance";
 import { AppointmentT } from "@/app/(logic)/search/[id]/page";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ChatInterface from "@/components/Chat";
+import GradientButton from "@/components/GradientButton";
+import { useAuth } from "@/components/Providers";
+import { PsychologistProfile } from "@/components/forms/appliance";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { DialogContent } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { db } from "@/firebase/config";
+import { cn } from "@/lib/utils";
+import { Dialog } from "@radix-ui/react-dialog";
+import { doc, getDoc } from "firebase/firestore";
 import {
     BellDot,
     Calendar,
-    Info,
     Mail,
     Phone,
     Settings,
-    User,
+    User
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import GradientButton from "@/components/GradientButton";
-import { Dialog } from "@radix-ui/react-dialog";
-import ChatInterface from "@/components/Chat";
-import { DialogContent } from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//     const uid = context.params?.uid as string;
-
-//     // Fetch user data from Firestore
-//     const docRef = doc(db, "psychologists", uid);
-//     const docSnap = await getDoc(docRef);
-
-//     if (!docSnap.exists()) {
-//         return {
-//             notFound: true, // Return a 404 page if the user does not exist
-//         };
-//     }
-
-//     return {
-//         props: {
-//             userData: JSON.parse(JSON.stringify(docSnap.data())), // Pass user data as props to the page component
-//         },
-//     };
-// };
 type ProfileT = PsychologistProfile & AppointmentT;
 
 export default function Page() {

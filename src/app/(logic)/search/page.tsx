@@ -10,200 +10,22 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 // import { ListProfile, ListProfiles } from "@/models/listProfile";
-import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
-import { ChevronRight, Pin, SearchCheck } from "lucide-react";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import { PsychologistProfile } from "@/components/forms/appliance";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { ChevronRight, Pin, SearchCheck } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
 interface OptionProps {
     name: string;
     iconSrc: string;
     isSelected: boolean;
     onSelect: () => void;
 }
-//     ultra: [
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//     ],
-//     premium: [
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "1-2 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "1-2 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "1-2 years of experience",
-//         },
-//     ],
-//     basic: [
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "1 year of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//     ],
-//     trial: [
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//         {
-//             name: "Test Testov",
-//             location: "Varna",
-//             picture: "/homepage/avatar.png",
-//             description:
-//                 "Our whole life we go our way. On this path, there are smaller and larger crises",
-//             experience: "2-5 years of experience",
-//         },
-//     ],
-// };
 const OptionComponent: React.FC<OptionProps> = ({
     name,
     iconSrc,
@@ -518,22 +340,25 @@ const Page: React.FC = () => {
     const [isShown, setIsShown] = useState(false);
     const [psychologists, setPsychologists] = useState<PsychologistProfile[]>([]);
 
-    async function fetchItems() {
+    function fetchItems() {
         setFinnishedOptions(true);
         setIsLoading(true);
+    
+        const q = query(collection(db, "psychologists"), where("approved", "==", true));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const tempValues: PsychologistProfile[] = [];
+            querySnapshot.forEach((doc) => {
+                tempValues.push(doc.data() as PsychologistProfile);
+            });
+            setPsychologists(tempValues);
+            setIsLoading(false);
+        },
+            (error) => {
+                console.error("Error fetching items: ", error);
+                setIsLoading(false);
+            });
 
-        const q = query(
-            collection(db, "psychologists"),
-            where("approved", "==", true),
-        );
-
-        const querySnapshot = await getDocs(q);
-        let tempValues: PsychologistProfile[] = [];
-        querySnapshot.forEach((doc) => {
-            tempValues = [...tempValues, doc.data() as PsychologistProfile];
-        });
-        setPsychologists(tempValues);
-        setIsLoading(false);
+        return unsubscribe;
     }
 
    
@@ -567,11 +392,11 @@ const Page: React.FC = () => {
                                                 .map((psychologist, index) => (
                                                     <ProfileCard
                                                         {...psychologist}
-                                                        key={`${variant}-${index}`} // Adding a unique key prop
+                                                        key={`${variant}-${index}`}
                                                     />
                                                 ));
                                         }
-                                        return null; // Render nothing if no psychologists of this variant
+                                        return null;
                                     },
                                 )
                             ) : (
@@ -628,7 +453,7 @@ const Page: React.FC = () => {
                     )}
                 </>
             ) : (
-                finnishedOptions && (
+                finnishedOptions && !isLoading && (
                     <div className="flex flex-col items-center justify-center gap-2 p-2">
                         {" "}
                         <Image

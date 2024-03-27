@@ -29,7 +29,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { HeaderT, HeadersT } from "@/models/header";
+import { HeaderT } from "@/models/header";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";

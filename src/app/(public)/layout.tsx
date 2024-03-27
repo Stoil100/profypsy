@@ -1,4 +1,4 @@
-import Footer from "@/components/Footer";
+import { Guidance } from "@/components/Guidance";
 import Navigation from "@/components/Navigation";
 
 export default function PublicLayout({
@@ -10,7 +10,7 @@ export default function PublicLayout({
         <section>
             <Navigation />
             {children}
-            <Footer />
+            <Guidance variant="footer"/>
         </section>
     );
 }

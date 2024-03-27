@@ -18,27 +18,15 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
 
+import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
+import { FirestoreError, doc, setDoc } from "firebase/firestore";
 import {
     Briefcase,
     GraduationCap,
@@ -47,16 +35,13 @@ import {
     Tag,
     UserRound,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import z from "zod";
+import { useAuth } from "../Providers";
 import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
-import { useAuth } from "../Providers";
-import { FirestoreError, doc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase/config";
-import { useRouter } from "next/navigation";
-import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import { toast } from "../ui/use-toast";
 
 type LanguageT = {
