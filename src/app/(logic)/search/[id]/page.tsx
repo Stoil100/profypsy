@@ -37,7 +37,7 @@ import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
-import { ArrowLeft, ArrowRight, SearchCheck } from "lucide-react";
+import { ArrowLeft, ArrowRight, SearchCheck, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -682,8 +682,8 @@ export default function Page({ params }: { params: { id: string } }) {
         <>
             {!profile && <Loader />}
             <section className="flex min-h-screen w-full flex-col items-center justify-center gap-5 px-4 py-4 text-center text-[#205041]">
-                <div className="mt-20 flex w-full max-w-[90vw] flex-col items-center gap-8 px-2  sm:px-4 md:grid md:grid-cols-2 lg:grid-cols-3">
-                    <div className="order-2 flex h-full w-full flex-col justify-center space-y-4 rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] p-2 shadow-2xl  md:col-span-1 lg:order-1">
+                <div className="mt-20 flex w-full max-w-[90vw] break-all flex-col items-center gap-8 px-2  sm:px-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+                    <div className="order-2 hover:scale-105 transition-transform flex h-full w-full flex-col justify-center space-y-6 rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] px-2 py-4 shadow-2xl  md:col-span-1 lg:order-1">
                         <h2 className="text-3xl text-white">
                             Professional standarts:
                         </h2>
@@ -738,43 +738,44 @@ export default function Page({ params }: { params: { id: string } }) {
                             </div>
                         </div>
                     </div>
-                    <div className="order-1 flex h-full w-full flex-col items-center justify-center space-y-4 rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] p-2 text-white shadow-2xl lg:order-2">
+                    <div className="order-1 hover:scale-105 transition-transform flex h-full w-full flex-col items-center justify-center space-y-6 rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] px-2 py-4 text-white shadow-2xl lg:order-2">
                         <h2 className="text-3xl">General info:</h2>
-                        <img
+                        {profile?.image?
+                        (<img
                             src={profile?.image}
                             alt={profile?.userName.firstName}
                             className="h-32 w-32 rounded-full"
-                        />
+                        />):(<div className="p-2 border-2 rounded-full "><User/></div>)}
                         <h3 className="text-3xl">
                             {profile?.userName.firstName}{" "}
                             {profile?.userName.lastName}
                         </h3>
                         <h4 className="text-2xl">About me:</h4>
-                        <p className="text-xl">{profile?.about}</p>
+                        <p className="text-xl line-clamp-3">{profile?.about}</p>
                         <h4 className="text-2xl">My personal quote:</h4>
                         <p className="w-full rounded-2xl bg-[#FCFBF4] text-xl italic text-[#205041]">
                             &quot;{profile?.quote}&quot;
                         </p>
                     </div>
-                    <div className="order-3 flex  h-full w-full flex-col justify-center  space-y-4 rounded-2xl bg-white bg-gradient-to-b from-[#40916C] to-[#52B788] p-2 shadow-2xl md:col-span-2 lg:col-span-1">
+                    <div className="order-3 hover:scale-105 transition-transform flex  h-full w-full flex-col justify-center  space-y-6 rounded-2xl bg-white bg-gradient-to-b from-[#40916C] to-[#52B788] px-2 py-4 shadow-2xl md:col-span-2 lg:col-span-1">
                         <h2 className="text-3xl text-white">My experience:</h2>
                         <div className="col-span-1 space-y-4">
                             <h4 className="text-2xl text-white">
                                 Work experience:
                             </h4>
-                            <ul className="list-decimal divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 pl-8 text-left">
+                            <ul className="list-decimal divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 text-left">
                                 {profile?.experiences!.map((exp, index) => (
-                                    <li key={index} className="text-xl">
+                                    <li key={index} className="text-xl line-clamp-2">
                                         {exp.experience}
                                     </li>
                                 ))}
                             </ul>
-                            <h4 className="text-2xl text-white">Education</h4>
-                            <ul className="list-decimal divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 pl-8 text-left">
+                            <h4 className="text-2xl text-white">Education:</h4>
+                            <ul className="list-decimal divide-y-2 divide-black rounded-xl bg-[#FCFBF4] p-2 text-left">
                                 {profile?.educations!.map((el, index) => (
                                     <li
                                         key={index}
-                                        className="text-xl capitalize"
+                                        className="text-xl capitalize line-clamp-2"
                                     >
                                         {el.education}
                                     </li>

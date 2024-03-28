@@ -26,6 +26,7 @@ import {
     Settings,
     User
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -121,33 +122,26 @@ export default function Page() {
                             )}
                         </div>
                     </div>
-                    <Tabs defaultValue="settings" >
+                    <Tabs defaultValue="settings">
                         <TabsList className="w-full">
                             <TabsTrigger value="settings">
                                 <Settings className="sm:mr-2" />
                                 <p className="hidden sm:block">Account</p>
                             </TabsTrigger>
-                            {user!.appointments!.length > 0 && (
-                                <TabsTrigger value="appointments">
-                                    <Calendar className="sm:mr-2" />
-                                    <p className="hidden sm:block">
-                                        Appointments
-                                    </p>
+                            <TabsTrigger value="appointments">
+                                <Calendar className="sm:mr-2" />
+                                <p className="hidden sm:block">Appointments</p>
+                            </TabsTrigger>
+                            {user.role === "psychologist" && (
+                                <TabsTrigger value="sessions">
+                                    <BellDot className="sm:mr-2" />
+                                    <p className="hidden sm:block">Sessions</p>
                                 </TabsTrigger>
                             )}
-                            {profile!.appointments!.length > 0 &&
-                                user.role === "psychologist" && (
-                                    <TabsTrigger value="sessions">
-                                        <BellDot className="sm:mr-2" />
-                                        <p className="hidden sm:block">
-                                            Sessions
-                                        </p>
-                                    </TabsTrigger>
-                                )}
                         </TabsList>
                         <TabsContent
                             value="settings"
-                            className="w-full space-y-4"
+                            className="w-full space-y-4 break-all"
                         >
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="h-full">
@@ -193,14 +187,14 @@ export default function Page() {
                                         </div>
                                         <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                             <p>About:</p>
-                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-full border-2  border-dashed border-black p-2 ">
+                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2  border-dashed border-black p-2 ">
                                                 <p>{profile!.about}</p>
                                             </div>
                                         </div>
                                         <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                             <p>Quote:</p>
                                             <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-full border-2  border-dashed border-black p-2 ">
-                                                <p className="italic">
+                                                <p className="italic text-center">
                                                     &quot;{profile!.quote}&quot;
                                                 </p>
                                             </div>
@@ -208,14 +202,14 @@ export default function Page() {
                                         {profile!.educations && (
                                             <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                                 <p>Education:</p>
-                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-full border-2  border-dashed border-black p-2 ">
+                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2  border-dashed border-black p-2 ">
                                                     {profile!.educations.map(
                                                         (education) => (
                                                             <p
                                                                 key={
                                                                     education.education
                                                                 }
-                                                                className="rounded-full bg-blue-100 px-4 py-1"
+                                                                className="rounded-xl bg-blue-100 px-4 py-1"
                                                             >
                                                                 {
                                                                     education.education
@@ -229,14 +223,14 @@ export default function Page() {
                                         {profile!.experiences && (
                                             <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                                 <p>Experience:</p>
-                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-full border-2  border-dashed border-black p-2 ">
+                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2  border-dashed border-black p-2 ">
                                                     {profile!.experiences.map(
                                                         (experience) => (
                                                             <p
                                                                 key={
                                                                     experience.experience
                                                                 }
-                                                                className="rounded-full bg-blue-100 px-4 py-1"
+                                                                className="rounded-xl bg-blue-100 px-4 py-1"
                                                             >
                                                                 {
                                                                     experience.experience
@@ -276,109 +270,117 @@ export default function Page() {
                                 collapsible
                                 className="rounded-2xl bg-[#FCFBF4] p-4"
                             >
-                                {user.appointments?.map(
-                                    (appointment, index) => (
-                                        <AccordionItem
-                                            value={`item-${index}`}
-                                            key={index}
-                                        >
-                                            <AccordionTrigger>
-                                                {appointment.selectedDate}
-                                            </AccordionTrigger>
-                                            <AccordionContent className="p-4">
-                                                <div className="space-y-4 break-all">
-                                                    <div>
-                                                        <h3 className="flex items-center space-x-2 text-lg font-semibold">
-                                                            <User className="h-5 w-5" />{" "}
-                                                            <span>
-                                                                Psychologist
-                                                                info:
-                                                            </span>
-                                                        </h3>
-                                                        <div className="pl-8">
-                                                            <h4 className="text-md text-2xl font-medium">
-                                                                {
-                                                                    appointment
-                                                                        .userName
-                                                                        .firstName
-                                                                }{" "}
-                                                                {
-                                                                    appointment
-                                                                        .userName
-                                                                        .lastName
-                                                                }
-                                                            </h4>
-                                                        </div>
-                                                        <div className="space-y-2 pl-8">
-                                                            <p className="flex items-center text-xl">
-                                                                <Mail className="mr-2 h-4 w-4" />
-                                                                {
-                                                                    appointment.email
-                                                                }
-                                                            </p>
-                                                            <p className="flex items-center text-xl">
-                                                                <Phone className="mr-2 h-4 w-4" />
-                                                                {
-                                                                    appointment.phone
-                                                                }
-                                                            </p>
-                                                            <p className="text-xl">
-                                                                Age:{" "}
-                                                                {
-                                                                    appointment.age
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="flex items-center space-x-2 text-lg font-semibold">
-                                                            <Calendar className="h-5 w-5" />{" "}
-                                                            <span>
-                                                                Appointment
-                                                                info:
-                                                            </span>
-                                                        </h3>
-                                                        <div className="px-8">
-                                                            <div>
-                                                                <p className="">
-                                                                    Info:
-                                                                </p>
-                                                                <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
+                                {user!.appointments!.length! > 0 ? (
+                                    user.appointments?.map(
+                                        (appointment, index) => (
+                                            <AccordionItem
+                                                value={`item-${index}`}
+                                                key={index}
+                                            >
+                                                <AccordionTrigger>
+                                                    {appointment.selectedDate}
+                                                </AccordionTrigger>
+                                                <AccordionContent className="p-4">
+                                                    <div className="space-y-4 break-all">
+                                                        <div>
+                                                            <h3 className="flex items-center space-x-2 text-lg font-semibold">
+                                                                <User className="h-5 w-5" />{" "}
+                                                                <span>
+                                                                    Psychologist
+                                                                    info:
+                                                                </span>
+                                                            </h3>
+                                                            <div className="pl-8">
+                                                                <h4 className="text-md text-2xl font-medium">
                                                                     {
-                                                                        appointment.info
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                            <div className="flex flex-col gap-2">
-                                                                <p>
-                                                                    Session
-                                                                    type:
-                                                                </p>
-                                                                <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
+                                                                        appointment
+                                                                            .userName
+                                                                            .firstName
+                                                                    }{" "}
                                                                     {
-                                                                        appointment.session
+                                                                        appointment
+                                                                            .userName
+                                                                            .lastName
                                                                     }
                                                                 </h4>
                                                             </div>
+                                                            <div className="space-y-2 pl-8">
+                                                                <p className="flex items-center text-xl">
+                                                                    <Mail className="mr-2 h-4 w-4" />
+                                                                    {
+                                                                        appointment.email
+                                                                    }
+                                                                </p>
+                                                                <p className="flex items-center text-xl">
+                                                                    <Phone className="mr-2 h-4 w-4" />
+                                                                    {
+                                                                        appointment.phone
+                                                                    }
+                                                                </p>
+                                                                <p className="text-xl">
+                                                                    Age:{" "}
+                                                                    {
+                                                                        appointment.age
+                                                                    }
+                                                                </p>
+                                                            </div>
                                                         </div>
+                                                        <div>
+                                                            <h3 className="flex items-center space-x-2 text-lg font-semibold">
+                                                                <Calendar className="h-5 w-5" />{" "}
+                                                                <span>
+                                                                    Appointment
+                                                                    info:
+                                                                </span>
+                                                            </h3>
+                                                            <div className="px-8">
+                                                                <div>
+                                                                    <p className="">
+                                                                        Info:
+                                                                    </p>
+                                                                    <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
+                                                                        {
+                                                                            appointment.info
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                                <div className="flex flex-col gap-2">
+                                                                    <p>
+                                                                        Session
+                                                                        type:
+                                                                    </p>
+                                                                    <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
+                                                                        {
+                                                                            appointment.session
+                                                                        }
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <GradientButton
+                                                            className="w-full border-2 border-[#25BA9E] text-xl"
+                                                            onClick={() => {
+                                                                toggleChat(
+                                                                    user.uid!,
+                                                                    appointment!
+                                                                        .psychologistUid,
+                                                                    appointment.userName,
+                                                                );
+                                                            }}
+                                                        >
+                                                            Chat now
+                                                        </GradientButton>
                                                     </div>
-                                                    <GradientButton
-                                                        className="text-xl w-full border-[#25BA9E] border-2"
-                                                        onClick={() => {
-                                                            toggleChat(
-                                                                user.uid!,
-                                                                appointment!
-                                                                    .psychologistUid,
-                                                                appointment.userName,
-                                                            );
-                                                        }}
-                                                    >
-                                                        Chat now
-                                                    </GradientButton>
-                                                </div>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    ),
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        ),
+                                    )
+                                ) : (
+                                    <p>
+                                        You don't have any appointments at the
+                                        moment. <br/> You can book one{" "}
+                                        <Link href={"/search"} className="text-[#25BA9E] underline ">here</Link>
+                                    </p>
                                 )}
                             </Accordion>
                             {chatProps.senderUid !== "" && (
@@ -388,13 +390,16 @@ export default function Page() {
                                         setChatProps({
                                             senderUid: "",
                                             receiverUid: "",
-                                            receiverUsername:{lastName: "", firstName: ""}
+                                            receiverUsername: {
+                                                lastName: "",
+                                                firstName: "",
+                                            },
                                         });
                                     }}
                                 >
                                     <DialogContent
                                         className={cn(
-                                            " bg-gradient-to-b max-w-[550px]",
+                                            " max-w-[550px] bg-gradient-to-b",
                                             user.role === "psychologist"
                                                 ? "from-[#40916C] to-[#52B788]"
                                                 : "from-[#F7F4E0] to-[#F1ECCC]",
@@ -403,7 +408,9 @@ export default function Page() {
                                         <ChatInterface
                                             senderUid={chatProps.senderUid}
                                             receiverUid={chatProps.receiverUid}
-                                            receiverUsername={chatProps.receiverUsername}
+                                            receiverUsername={
+                                                chatProps.receiverUsername
+                                            }
                                         />
                                     </DialogContent>
                                 </Dialog>
@@ -415,107 +422,113 @@ export default function Page() {
                                 collapsible
                                 className="rounded-2xl bg-[#FCFBF4] p-4"
                             >
-                                {profile!.appointments?.map(
-                                    (appointment, index) => (
-                                        <AccordionItem
-                                            value={`item-${index}`}
-                                            key={index}
-                                        >
-                                            <AccordionTrigger>
-                                                {appointment.selectedDate}
-                                            </AccordionTrigger>
-                                            <AccordionContent className="p-4">
-                                                <div className="space-y-4 break-all">
-                                                    <div>
-                                                        <h3 className="flex items-center space-x-2 text-lg font-semibold">
-                                                            <User className="h-5 w-5" />{" "}
-                                                            <span>
-                                                                Client info:
-                                                            </span>
-                                                        </h3>
-                                                        <div className="pl-8">
-                                                            <h4 className="text-md text-2xl font-medium">
-                                                                {
-                                                                    appointment
-                                                                        .userName
-                                                                        .firstName
-                                                                }{" "}
-                                                                {
-                                                                    appointment
-                                                                        .userName
-                                                                        .lastName
-                                                                }
-                                                            </h4>
-                                                        </div>
-                                                        <div className="space-y-2 pl-8">
-                                                            <p className="flex items-center text-xl">
-                                                                <Mail className="mr-2 h-4 w-4" />
-                                                                {
-                                                                    appointment.email
-                                                                }
-                                                            </p>
-                                                            <p className="flex items-center text-xl">
-                                                                <Phone className="mr-2 h-4 w-4" />
-                                                                {
-                                                                    appointment.phone
-                                                                }
-                                                            </p>
-                                                            <p className="text-xl">
-                                                                Age:{" "}
-                                                                {
-                                                                    appointment.age
-                                                                }
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="flex items-center space-x-2 text-lg font-semibold">
-                                                            <Calendar className="h-5 w-5" />{" "}
-                                                            <span>
-                                                                Appointment
-                                                                info:
-                                                            </span>
-                                                        </h3>
-                                                        <div className="px-8">
-                                                            <div>
-                                                                <p className="">
-                                                                    Info:
-                                                                </p>
-                                                                <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
+                                {profile!.appointments.length > 0 ? (
+                                    profile!.appointments?.map(
+                                        (appointment, index) => (
+                                            <AccordionItem
+                                                value={`item-${index}`}
+                                                key={index}
+                                            >
+                                                <AccordionTrigger>
+                                                    {appointment.selectedDate}
+                                                </AccordionTrigger>
+                                                <AccordionContent className="p-4">
+                                                    <div className="space-y-4 break-all">
+                                                        <div>
+                                                            <h3 className="flex items-center space-x-2 text-lg font-semibold">
+                                                                <User className="h-5 w-5" />{" "}
+                                                                <span>
+                                                                    Client info:
+                                                                </span>
+                                                            </h3>
+                                                            <div className="pl-8">
+                                                                <h4 className="text-md text-2xl font-medium">
                                                                     {
-                                                                        appointment.info
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                            <div className="flex flex-col gap-2">
-                                                                <p>
-                                                                    Session
-                                                                    type:
-                                                                </p>
-                                                                <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
+                                                                        appointment
+                                                                            .userName
+                                                                            .firstName
+                                                                    }{" "}
                                                                     {
-                                                                        appointment.session
+                                                                        appointment
+                                                                            .userName
+                                                                            .lastName
                                                                     }
                                                                 </h4>
                                                             </div>
+                                                            <div className="space-y-2 pl-8">
+                                                                <p className="flex items-center text-xl">
+                                                                    <Mail className="mr-2 h-4 w-4" />
+                                                                    {
+                                                                        appointment.email
+                                                                    }
+                                                                </p>
+                                                                <p className="flex items-center text-xl">
+                                                                    <Phone className="mr-2 h-4 w-4" />
+                                                                    {
+                                                                        appointment.phone
+                                                                    }
+                                                                </p>
+                                                                <p className="text-xl">
+                                                                    Age:{" "}
+                                                                    {
+                                                                        appointment.age
+                                                                    }
+                                                                </p>
+                                                            </div>
                                                         </div>
+                                                        <div>
+                                                            <h3 className="flex items-center space-x-2 text-lg font-semibold">
+                                                                <Calendar className="h-5 w-5" />{" "}
+                                                                <span>
+                                                                    Appointment
+                                                                    info:
+                                                                </span>
+                                                            </h3>
+                                                            <div className="px-8">
+                                                                <div>
+                                                                    <p className="">
+                                                                        Info:
+                                                                    </p>
+                                                                    <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
+                                                                        {
+                                                                            appointment.info
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                                <div className="flex flex-col gap-2">
+                                                                    <p>
+                                                                        Session
+                                                                        type:
+                                                                    </p>
+                                                                    <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
+                                                                        {
+                                                                            appointment.session
+                                                                        }
+                                                                    </h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <GradientButton
+                                                            className="w-full border-2 border-[#25BA9E] text-xl"
+                                                            onClick={() => {
+                                                                toggleChat(
+                                                                    user!.uid!,
+                                                                    appointment.clientUid!,
+                                                                    appointment.userName,
+                                                                );
+                                                            }}
+                                                        >
+                                                            Chat now
+                                                        </GradientButton>
                                                     </div>
-                                                    <GradientButton
-                                                        className="text-xl w-full border-[#25BA9E] border-2"
-                                                        onClick={() => {
-                                                            toggleChat(
-                                                                user!.uid!,
-                                                                appointment.clientUid!,
-                                                                appointment.userName
-                                                            );
-                                                        }}
-                                                    >
-                                                        Chat now
-                                                    </GradientButton>
-                                                </div>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    ),
+                                                </AccordionContent>
+                                            </AccordionItem>
+                                        ),
+                                    )
+                                ) : (
+                                    <div>
+                                        You don't have any upcoming sessions
+                                    </div>
                                 )}
                             </Accordion>
                             {chatProps.senderUid !== "" && (
@@ -525,21 +538,28 @@ export default function Page() {
                                         setChatProps({
                                             senderUid: "",
                                             receiverUid: "",
-                                            receiverUsername:{firstName: "", lastName: ""}
+                                            receiverUsername: {
+                                                firstName: "",
+                                                lastName: "",
+                                            },
                                         });
                                     }}
                                 >
-                                      <DialogContent
+                                    <DialogContent
                                         className={cn(
-                                            " bg-gradient-to-b max-w-[550px]",
+                                            " max-w-[550px] bg-gradient-to-b",
                                             user.role === "psychologist"
                                                 ? "from-[#40916C] to-[#52B788]"
                                                 : "from-[#F7F4E0] to-[#F1ECCC]",
                                         )}
-                                    > <ChatInterface
+                                    >
+                                        {" "}
+                                        <ChatInterface
                                             senderUid={chatProps.senderUid}
                                             receiverUid={chatProps.receiverUid}
-                                            receiverUsername={chatProps.receiverUsername}
+                                            receiverUsername={
+                                                chatProps.receiverUsername
+                                            }
                                         />
                                     </DialogContent>
                                 </Dialog>

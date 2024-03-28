@@ -127,7 +127,7 @@ const ProfileCard = ({
                     : "Strong match"}
         </Badge>
         <img src={image} className="size-28 rounded" />
-        <div className="flex w-full flex-col items-start justify-center gap-2">
+        <div className="flex w-full flex-col items-start justify-center gap-2  break-all">
             <h4 className="text-3xl text-[#205041]">
                 {userName.firstName} {userName.lastName}
             </h4>
@@ -136,11 +136,11 @@ const ProfileCard = ({
                 <p className="text-[#205041]">{location}</p>
             </div>
             {experiences.map((experience, index) => (
-                <p className="text-[#20504180]" key={index}>
+                <p className="text-[#20504180] line-clamp-1" key={index}>
                     {experience.experience}
                 </p>
             ))}
-            <p className="text-[#205041]">{about}</p>
+            <p className="text-[#205041] line-clamp-1">{about}</p>
         </div>
         <Link href={`/search/${uid}`} className="w-full bg-gradient-to-b from-[#40916C] text-center py-2 rounded-xl hover:scale-110 transition-transform to-[#52B788] text-white">
                 Book Now
@@ -460,7 +460,7 @@ const Page: React.FC = () => {
                             width={500}
                             height={500}
                         />
-                        <p className="text-3xl text-center">
+                        <p className="text-3xl text-center text-[#205041]">
                             Oops! We couldn&apos;t find a match for you at the
                             moment!
                         </p>
