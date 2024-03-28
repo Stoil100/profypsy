@@ -104,7 +104,7 @@ const AuthForm = ({ variant="login" }: FormVariant) => {
 
     return (
         <div className="flex flex-col items-center justify-center gap-3 font-openSans">
-            <h3 className="z-10 font-playfairDSC text-4xl font-bold capitalize text-black">
+            <h3 className="z-10 font-playfairDSC text-4xl font-bold capitalize text-[#205041] text-center">
                 {variant === "register"
                     ? "Register your account"
                     : "Login to your account"}

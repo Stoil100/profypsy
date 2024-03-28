@@ -30,20 +30,20 @@ interface AboutProps {
 const SocialMediaLinks = () => (
     <div className="flex w-full items-center justify-between text-[#F1ECCC]">
         <Link href="https://instagram.com" aria-label="Instagram">
-            <Instagram size={48} absoluteStrokeWidth />
+            <Instagram className="size-8 md:size-12" absoluteStrokeWidth />
         </Link>
         <Link href="https://facebook.com" aria-label="Facebook">
-            <Facebook size={48} absoluteStrokeWidth />
+            <Facebook className="size-8 md:size-12" absoluteStrokeWidth />
         </Link>
         <Link href="https://twitter.com" aria-label="Twitter">
-            <Twitter size={48} absoluteStrokeWidth />
+            <Twitter className="size-8 md:size-12" absoluteStrokeWidth />
         </Link>
     </div>
 );
 
 const ServicesLinks = () => (
     <>
-        <Link href="/search" className="transition-transform hover:scale-110">
+        <Link href="/search" className="transition-transform hover:scale-110 text-inherit">
             For You
         </Link>
         <Link href="/search" className="transition-transform hover:scale-110">
@@ -103,15 +103,15 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
     return (
         <div
             className={clsx(
-                "flex min-h-[33vh] flex-wrap items-start justify-center gap-14 py-10 text-xl font-thin text-white w-full",
-                variant === "footer" ? "bg-[#525174]" : "bg-transparent justify-evenly",
+                "flex min-h-[33vh] flex-wrap items-start justify-center sm:py-10 gap-2 text-xl font-thin text-white w-full",
+                variant === "footer" ? "bg-[#525174] gap-14" : "bg-transparent justify-evenly",
             )}
         >
-            <div className="flex flex-col gap-2 font-openSans text-white">
+            <div className="flex flex-col gap-2 font-openSans text-white order-1">
                 <SocialMediaLinks />
                 <Link
                     href={"/"}
-                    className="font-playfairDSC text-3xl uppercase"
+                    className="font-playfairDSC text-xl md:text-3xl uppercase"
                 >
                     Profypsy
                 </Link>
@@ -133,16 +133,16 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
                     </Link>
                 )}
             </div>
-            <div className="flex flex-col gap-1">
-                <h4 className="text-2xl">Services</h4>
+            <div className="flex flex-col gap-1 text-base md:text-md order-3 md:order-2">
+                <h4 className="text-xl md:text-2xl underline">Services</h4>
                 <ServicesLinks />
             </div>
-            <div className="flex flex-col gap-1">
-                <h4 className="text-2xl">Useful Links</h4>
+            <div className="flex flex-col gap-1 text-base md:text-md order-2 md:order-3">
+                <h4 className="text-xl md:text-2xl underline">Useful Links</h4>
                 <UsefulLinks />
             </div>
-            <div className="flex flex-col gap-1">
-                <h4 className="text-2xl">About</h4>
+            <div className="flex flex-col gap-1 text-base md:text-md items-center sm:items-end order-4">
+                <h4 className="text-xl md:text-2xl underline">About</h4>
                 <AboutLinks user={user} router={router} />
             </div>
         </div>

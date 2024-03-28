@@ -79,7 +79,7 @@ const BottomLine = () => (
 function HeroSection() {
     function HeaderCard({ title, image }: HeaderT) {
         return (
-            <Link href={"/search"} className="flex w-full cursor-pointer flex-col items-center justify-between gap-2 rounded-3xl bg-[#B2D3A8] p-3 transition-transform hover:scale-105">
+            <Link href={"/search"} className="flex  cursor-pointer flex-col items-center justify-between gap-2 rounded-3xl bg-[#B2D3A8] p-3 transition-transform hover:scale-105">
                 <Image src={image} alt={title} width={250} height={250} />
                 <div className="flex w-full items-center justify-between">
                     <h4 className="text-lg">{title}</h4>
@@ -91,10 +91,10 @@ function HeroSection() {
     return (
         <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 bg-gradient-to-b from-[#40916C] to-[#52B788] pt-10 text-white">
             <div className="flex w-2/3 flex-col items-center gap-7 text-center">
-                <h1 className="font-playfairDSC text-5xl font-thin capitalize">
+                <h1 className="font-playfairDSC text-3xl md:text-5xl font-thin capitalize">
                     Your Journey to <br /> Mental Wellness Begins Here
                 </h1>
-                <h3 className="font-openSans text-2xl">
+                <h3 className="font-openSans text-xl md:text-2xl">
                     Choose your therapist and begin
                     <br /> your session now
                 </h3>
@@ -104,7 +104,7 @@ function HeroSection() {
                     </GradientButton>
                 </Link>
             </div>
-            <div className="flex items-center justify-center gap-10">
+            <div className="flex items-center justify-center gap-4 md:gap-10 flex-wrap p-2">
                 <HeaderCard title="For you" image="/homepage/person.png" />
                 <HeaderCard title="For couples" image="/homepage/couples.png" />
                 <HeaderCard title="For families" image="/homepage/families.png" />
@@ -114,9 +114,9 @@ function HeroSection() {
 }
 function TherapistsSection() {
     return (
-        <section className="flex min-h-screen w-full flex-col items-center justify-center gap-10 px-[200px]">
-            <div className="flex w-full items-center justify-between">
-                <p className="font-playfairDSC text-2xl text-[#205041]">
+        <section className="flex min-h-screen w-full flex-col items-center justify-center gap-4 md:gap-10 px-4 md:px-[100px] lg:px-[150px] xl:px-[200px]">
+            <div className="flex flex-col md:flex-row w-full items-center justify-between gap-2">
+                <p className="font-playfairDSC text-center  text-2xl text-[#205041]">
                     Handpicked Psychologists,
                     <br />
                     <span className="text-[#128665]">Based on Your Needs</span>
@@ -127,8 +127,8 @@ function TherapistsSection() {
                     </GradientButton>
                 </Link>
             </div>
-            <Carousel className="max-w-[70vw]" opts={{ loop: true }}>
-                <CarouselContent className="-ml-2 md:-ml-4">
+            <Carousel className="w-screen md:max-w-[70vw]" opts={{ loop: true }}>
+                <CarouselContent className="md:-ml-4 px-4">
                     {carouselItems.map((item, index) => (
                         <CarouselItem
                             key={index}
@@ -162,8 +162,8 @@ function TherapistsSection() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
+                <CarouselPrevious className="hidden md:flex"/>
+                <CarouselNext className="hidden md:flex"/>
             </Carousel>
             <BottomLine />
         </section>
@@ -177,11 +177,10 @@ function ReviewsSection() {
                     <img src="/homepage/star.png" alt="star" key={index} width={32} />
                 ))}
             </div>
-            <h2 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent">
+            <h2 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-3xl md:text-4xl capitalize text-transparent">
                 More than 10000 5-star reviews
             </h2>
             <Carousel
-                className=""
                 plugins={[
                     AutoScroll({
                         playOnInit: true,
@@ -197,7 +196,7 @@ function ReviewsSection() {
                     {Array.from({ length: 16 }).map((item, index) => (
                         <CarouselItem
                             key={index}
-                            className="md:basis-1/3 lg:basis-1/5 "
+                            className="md:basis-1/3 lg:basis-1/5 basis-1/2"
                         >
                             <div
                                 className={cn(
@@ -222,14 +221,14 @@ function ReviewsSection() {
                                     <p className="absolute p-2 text-xl text-white">
                                         Alex
                                     </p>
-                                    <img src="/homepage/reviews.png" alt="reviews" />
+                                    <img src="/homepage/reviews.png" alt="reviews"/>
                                 </div>
                             </div>
                         </CarouselItem>
                     ))}
                 </CarouselContent>
             </Carousel>
-            <div className="px-[200px]">
+            <div className="md:px-[100px] lg:px-[150px] xl:px-[200px]">
                 <BottomLine />
             </div>
         </section>
@@ -238,15 +237,15 @@ function ReviewsSection() {
 function ApproachSection() {
     const [activeElement, setActiveElement] = useState("first");
     return (
-        <section className="w-full space-y-5 px-[200px] py-5">
+        <section className="w-full space-y-5 px-2 md:px-[100px] lg:px-[150px] xl:px-[200px] py-5">
             <h3 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent">
                 How Profypsy Works
             </h3>
             <div className="flex w-full items-center justify-around">
-                <div className="w-1/3 space-y-5">
+                <div className="w-full md:w-1/3 space-y-5">
                     <div
                         className={cn(
-                            "flex w-full items-center justify-start gap-3 rounded-3xl p-3 font-openSans drop-shadow-md transition-all hover:scale-110",
+                            "flex w-full items-center justify-start gap-3 rounded-3xl p-2 md:p-3 font-openSans drop-shadow-md transition-all hover:md:scale-110",
                             activeElement === "first" && "bg-white",
                         )}
                         onMouseEnter={() => {
@@ -262,7 +261,7 @@ function ApproachSection() {
                     </div>
                     <div
                         className={cn(
-                            "flex w-full items-center justify-start gap-3 rounded-3xl p-3 font-openSans drop-shadow-md transition-all hover:scale-110",
+                            "flex w-full items-center justify-start gap-2  rounded-3xl p-2 md:p-3 font-openSans drop-shadow-md transition-all hover:md:scale-110",
                             activeElement === "second" && "bg-white",
                         )}
                         onMouseEnter={() => {
@@ -272,13 +271,13 @@ function ApproachSection() {
                         <p className="flex size-10 items-center justify-center rounded-full bg-[#FCD96A] font-thin text-white">
                             2
                         </p>
-                        <p className="text-xl text-[#205041]">
+                        <p className="text-lg md:text-xl text-[#205041]">
                             Get matched with a therapist
                         </p>
                     </div>
                     <div
                         className={cn(
-                            "flex w-full items-center justify-start gap-3 rounded-3xl p-3 font-openSans drop-shadow-md transition-all hover:scale-110",
+                            "flex w-full items-center justify-start gap-3 rounded-3xl p-2 md:p-3 font-openSans drop-shadow-md transition-all hover:md:scale-110",
                             activeElement === "third" && "bg-white",
                         )}
                         onMouseEnter={() => {
@@ -296,10 +295,10 @@ function ApproachSection() {
                 <img
                     src="/homepage/approach.png"
                     alt="how profypsy works"
-                    className="h-[400px]"
+                    className="max-h-[400px] hidden md:block"
                 />
             </div>
-            <div className="px-4">
+            <div className="px-4 w-full flex justify-center">
                 <Link href={"/login"}>
                     <GradientButton className="text-2xl">
                         Start Now
@@ -312,14 +311,14 @@ function ApproachSection() {
 }
 function FaQSection() {
     return (
-        <section className="mb-5 flex w-full flex-col items-center justify-center gap-4 px-[200px]">
-            <h3 className="font-playfairDSC text-4xl text-[#205041]">
+        <section className="mb-5 flex w-full flex-col items-center justify-center gap-4 px-4 md:px-[100px] lg:px-[150px] xl:px-[200px]">
+            <h3 className="font-playfairDSC text-4xl text-[#205041] text-center">
                 Frequently Asked Questions
             </h3>
             <div className="w-full rounded-2xl bg-white p-2 font-openSans text-xl">
                 <Accordion type="single" collapsible>
                     <AccordionItem value="item-1">
-                        <AccordionTrigger>
+                        <AccordionTrigger className="text-left">
                             Is online therapy effective?
                         </AccordionTrigger>
                         <AccordionContent>
@@ -327,7 +326,7 @@ function FaQSection() {
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
-                        <AccordionTrigger>
+                        <AccordionTrigger className="text-left">
                             What is the difference between therapy and
                             psychiatry?
                         </AccordionTrigger>
@@ -336,7 +335,7 @@ function FaQSection() {
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
-                        <AccordionTrigger>
+                        <AccordionTrigger className="text-left">
                             How do I get matched with a professional?
                         </AccordionTrigger>
                         <AccordionContent>
@@ -357,21 +356,21 @@ function FaQSection() {
 function JoinSection() {
     const [calcPrice, setCalcPrice] = useState(10400);
     return (
-        <section className="flex w-full items-center justify-between px-[200px] py-5">
+        <section className="flex w-full items-center justify-between md:px-[100px] lg:px-[150px] xl:px-[200px] py-5">
             <img
                 src="/homepage/join.png"
                 alt="join as a psychologist"
-                className="h-[500px]"
+                className="md:block hidden md:max-h-[300px] lg:max-h-[400px] xl:max-h-[500px]"
             />
-            <div className="flex flex-col items-end gap-4 text-right">
-                <h2 className="font-playfairDSC text-4xl font-thin text-[#205041]">
+            <div className="flex flex-col items-center md:items-end gap-4 text-center md:text-right">
+                <h2 className="font-playfairDSC text-3xl md:text-4xl font-thin text-[#205041]">
                     Would You Like To Join As A Psychologist?
                 </h2>
                 <h4 className="text-2xl">
                     We are now over 2000 specialists, and still searching for
                     more specisalists in the field
                 </h4>
-                <div className="w-2/3 rounded-2xl bg-[#188665BF] p-4 text-center font-openSans">
+                <div className="w-full md:w-2/3 rounded-2xl bg-[#188665BF] p-4 text-center font-openSans">
                     <h3 className="text-2xl text-[#FCFBF4]">
                         As a Propsy therapist you can earn an estimated
                     </h3>
@@ -382,7 +381,7 @@ function JoinSection() {
                                     setCalcPrice(parseInt(value) * 520);
                                 }}
                             >
-                                <SelectTrigger className="w-[100px] rounded-full text-xl text-[#205041]">
+                                <SelectTrigger className="md:max-w-[100px] rounded-full text-xl text-[#205041]">
                                     <SelectValue placeholder="20" />
                                 </SelectTrigger>
                                 <SelectContent>

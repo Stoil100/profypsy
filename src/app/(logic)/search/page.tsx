@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 // import { ListProfile, ListProfiles } from "@/models/listProfile";
 import { PsychologistProfile } from "@/components/forms/appliance";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { ChevronRight, Pin, SearchCheck } from "lucide-react";
+import { ChevronRight, Pin, SearchCheck, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -40,8 +40,8 @@ const OptionComponent: React.FC<OptionProps> = ({
                 "bg-gradient-to-r from-[#23A53D] to-[#6DD864] text-white",
         )}
     >
-        <img src={iconSrc} className="size-20" />
-        <p className="text-xl">{name}</p>
+        <img src={iconSrc} className="size-16 md:size-20" />
+        <p className="text-md md:text-xl">{name}</p>
         <ChevronRight />
     </div>
 );
@@ -89,7 +89,7 @@ const HelpSelector: React.FC<{ option: string }> = ({ option }) => {
             onClick={toggleCheckbox}
         >
             <Checkbox id={option} checked={isChecked} />
-            <p className="text-xl" onClick={toggleCheckbox}>
+            <p className="text-md md:text-xl" onClick={toggleCheckbox}>
                 {option}
             </p>
         </div>
@@ -126,8 +126,8 @@ const ProfileCard = ({
                     ? "Freshly found"
                     : "Strong match"}
         </Badge>
-        <img src={image} className="size-28 rounded" />
-        <div className="flex w-full flex-col items-start justify-center gap-2  break-all">
+        {image?(<img src={image} className="size-28 rounded" />):(<div className="p-4 border-gray-500 border-dashed border-2 rounded-full size-20"><User className="w-full h-full text-gray-400"/></div>)}
+        <div className="flex w-full flex-col items-start justify-center gap-2 break-all">
             <h4 className="text-3xl text-[#205041]">
                 {userName.firstName} {userName.lastName}
             </h4>
@@ -136,7 +136,7 @@ const ProfileCard = ({
                 <p className="text-[#205041]">{location}</p>
             </div>
             {experiences.map((experience, index) => (
-                <p className="text-[#20504180] line-clamp-1" key={index}>
+                <p className="text-[#20504180] line-clamp-1 " key={index}>
                     {experience.experience}
                 </p>
             ))}
@@ -165,34 +165,34 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
             className="fixed top-10 flex h-screen w-screen items-center"
         >
             <CarouselContent>
-                <CarouselItem className="p-1">
-                    <div className="mb-5 flex flex-col items-center justify-center gap-4">
-                        <h2 className="font-playfairDSC text-4xl capitalize">
+                <CarouselItem className="pb-2">
+                <div className="flex h-full w-full flex-col items-center justify-center gap-5 text-[#205041">
+                        <h2 className="font-playfairDSC text-2xl md:text-4xl capitalize text-center ">
                             Lets find what’s right for you
                         </h2>
-                        <ul className="list-decimal text-xl font-semibold text-[#205041]">
+                        <ul className="list-decimal text-md md:text-xl font-semibold text-[#205041] pl-10">
                             <li>Tell us what is on your mind</li>
                             <li>Find a psychologist that suits you</li>
                             <li>Book your session</li>
                         </ul>
                         <img
                             src="/logic/search.png"
-                            className="max-h-[400px]"
+                            className="max-h-[200px] md:max-h-[400px]"
                         />
                         <GradientButton
-                            className="text-3xl"
+                            className="text-xl md:text-3xl"
                             onClick={() => scrollNext(1)}
                         >
                             Get Started
                         </GradientButton>
                     </div>
                 </CarouselItem>
-                <CarouselItem>
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1">
-                        <h2 className="font-playfairDSC text-4xl capitalize text-[#205041]">
+                <CarouselItem className="pb-2">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1 px-2">
+                        <h2 className="font-playfairDSC text-3xl md:text-4xl text-center capitalize text-[#205041]">
                             Who is the support for you?
                         </h2>
-                        <div className="w-[500px] space-y-4">
+                        <div className="w-full max-w-[500px] space-y-4">
                             <OptionComponent
                                 name="For you"
                                 iconSrc="/homepage/person.png"
@@ -213,19 +213,19 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                             />
                         </div>
                         <GradientButton
-                            className="text-3xl"
+                            className="text-xl md:text-3xl"
                             onClick={() => scrollNext(2)}
                         >
                             Next
                         </GradientButton>
                     </div>
                 </CarouselItem>
-                <CarouselItem>
+                <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1">
-                        <h2 className="font-playfairDSC text-4xl capitalize text-[#205041]">
-                            Who is the support for you?
+                        <h2 className="font-playfairDSC text-3xl md:text-4xl text-center capitalize text-[#205041]">
+                        What language would you prefer?
                         </h2>
-                        <div className="flex w-[500px] flex-col items-center gap-4">
+                        <div className="flex w-full px-2 max-w-[500px] flex-col items-center gap-4">
                             <LanguageSelector
                                 language="Bulgarian"
                                 imageSrc="/logic/bg.png"
@@ -236,22 +236,22 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                             />
                         </div>
                         <GradientButton
-                            className="text-3xl"
+                            className="text-xl md:text-3xl"
                             onClick={() => scrollNext(3)}
                         >
                             Next
                         </GradientButton>
                     </div>
                 </CarouselItem>
-                <CarouselItem>
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                        <h2 className="font-playfairDSC text-4xl capitalize text-[#205041]">
+                <CarouselItem className="pb-2"> 
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-4">
+                        <h2 className="font-playfairDSC text-2xl md:text-4xl text-center capitalize text-[#205041]">
                             Why are you looking for help today?
                         </h2>
                         <p className="bg-gradient-to-b from-[#6DD864] to-[#23A53D] bg-clip-text text-transparent">
                             If needed choose multiple
                         </p>
-                        <div className="w-full  max-w-[500px] space-y-4">
+                        <div className="w-full max-w-[500px] space-y-2 md:space-y-4">
                             {[1, 2, 3, 4, 5, 6].map((_, index) => (
                                 <HelpSelector
                                     key={index}
@@ -260,41 +260,43 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                             ))}
                         </div>
                         <GradientButton
-                            className="text-3xl"
+                            className="text-xl md:text-3xl"
                             onClick={() => scrollNext(4)}
                         >
                             Next
                         </GradientButton>
                     </div>
                 </CarouselItem>
-                <CarouselItem>
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                        <h2 className="font-playfairDSC text-4xl capitalize text-[#205041]">
+                <CarouselItem className="pb-2">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-4  px-4">
+                        <h2 className="font-playfairDSC text-2xl md:text-4xl capitalize text-center text-[#205041]">
                             How much does it concern you?
                         </h2>
                         <p className="bg-gradient-to-b from-[#6DD864] to-[#23A53D] bg-clip-text text-transparent">
                             Drag from left to right
                         </p>
                         <div className="w-full max-w-[500px] space-y-4">
-                            <div className="flex h-[40px] rounded-full border">
-                                <div className="flex w-1/3 items-center justify-center rounded-l-full bg-[#08BF6B] text-white">
+                            <div className="flex h-[40px] rounded-full border-2 border-white">
+                                <div className="flex w-1/3 items-center justify-center rounded-l-full bg-[#08BF6B] text-white"onClick={()=>{setDraggedValue(0)}} >
                                     A little
                                 </div>
                                 <div
                                     className={cn(
-                                        "flex w-1/3 items-center justify-center text-[#FCD96A] transition-colors duration-300",
+                                        "flex w-1/3 items-center justify-center text-[#FCD96A]  transition-colors duration-300",
                                         draggedValue >= 50 &&
                                             "bg-[#FCD96A] text-white",
                                     )}
+                                    onClick={()=>{setDraggedValue(50)}}
                                 >
                                     Moderate
                                 </div>
                                 <div
                                     className={cn(
-                                        "flex w-1/3 items-center justify-center rounded-r-full text-[#FC8A6A] transition-colors duration-300",
+                                        "flex w-1/3 items-center justify-center rounded-r-full text-[#FC8A6A]  transition-colors duration-300",
                                         draggedValue >= 100 &&
                                             "bg-[#FC8A6A] text-white",
                                     )}
+                                    onClick={()=>{setDraggedValue(100)}}
                                 >
                                     Quite much
                                 </div>
@@ -307,10 +309,11 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                                 max={100}
                                 step={50}
                                 className="w-full"
+                                value={[draggedValue]}
                             />
                         </div>
                         <GradientButton
-                            className="text-3xl"
+                           className="text-xl md:text-3xl"
                             onClick={fetchItems}
                         >
                             Finnish up
@@ -367,16 +370,16 @@ const Page: React.FC = () => {
             {isLoading && <Loader />}
             {psychologists.length !== 0 ? (
                 <>
-                    <section className="flex min-h-screen w-full flex-col items-center justify-center gap-14">
+                    <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 md:gap-14 px-6 pb-2">
                         <div className="mt-20 flex flex-col items-center justify-center gap-4">
-                            <h3 className="font-playfairDSC text-3xl uppercase text-[#128665]">
+                            <h3 className="font-playfairDSC text-3xl uppercase text-center text-[#128665]">
                                 Our top 3 psychologists
                             </h3>
                             <p className="text-xl text-[#205041]">
                                 Picked specifically for you
                             </p>
                         </div>
-                        <div className="flex w-2/3 flex-wrap items-center justify-center gap-10">
+                        <div className="flex w-full md:w-2/3 flex-wrap items-center justify-center gap-10">
                             {psychologists.length > 0 ? (
                                 ["Deluxe", "Premium", "Basic"].map(
                                     (variant) => {
@@ -420,8 +423,8 @@ const Page: React.FC = () => {
                         )}
                     </section>
                     {isShown && (
-                        <section className=" -mt-20 flex h-fit w-full items-center justify-center bg-gradient-to-b from-[#40916C] to-[#52B788] py-20">
-                            <div className="flex w-2/3 flex-wrap items-center justify-center gap-10">
+                        <section className=" px-4 flex h-fit w-full items-center justify-center bg-gradient-to-b from-[#40916C] to-[#52B788] py-20">
+                            <div className="flex  w-full md:w-2/3 flex-wrap items-center justify-center gap-10">
                                 {psychologists
                                     .filter((p) => p.variant === "Deluxe")
                                     .map((pyshologist, index) => (

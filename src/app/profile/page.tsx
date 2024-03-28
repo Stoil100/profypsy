@@ -1,5 +1,4 @@
 "use client";
-// pages/profile!/[uid].tsx
 import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import ChatInterface from "@/components/Chat";
 import GradientButton from "@/components/GradientButton";

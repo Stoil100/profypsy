@@ -471,8 +471,8 @@ export default function ApplianceForm({ className }: Props) {
                                     setTab("info");
                                 }}
                             >
-                                <Info className="size-4 sm:size-6" />
-                                <p>Personal Info</p>
+                                <Info className="size-8 md:size-6" />
+                                <p className="md:block hidden">Personal Info</p>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="education"
@@ -485,8 +485,8 @@ export default function ApplianceForm({ className }: Props) {
                                     setTab("education");
                                 }}
                             >
-                                <GraduationCap className="size-4 sm:size-6" />
-                                <p>Education</p>
+                                <GraduationCap className="size-8 sm:size-6" />
+                                <p className="hidden md:block">Education</p>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="experience"
@@ -499,8 +499,8 @@ export default function ApplianceForm({ className }: Props) {
                                     setTab("experience");
                                 }}
                             >
-                                <Briefcase className="size-4 sm:size-6" />
-                                <p>Experience</p>
+                                <Briefcase className="size-8 sm:size-6" />
+                                <p className="hidden md:block">Experience</p>
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value="info" className="space-y-4">
