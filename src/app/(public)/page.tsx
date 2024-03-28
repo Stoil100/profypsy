@@ -89,7 +89,7 @@ function HeroSection() {
         );
     }
     return (
-        <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 bg-gradient-to-b from-[#40916C] to-[#52B788] pt-10 text-white">
+        <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 bg-gradient-to-b from-[#40916C] to-[#52B788] pt-16 md:pt-10 text-white">
             <div className="flex w-2/3 flex-col items-center gap-7 text-center">
                 <h1 className="font-playfairDSC text-3xl md:text-5xl font-thin capitalize">
                     Your Journey to <br /> Mental Wellness Begins Here
@@ -177,7 +177,7 @@ function ReviewsSection() {
                     <img src="/homepage/star.png" alt="star" key={index} width={32} />
                 ))}
             </div>
-            <h2 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-3xl md:text-4xl capitalize text-transparent">
+            <h2 className="px-2 bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-3xl md:text-4xl capitalize text-transparent">
                 More than 10000 5-star reviews
             </h2>
             <Carousel
@@ -356,7 +356,7 @@ function FaQSection() {
 function JoinSection() {
     const [calcPrice, setCalcPrice] = useState(10400);
     return (
-        <section className="flex w-full items-center justify-between md:px-[100px] lg:px-[150px] xl:px-[200px] py-5">
+        <section className="flex w-full items-center justify-between px-4 md:px-[100px] lg:px-[150px] xl:px-[200px] py-5">
             <img
                 src="/homepage/join.png"
                 alt="join as a psychologist"
@@ -372,7 +372,7 @@ function JoinSection() {
                 </h4>
                 <div className="w-full md:w-2/3 rounded-2xl bg-[#188665BF] p-4 text-center font-openSans">
                     <h3 className="text-2xl text-[#FCFBF4]">
-                        As a Propsy therapist you can earn an estimated
+                        As a Profypsy therapist you can earn an estimated
                     </h3>
                     <div className="flex w-full items-center justify-between text-[#F1ECCC] ">
                         <div className="flex w-1/2 flex-col items-center">

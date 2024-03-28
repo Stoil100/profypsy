@@ -167,7 +167,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
             <CarouselContent>
                 <CarouselItem className="pb-2">
                 <div className="flex h-full w-full flex-col items-center justify-center gap-5 text-[#205041">
-                        <h2 className="font-playfairDSC text-2xl md:text-4xl capitalize text-center ">
+                        <h2 className="font-playfairDSC text-2xl md:text-4xl capitalize text-center text-[#205041] px-2">
                             Lets find what’s right for you
                         </h2>
                         <ul className="list-decimal text-md md:text-xl font-semibold text-[#205041] pl-10">
