@@ -377,7 +377,7 @@ export default function Page() {
                                     )
                                 ) : (
                                     <p>
-                                        You don't have any appointments at the
+                                        You don&apos;t have any appointments at the
                                         moment. <br/> You can book one{" "}
                                         <Link href={"/search"} className="text-[#25BA9E] underline ">here</Link>
                                     </p>
@@ -527,7 +527,7 @@ export default function Page() {
                                     )
                                 ) : (
                                     <div>
-                                        You don't have any upcoming sessions
+                                        You don&apos;t have any upcoming sessions
                                     </div>
                                 )}
                             </Accordion>
