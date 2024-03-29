@@ -19,7 +19,9 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ChevronRight, Pin, SearchCheck, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "@/components/Providers";
+import { useRouter } from "next/navigation";
 interface OptionProps {
     name: string;
     iconSrc: string;
@@ -361,7 +363,13 @@ const Page: React.FC = () => {
     const [psychologists, setPsychologists] = useState<PsychologistProfile[]>(
         [],
     );
-
+    const {user}=useAuth();
+    const router=useRouter();
+    useEffect(() => {
+        if (!user.uid) {
+            router.push("/login");
+        }
+    }, [user, router]);
     function fetchItems() {
         setFinnishedOptions(true);
         setIsLoading(true);
