@@ -25,7 +25,7 @@ export default function page() {
                 </h2>
                 <p className="text-lg px-4">
                     For us, the creators of this platform, the meaning lies in
-                    the opportunity to make a positive change in people's lives
+                    the opportunity to make a positive change in people&apos;s lives
                     by providing them with an easy and accessible way to receive
                     quality psychotherapeutic assistance. Our goal is to
                     eliminate barriers to access to mental health and to create

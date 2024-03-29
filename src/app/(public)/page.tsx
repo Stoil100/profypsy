@@ -349,8 +349,8 @@ function FaQSection() {
                                             and thoughts.
                                         </li>
                                         <li>
-                                            They typically hold a bachelor's,
-                                            master's, or doctoral degree in
+                                            They typically hold a bachelor&apos;s,
+                                            master&apos;s, or doctoral degree in
                                             psychology.
                                         </li>
                                         <li>
@@ -371,7 +371,7 @@ function FaQSection() {
                                         </li>
                                         <li>
                                             They usually have specialized
-                                            training or a master's degree in
+                                            training or a master&apos;s degree in
                                             psychology, psychiatry, social work,
                                             or a related field.
                                         </li>
@@ -472,7 +472,7 @@ function FaQSection() {
                                 <li>
                                     <strong>Establish trust:</strong> It is
                                     important to feel comfortable and confident
-                                    in your therapist's abilities. Trust and
+                                    in your therapist&apos;s abilities. Trust and
                                     good communication are key to successful
                                     therapy.
                                 </li>
