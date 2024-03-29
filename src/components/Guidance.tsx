@@ -55,22 +55,40 @@ const ServicesLinks = () => (
     </>
 );
 
-const UsefulLinks = () => (
-    <>
-        <Link href="/search" className="transition-transform hover:scale-110">
-            Find a therapist
-        </Link>
-        <Link href="/profile" className="transition-transform hover:scale-110">
-            My profile
-        </Link>
-        <Link href="/articles" className="transition-transform hover:scale-110">
-            Blog
-        </Link>
-    </>
-);
+const UsefulLinks:React.FC<UserType> = (user) => (
+        <>
+            <Link
+                href="/search"
+                className="transition-transform hover:scale-110"
+            >
+                Find a therapist
+            </Link>
+            <Link
+                href="/profile"
+                className="transition-transform hover:scale-110"
+            >
+                My profile
+            </Link>
+            <Link
+                href="/articles"
+                className="transition-transform hover:scale-110"
+            >
+                Blog
+            </Link>
+            {user.role==="admin"&& <Link
+                href="/admin"
+                className="transition-transform hover:scale-110"
+            >
+                Admin
+            </Link>}
+        </>
+    );
 
 const AboutLinks: React.FC<AboutProps> = ({ user, router }) => (
     <>
+    <Link href="/mission" className="transition-transform hover:scale-110">
+            Our mission
+        </Link>
         <Link href="/policy" className="transition-transform hover:scale-110">
             Privacy policy
         </Link>
@@ -103,8 +121,8 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
     return (
         <div
             className={clsx(
-                "flex min-h-[33vh] flex-wrap items-start justify-center sm:py-10 gap-2 text-xl font-thin text-white w-full",
-                variant === "footer" ? "bg-[#525174] gap-14 p-4" : "bg-transparent justify-evenly",
+                "flex min-h-[33vh] flex-wrap items-start justify-center sm:py-10 text-xl font-thin text-white w-full",
+                variant === "footer" ? "bg-[#525174] gap-14 p-4" : "gap-2 bg-transparent justify-evenly",
             )}
         >
             <div className="flex flex-col gap-2 font-openSans text-white order-1">
@@ -139,7 +157,7 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
             </div>
             <div className="flex flex-col gap-1 text-base md:text-md order-2 md:order-3">
                 <h4 className="text-xl md:text-2xl underline">Useful Links</h4>
-                <UsefulLinks />
+                <UsefulLinks {...user}/>
             </div>
             <div className="flex flex-col gap-1 text-base md:text-md items-center sm:items-end order-4">
                 <h4 className="text-xl md:text-2xl underline">About</h4>

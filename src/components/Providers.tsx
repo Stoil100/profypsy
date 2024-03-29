@@ -17,6 +17,7 @@ import {
     OAuthProvider,
     FacebookAuthProvider,
     AuthError,
+    sendEmailVerification,
 } from "firebase/auth";
 import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { AuthT } from "@/models/auth";
@@ -143,6 +144,11 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 values.email,
                 values.password,
             );
+            if (userCredential.user) {
+                await sendEmailVerification(userCredential.user);
+                // Inform the user to check their email for a verification link
+                alert("Please verify your email before continuing to your profile.");
+              }
             await handleUserAfterAuth({
                 email: userCredential.user.email,
                 uid: userCredential.user.uid,
@@ -154,8 +160,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             return error as AuthError;
         }
     };
-
-    // Continued from previous implementation...
 
     const logIn = async (values: AuthT): Promise<void | AuthError> => {
         try {

@@ -35,7 +35,7 @@ const OptionComponent: React.FC<OptionProps> = ({
     <div
         onClick={onSelect}
         className={cn(
-            "flex cursor-pointer items-center space-x-2 rounded-lg bg-[#FCFBF4] p-1 drop-shadow-lg transition-all hover:scale-110",
+            "flex cursor-pointer items-center space-x-2 rounded-lg bg-[#FCFBF4] p-1 drop-shadow-lg transition-all hover:md:scale-110",
             isSelected &&
                 "bg-gradient-to-r from-[#23A53D] to-[#6DD864] text-white",
         )}
@@ -57,18 +57,19 @@ const LanguageSelector: React.FC<{ language: string; imageSrc: string }> = ({
     return (
         <div
             className={cn(
-                "flex w-full cursor-pointer items-center gap-2 rounded-lg bg-[#FCFBF4] p-2 drop-shadow-lg transition-all hover:scale-110",
+                "flex w-full cursor-pointer items-center gap-2 rounded-lg bg-[#FCFBF4] p-2 drop-shadow-lg transition-all hover:md:scale-110",
                 isChecked &&
                     "bg-gradient-to-r from-[#23A53D] to-[#6DD864] text-white",
             )}
             onClick={toggleCheckbox}
         >
             <Checkbox id={language} checked={isChecked} />
-            <div className="flex items-center justify-center gap-2" onClick={toggleCheckbox}>
-            <img src={imageSrc} />
-            <p className="text-xl">
-                {language}
-            </p>
+            <div
+                className="flex items-center justify-center gap-2"
+                onClick={toggleCheckbox}
+            >
+                <img src={imageSrc} />
+                <p className="text-xl">{language}</p>
             </div>
         </div>
     );
@@ -82,7 +83,7 @@ const HelpSelector: React.FC<{ option: string }> = ({ option }) => {
     return (
         <div
             className={cn(
-                "flex w-full cursor-pointer items-center gap-2 rounded-lg bg-[#FCFBF4] p-2 drop-shadow-lg transition-all hover:scale-110",
+                "flex w-full cursor-pointer items-center gap-2 rounded-lg bg-[#FCFBF4] p-2 drop-shadow-lg transition-all hover:md:scale-110",
                 isChecked &&
                     "bg-gradient-to-r from-[#23A53D] to-[#6DD864] text-white",
             )}
@@ -126,7 +127,13 @@ const ProfileCard = ({
                     ? "Freshly found"
                     : "Strong match"}
         </Badge>
-        {image?(<img src={image} className="size-28 rounded" />):(<div className="p-4 border-gray-500 border-dashed border-2 rounded-full size-20"><User className="w-full h-full text-gray-400"/></div>)}
+        {image ? (
+            <img src={image} className="size-28 rounded" />
+        ) : (
+            <div className="size-20 rounded-full border-2 border-dashed border-gray-500 p-4">
+                <User className="h-full w-full text-gray-400" />
+            </div>
+        )}
         <div className="flex w-full flex-col items-start justify-center gap-2 break-all">
             <h4 className="text-3xl text-[#205041]">
                 {userName.firstName} {userName.lastName}
@@ -136,14 +143,17 @@ const ProfileCard = ({
                 <p className="text-[#205041]">{location}</p>
             </div>
             {experiences.map((experience, index) => (
-                <p className="text-[#20504180] line-clamp-1 " key={index}>
+                <p className="line-clamp-1 text-[#20504180] " key={index}>
                     {experience.experience}
                 </p>
             ))}
-            <p className="text-[#205041] line-clamp-1">{about}</p>
+            <p className="line-clamp-1 text-[#205041]">{about}</p>
         </div>
-        <Link href={`/search/${uid}`} className="w-full bg-gradient-to-b from-[#40916C] text-center py-2 rounded-xl hover:scale-110 transition-transform to-[#52B788] text-white">
-                Book Now
+        <Link
+            href={`/search/${uid}`}
+            className="w-full rounded-xl bg-gradient-to-b from-[#40916C] to-[#52B788] py-2 text-center text-white transition-transform hover:md:scale-110"
+        >
+            Book Now
         </Link>
     </div>
 );
@@ -157,7 +167,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
         "you" | "couples" | "families" | undefined
     >();
 
-    const scrollNext = (page: number) => api?.scrollTo(page);
+    const scrollNext = () => api?.scrollNext();
     return (
         <Carousel
             setApi={setApi}
@@ -166,11 +176,11 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
         >
             <CarouselContent>
                 <CarouselItem className="pb-2">
-                <div className="flex h-full w-full flex-col items-center justify-center gap-5 text-[#205041">
-                        <h2 className="font-playfairDSC text-2xl md:text-4xl capitalize text-center text-[#205041] px-2">
+                    <div className="text-[#205041 flex h-full w-full flex-col items-center justify-center gap-5">
+                        <h2 className="px-2 text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
                             Lets find what’s right for you
                         </h2>
-                        <ul className="list-decimal text-md md:text-xl font-semibold text-[#205041] pl-10">
+                        <ul className="text-md list-decimal pl-10 font-semibold text-[#205041] md:text-xl">
                             <li>Tell us what is on your mind</li>
                             <li>Find a psychologist that suits you</li>
                             <li>Book your session</li>
@@ -181,7 +191,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         />
                         <GradientButton
                             className="text-xl md:text-3xl"
-                            onClick={() => scrollNext(1)}
+                            onClick={scrollNext}
                         >
                             Get Started
                         </GradientButton>
@@ -189,7 +199,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                 </CarouselItem>
                 <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1 px-2">
-                        <h2 className="font-playfairDSC text-3xl md:text-4xl text-center capitalize text-[#205041]">
+                        <h2 className="text-center font-playfairDSC text-3xl capitalize text-[#205041] md:text-4xl">
                             Who is the support for you?
                         </h2>
                         <div className="w-full max-w-[500px] space-y-4">
@@ -214,7 +224,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         </div>
                         <GradientButton
                             className="text-xl md:text-3xl"
-                            onClick={() => scrollNext(2)}
+                            onClick={scrollNext}
                         >
                             Next
                         </GradientButton>
@@ -222,10 +232,10 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                 </CarouselItem>
                 <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1">
-                        <h2 className="font-playfairDSC text-3xl md:text-4xl text-center capitalize text-[#205041]">
-                        What language would you prefer?
+                        <h2 className="text-center font-playfairDSC text-3xl capitalize text-[#205041] md:text-4xl">
+                            What language would you prefer?
                         </h2>
-                        <div className="flex w-full px-2 max-w-[500px] flex-col items-center gap-4">
+                        <div className="flex w-full max-w-[500px] flex-col items-center gap-4 px-2">
                             <LanguageSelector
                                 language="Bulgarian"
                                 imageSrc="/logic/bg.png"
@@ -237,13 +247,13 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         </div>
                         <GradientButton
                             className="text-xl md:text-3xl"
-                            onClick={() => scrollNext(3)}
+                            onClick={scrollNext}
                         >
                             Next
                         </GradientButton>
                     </div>
                 </CarouselItem>
-                <CarouselItem className="pb-2"> 
+                {/* <CarouselItem className="pb-2"> 
                     <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-4">
                         <h2 className="font-playfairDSC text-2xl md:text-4xl text-center capitalize text-[#205041]">
                             Why are you looking for help today?
@@ -261,15 +271,15 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         </div>
                         <GradientButton
                             className="text-xl md:text-3xl"
-                            onClick={() => scrollNext(4)}
+                             onClick={scrollNext}
                         >
                             Next
                         </GradientButton>
                     </div>
-                </CarouselItem>
+                </CarouselItem> */}
                 <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-4  px-4">
-                        <h2 className="font-playfairDSC text-2xl md:text-4xl capitalize text-center text-[#205041]">
+                        <h2 className="text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
                             How much does it concern you?
                         </h2>
                         <p className="bg-gradient-to-b from-[#6DD864] to-[#23A53D] bg-clip-text text-transparent">
@@ -277,7 +287,12 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         </p>
                         <div className="w-full max-w-[500px] space-y-4">
                             <div className="flex h-[40px] rounded-full border-2 border-white">
-                                <div className="flex w-1/3 items-center justify-center rounded-l-full bg-[#08BF6B] text-white"onClick={()=>{setDraggedValue(0)}} >
+                                <div
+                                    className="flex w-1/3 items-center justify-center rounded-l-full bg-[#08BF6B] text-white"
+                                    onClick={() => {
+                                        setDraggedValue(0);
+                                    }}
+                                >
                                     A little
                                 </div>
                                 <div
@@ -286,7 +301,9 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                                         draggedValue >= 50 &&
                                             "bg-[#FCD96A] text-white",
                                     )}
-                                    onClick={()=>{setDraggedValue(50)}}
+                                    onClick={() => {
+                                        setDraggedValue(50);
+                                    }}
                                 >
                                     Moderate
                                 </div>
@@ -296,7 +313,9 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                                         draggedValue >= 100 &&
                                             "bg-[#FC8A6A] text-white",
                                     )}
-                                    onClick={()=>{setDraggedValue(100)}}
+                                    onClick={() => {
+                                        setDraggedValue(100);
+                                    }}
                                 >
                                     Quite much
                                 </div>
@@ -313,7 +332,7 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                             />
                         </div>
                         <GradientButton
-                           className="text-xl md:text-3xl"
+                            className="text-xl md:text-3xl"
                             onClick={fetchItems}
                         >
                             Finnish up
@@ -339,30 +358,36 @@ const Page: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [finnishedOptions, setFinnishedOptions] = useState(false);
     const [isShown, setIsShown] = useState(false);
-    const [psychologists, setPsychologists] = useState<PsychologistProfile[]>([]);
+    const [psychologists, setPsychologists] = useState<PsychologistProfile[]>(
+        [],
+    );
 
     function fetchItems() {
         setFinnishedOptions(true);
         setIsLoading(true);
-    
-        const q = query(collection(db, "psychologists"), where("approved", "==", true));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const tempValues: PsychologistProfile[] = [];
-            querySnapshot.forEach((doc) => {
-                tempValues.push(doc.data() as PsychologistProfile);
-            });
-            setPsychologists(tempValues);
-            setIsLoading(false);
-        },
+
+        const q = query(
+            collection(db, "psychologists"),
+            where("approved", "==", true),
+        );
+        const unsubscribe = onSnapshot(
+            q,
+            (querySnapshot) => {
+                const tempValues: PsychologistProfile[] = [];
+                querySnapshot.forEach((doc) => {
+                    tempValues.push(doc.data() as PsychologistProfile);
+                });
+                setPsychologists(tempValues);
+                setIsLoading(false);
+            },
             (error) => {
                 console.error("Error fetching items: ", error);
                 setIsLoading(false);
-            });
+            },
+        );
 
         return unsubscribe;
     }
-
-   
 
     return (
         <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans ">
@@ -370,16 +395,16 @@ const Page: React.FC = () => {
             {isLoading && <Loader />}
             {psychologists.length !== 0 ? (
                 <>
-                    <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 md:gap-14 px-6 pb-2">
+                    <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 px-6 pb-2 md:gap-14">
                         <div className="mt-20 flex flex-col items-center justify-center gap-4">
-                            <h3 className="font-playfairDSC text-3xl uppercase text-center text-[#128665]">
+                            <h3 className="text-center font-playfairDSC text-3xl uppercase text-[#128665]">
                                 Our top 3 psychologists
                             </h3>
                             <p className="text-xl text-[#205041]">
                                 Picked specifically for you
                             </p>
                         </div>
-                        <div className="flex w-full md:w-2/3 flex-wrap items-center justify-center gap-10">
+                        <div className="flex w-full flex-wrap items-center justify-center gap-10 md:w-2/3">
                             {psychologists.length > 0 ? (
                                 ["Deluxe", "Premium", "Basic"].map(
                                     (variant) => {
@@ -423,8 +448,11 @@ const Page: React.FC = () => {
                         )}
                     </section>
                     {isShown && (
-                        <section className=" px-4 flex h-fit w-full items-center justify-center bg-gradient-to-b from-[#40916C] to-[#52B788] py-20">
-                            <div className="flex  w-full md:w-2/3 flex-wrap items-center justify-center gap-10">
+                        <section className=" flex h-fit w-full flex-col items-center justify-center  gap-6 bg-gradient-to-b from-[#40916C] to-[#52B788] px-4 py-20">
+                            <h2 className="font-playfairDSC text-4xl text-white drop-shadow-xl [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
+                                Selection of choices solely for you
+                            </h2>
+                            <div className="flex  w-full flex-wrap items-center justify-center gap-10 md:w-2/3">
                                 {psychologists
                                     .filter((p) => p.variant === "Deluxe")
                                     .map((pyshologist, index) => (
@@ -454,7 +482,8 @@ const Page: React.FC = () => {
                     )}
                 </>
             ) : (
-                finnishedOptions && !isLoading && (
+                finnishedOptions &&
+                !isLoading && (
                     <div className="flex flex-col items-center justify-center gap-2 p-2">
                         {" "}
                         <Image
@@ -463,7 +492,7 @@ const Page: React.FC = () => {
                             width={500}
                             height={500}
                         />
-                        <p className="text-3xl text-center text-[#205041]">
+                        <p className="text-center text-3xl text-[#205041]">
                             Oops! We couldn&apos;t find a match for you at the
                             moment!
                         </p>

@@ -62,10 +62,8 @@ export default function Page() {
     }, []);
 
     function toggleChat(senderUid:string,receiverUid:string,receiverUsername:{firstName:string,lastName:string}){
-        console.log(senderUid,receiverUid);
         setChatProps({senderUid,receiverUid,receiverUsername })
     }
-    console.log(user);
     return (
         <main
             className={cn(

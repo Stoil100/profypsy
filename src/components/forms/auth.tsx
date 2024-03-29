@@ -30,13 +30,6 @@ const AuthForm = ({ variant="login" }: FormVariant) => {
             email: z
                 .string()
                 .email({ message: "Please enter a valid email address." }),
-            phone: z
-                .string()
-                .regex(
-                    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
-                    "Invalid phone number",
-                )
-                .optional(),
             password: z
                 .string()
                 .regex(/.*[A-Z].*/, "One uppercase character")
@@ -78,6 +71,7 @@ const AuthForm = ({ variant="login" }: FormVariant) => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log(values as AuthT);
         setIsLoading(true);
         try {
             let errorMessage: any;

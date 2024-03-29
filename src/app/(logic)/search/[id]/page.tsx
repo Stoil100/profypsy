@@ -165,7 +165,6 @@ const BookingDates: React.FC<BookingDatesProps> = ({
                                     appointment.selectedDate ===
                                     selectedDateTime,
                             );
-                            console.log(availability);
                         });
                     }
                 });

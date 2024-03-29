@@ -312,7 +312,7 @@ function ApproachSection() {
 function FaQSection() {
     return (
         <section className="mb-5 flex w-full flex-col items-center justify-center gap-4 px-4 md:px-[100px] lg:px-[150px] xl:px-[200px]">
-            <h3 className="font-playfairDSC text-4xl text-[#205041] text-center">
+            <h3 className="text-center font-playfairDSC text-4xl text-[#205041]">
                 Frequently Asked Questions
             </h3>
             <div className="w-full rounded-2xl bg-white p-2 font-openSans text-xl">
@@ -322,7 +322,16 @@ function FaQSection() {
                             Is online therapy effective?
                         </AccordionTrigger>
                         <AccordionContent>
-                            Yes. It adheres to the WAI-ARIA design pattern.
+                            Yes, online therapy can be effective, especially
+                            when utilized by individuals with appropriate
+                            training and experience in the field of
+                            psychotherapy. This provides access to therapy for
+                            people who might otherwise be unable to access it
+                            due to various reasons such as geographical
+                            location, financial constraints, or mobility issues.
+                            It is important to choose a qualified and licensed
+                            therapist and ensure appropriate communication and
+                            confidentiality.
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
@@ -331,7 +340,69 @@ function FaQSection() {
                             psychiatry?
                         </AccordionTrigger>
                         <AccordionContent>
-                            Yes. It adheres to the WAI-ARIA design pattern.
+                            <ul>
+                                <li>
+                                    <h2 className="text-xl font-bold">Psychologist:</h2>
+                                    <ul className="list-disc px-6 py-2  text-base">
+                                        <li>
+                                            Psychologists study human behavior
+                                            and thoughts.
+                                        </li>
+                                        <li>
+                                            They typically hold a bachelor's,
+                                            master's, or doctoral degree in
+                                            psychology.
+                                        </li>
+                                        <li>
+                                            They can conduct psychological
+                                            assessments, consultations, and
+                                            provide counseling but cannot
+                                            prescribe medication.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h2 className="text-xl font-bold">Psychotherapist:</h2>
+                                    <ul className="list-disc px-6 py-2 text-base">
+                                        <li>
+                                            Psychotherapists specialize in
+                                            treating mental disorders and issues
+                                            through various therapeutic methods.
+                                        </li>
+                                        <li>
+                                            They usually have specialized
+                                            training or a master's degree in
+                                            psychology, psychiatry, social work,
+                                            or a related field.
+                                        </li>
+                                        <li>
+                                            They perform psychotherapy,
+                                            including individual sessions, group
+                                            therapies, and other techniques.
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <h2 className="text-xl font-bold">Psychiatrist:</h2>
+                                    <ul className="list-disc px-6 py-2 text-base">
+                                        <li>
+                                            Psychiatrists are medical doctors
+                                            specialized in diagnosing, treating,
+                                            and managing mental disorders.
+                                        </li>
+                                        <li>
+                                            They hold a medical degree and are
+                                            licensed to prescribe medication.
+                                        </li>
+                                        <li>
+                                            They may conduct therapy sessions,
+                                            but their primary role is related to
+                                            medication management and treatment
+                                            of mental health.
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
@@ -339,7 +410,80 @@ function FaQSection() {
                             How do I get matched with a professional?
                         </AccordionTrigger>
                         <AccordionContent>
-                            Yes. It adheres to the WAI-ARIA design pattern.
+                            <h2 className="text-2xl">
+                                Choosing the right therapist is crucial for the
+                                success of therapy.
+                            </h2>
+                            <p className="text-lg">
+                                Here are a few steps to help you choose the
+                                right therapist for you:
+                            </p>
+
+                            <ol className="list-decimal px-6 py-2 text-base">
+                                <li>
+                                    <strong>
+                                        Identify your needs and goals:
+                                    </strong>{" "}
+                                    Understand what problems or challenges you
+                                    want to address through therapy and what
+                                    goals you want to achieve.
+                                </li>
+
+                                <li>
+                                    <strong>
+                                        Explore different therapy methods:
+                                    </strong>{" "}
+                                    There are many different therapy methods,
+                                    such as cognitive-behavioral therapy,
+                                    psychoanalysis, gestalt therapy, and others.
+                                    Choose a method that inspires confidence and
+                                    that you believe will be suitable for your
+                                    needs.
+                                </li>
+
+                                <li>
+                                    <strong>
+                                        Look for licensed and qualified
+                                        professionals:
+                                    </strong>{" "}
+                                    Make sure that your potential therapist is
+                                    licensed and has appropriate educational
+                                    background and experience. Check their
+                                    qualifications and certificates.
+                                </li>
+
+                                <li>
+                                    <strong>Ask for recommendations:</strong>{" "}
+                                    Ask friends, family, or your doctor for
+                                    recommendations for good therapists.
+                                    Additionally, browse online reviews and
+                                    ratings for potential candidates.
+                                </li>
+
+                                <li>
+                                    <strong>Try the first session:</strong> Many
+                                    therapists offer free initial consultations.
+                                    Take advantage of this opportunity to assess
+                                    your compatibility with the therapist and to
+                                    determine whether their style and methods
+                                    meet your needs.
+                                </li>
+
+                                <li>
+                                    <strong>Establish trust:</strong> It is
+                                    important to feel comfortable and confident
+                                    in your therapist's abilities. Trust and
+                                    good communication are key to successful
+                                    therapy.
+                                </li>
+                            </ol>
+
+                            <p>
+                                By following these steps, it will be easier to
+                                choose the right therapist for you, who will
+                                help you achieve your goals and improve your
+                                mental well-being.
+                            </p>
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
