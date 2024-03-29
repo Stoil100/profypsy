@@ -4,7 +4,7 @@ import { db } from '@/firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react'
 
-export default function page({ params }: { params: { id: string } }) {
+export default function Article({ params }: { params: { id: string } }) {
     const [article, setArticle] = useState<ArticleT>();
     useEffect(() => {
         async function getUserData() {
