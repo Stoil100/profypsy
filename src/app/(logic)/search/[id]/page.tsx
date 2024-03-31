@@ -239,46 +239,60 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     }
 
     return (
-        <>
-            <div className="flex items-center justify-center gap-10">
+        <div className="flex h-full flex-col items-center justify-center space-y-3">
+            <div className="flex flex-wrap items-center justify-center gap-4">
                 {Object.entries(
                     aggregateTimeSlots(getDatesForWeek(currentWeek)),
                 ).map(([date, slots]) => (
-                    <div
-                        key={date}
-                        className="flex flex-col items-center gap-2"
-                    >
+                    <div>
                         <h3 className="text-xl text-[#128665]">{date}:</h3>
-                        <div className="flex flex-col gap-2">
-                            {slots.map((slot) => (
-                                <Button
-                                    key={slot}
-                                    variant="outline"
-                                    disabled={
-                                        !availableSlots[`${date} ${slot}`]
-                                    }
-                                    className={cn(
-                                        "rounded-full border-2 p-3 text-lg",
-                                        !availableSlots[`${date} ${slot}`]
-                                            ? "border-gray-400 text-gray-400"
-                                            : "border-[#52B788] text-[#52B788] hover:bg-[#52B788] hover:text-white",
-                                        selectedAppointmentTime ===
-                                            `${date} ${slot}` &&
-                                            "bg-[#52B788] text-white",
-                                    )}
-                                    onClick={() =>
-                                        setSelectedAppointmentTime(
-                                            `${date} ${slot}`,
-                                        )
-                                    }
-                                >
-                                    {slot}
-                                </Button>
-                            ))}
-                        </div>
+                        <Select key={date}>
+                            <SelectTrigger className="w-full border-[#52B788] text-[#52B788]">
+                                <SelectValue placeholder="Select date:" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup className="flex h-fit flex-col gap-2">
+                                    {slots.map((slot) => (
+                                        <Button
+                                            variant="outline"
+                                            value={`${date} ${slot}`}
+                                            key={slot}
+                                            disabled={
+                                                !availableSlots[
+                                                    `${date} ${slot}`
+                                                ]
+                                            }
+                                            className={cn(
+                                                "flex cursor-pointer  items-center justify-center rounded-xl border-2 text-base",
+                                                !availableSlots[
+                                                    `${date} ${slot}`
+                                                ]
+                                                    ? "border-gray-400 text-gray-400"
+                                                    : "border-[#52B788] text-[#52B788] hover:!bg-[#52B788] hover:!text-white",
+                                                selectedAppointmentTime ===
+                                                    `${date} ${slot}` &&
+                                                    "!bg-[#52B788] !text-white",
+                                            )}
+                                            onClick={() =>
+                                                setSelectedAppointmentTime(
+                                                    `${date} ${slot}`,
+                                                )
+                                            }
+                                        >
+                                            {slot}
+                                        </Button>
+                                    ))}
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
                     </div>
                 ))}
             </div>
+            {selectedAppointmentTime && (
+                <h2 className="text-center">
+                    You have selected appointment on {selectedAppointmentTime}
+                </h2>
+            )}
             <div className="flex w-full justify-center gap-4 self-center">
                 <Button
                     variant="outline"
@@ -297,7 +311,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
                     <ArrowRight />
                 </Button>
             </div>
-        </>
+        </div>
     );
 };
 
@@ -315,6 +329,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     profile,
     user,
 }) => {
+    const [page, setPage] = useState(0)
     const [api, setApi] = useState<CarouselApi>();
     const [selectedAppointmentTime, setSelectedAppointmentTime] = useState<
         string | null
@@ -335,7 +350,9 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     });
     if (!isOpen) return null;
 
-    const scrollSlide = (page: number) => api?.scrollTo(page);
+    const scrollSlide = (page: number) =>{ 
+        setPage(page);
+        api?.scrollTo(page)};
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         if (!user) return;
@@ -378,13 +395,16 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             console.error("Error adding appointment: ", error);
         }
     };
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="h-fit w-fit border-transparent bg-gradient-to-b from-[#52B788] to-[#128665] p-2">
+            <DialogContent className="h-fit w-full max-w-3xl border-transparent bg-gradient-to-b from-[#52B788] to-[#128665] p-2">
                 <Carousel setApi={setApi} opts={{ watchDrag: false }}>
-                    <CarouselContent className="w-fit px-2">
-                        <CarouselItem className="ml-2 w-fit space-y-3 rounded-xl bg-white p-2">
-                            <div className="border-b-2">
+                    <CarouselContent className="h-fit px-2">
+                        <CarouselItem className="ml-2 flex flex-col justify-between space-y-3 rounded-xl bg-white p-2">
+                        {page===0&&
+                            <>
+                            <div className="w-full border-b-2 text-center">
                                 <h2 className="text-2xl">
                                     Book Your Appointment
                                 </h2>
@@ -410,12 +430,16 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                     </Button>
                                 </div>
                             )}
+                            </>
+}
                         </CarouselItem>
-
                         <CarouselItem className="ml-2 w-full  space-y-3 rounded-xl bg-white p-2">
+                            
+                        {page===1&&
+                            <>
                             <div className="border-b-2 p-2">
                                 <h2 className="text-2xl">
-                                    Additional info about your appoiment
+                                    Additional information about your appoiment
                                 </h2>
                             </div>
                             <Form {...form}>
@@ -457,7 +481,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                                         <Input
                                                             placeholder="Enter your last name..."
                                                             {...field}
-                                                            className="rounded-2xl border-2 border-[#52B788]"
+                                                            className="rounded-2xl border-2 border-[#52B788] "
                                                         />
                                                     </FormControl>
                                                     <FormMessage />
@@ -644,6 +668,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                     </div>
                                 </form>
                             </Form>
+                            </>}
                         </CarouselItem>
                     </CarouselContent>
                 </Carousel>
