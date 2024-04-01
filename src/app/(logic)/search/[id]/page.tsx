@@ -244,7 +244,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
                 {Object.entries(
                     aggregateTimeSlots(getDatesForWeek(currentWeek)),
                 ).map(([date, slots]) => (
-                    <div>
+                    <div key={date}>
                         <h3 className="text-xl text-[#128665]">{date}:</h3>
                         <Select key={date}>
                             <SelectTrigger className="w-full border-[#52B788] text-[#52B788]">
