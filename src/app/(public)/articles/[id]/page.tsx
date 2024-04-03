@@ -52,8 +52,8 @@ function useArticles(articleId: string) {
 export default function Article({ params }: { params: { id: string } }) {
     const { articles, currentArticle, loading, error } = useArticles(params.id);
     return (
-        <main className="flex h-fit w-full bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] pt-20">
-            <div className="w-full space-y-4 p-3 text-[#205041] md:w-2/3 md:p-8">
+        <main className="flex h-fit w-full bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] pt-20 pb-4">
+            <div className="w-full space-y-4 p-3 text-[#205041] md:w-3/4 md:p-8">
                 <h2 className="text-center text-4xl font-bold">
                     {currentArticle?.title}
                 </h2>
@@ -67,7 +67,7 @@ export default function Article({ params }: { params: { id: string } }) {
                     ))}
                 </div>
             </div>
-            <div className="hidden w-1/3 flex-col items-center gap-10 border-l-2 border-black pt-20 md:flex">
+            <div className="hidden w-1/4 flex-col items-center gap-10 border-l-2 border-black pt-20 md:flex">
                 <div className=" flex w-1/2 flex-col items-center gap-3">
                     <h3 className="text-center  text-xl">
                         Get the latest articles straight to your email box
@@ -77,15 +77,15 @@ export default function Article({ params }: { params: { id: string } }) {
                 <div className="sticky top-20 flex w-2/3 flex-col items-center justify-center gap-2">
                     <h2 className="self-start text-3xl">Newest Posts:</h2>
                     <hr className="w-full border border-black" />
-                    <div className="space-y-4">
+                    <div className="space-y-4 pt-4">
                         {articles!.slice(0, 6).map((article) => (
                             <div
-                                className="flex cursor-pointer items-start justify-center gap-4 md:max-lg:flex-wrap"
+                                className="flex cursor-pointer items-start justify-center gap-4 flex-col transition-transform hover:scale-105"
                                 key={article.id}
                             >
                                 <img
                                     src={article.image}
-                                    className="h-auto max-w-36 rounded-xl"
+                                    className="h-auto w-full rounded-xl"
                                 />
                                 <h4 className="text-xl  md:max-lg:text-center">
                                     {article.title}
