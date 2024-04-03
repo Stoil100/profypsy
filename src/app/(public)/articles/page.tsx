@@ -7,7 +7,15 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+  } from "@/components/ui/carousel"
+import clsx from "clsx";
+  
 const ArticleCard: React.FC<ArticleT> = (article) => {
     const router = useRouter();
     return (
@@ -39,7 +47,7 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
 };
 
 export default function Articles() {
-    const [articles, setArticles] = useState<ArticleT[]>();
+    const [articles, setArticles] = useState<ArticleT[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -71,12 +79,52 @@ export default function Articles() {
         fetchItems();
     }, []);
     return (
-        <main className="w-full min-h-screen flex justify-center bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC]">
-        <div className="flex justify-center max-w-2xl w-full items-center flex-wrap">
-            {articles?.map((article, index) => (
-                <ArticleCard {...article} key={index} />
-            ))}
-        </div>
+        <main className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] py-20 px-2">
+            <h1 className="border-b-2 border-[#25BA9E] pb-2 font-playfairDSC text-5xl italic text-center">
+                Profypsy's Articles
+            </h1>
+            <div className="mb-10 max-w-3xl rounded-2xl bg-white p-2 flex flex-col items-center ">
+                <h4 className="border-b-2 px-2 pb-2 text-center text-3xl italic w-fit">
+                    Our most popular articles:
+                </h4>
+                <Carousel>
+                    <CarouselContent>
+                        {articles?.map((article, index) => (
+                            <CarouselItem key={index} className="">
+                                <div style={{ backgroundImage: `url(${article.image})`}} className="bg-cover items-end flex min-h-[30vh] flex-wrap  gap-10 rounded-xl ">
+                                    <div className="h-full w-full text-white bg-black/70 p-2 rounded-b-xl">
+                                        <h2 className="text-2xl italic">
+                                            &quot;{article.title}&quot;
+                                        </h2>
+                                        <Link
+                                            href={`articles/${article.id}`}
+                                            className="block w-fit rounded-full bg-[#25BA9E] p-1 px-2 text-white transition-transform hover:scale-105"
+                                        >
+                                            Read more
+                                        </Link>
+                                    </div>
+
+                                    {/* <img
+                                        src={article.image}
+                                        className=" rounded-3xl max-w-xs"
+                                    /> */}
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    {articles!.length! > 1 && (
+                        <>
+                            <CarouselPrevious />
+                            <CarouselNext />
+                        </>
+                    )}
+                </Carousel>
+            </div>
+            <div className="flex w-full max-w-2xl flex-wrap items-center justify-center">
+                {articles?.map((article, index) => (
+                    <ArticleCard {...article} key={index} />
+                ))}
+            </div>
         </main>
     );
 }
