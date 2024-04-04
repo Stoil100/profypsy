@@ -2,19 +2,18 @@
 
 import { ArticleT } from "@/components/schemas/article";
 import { Badge } from "@/components/ui/badge";
-import { db } from "@/firebase/config";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
-  } from "@/components/ui/carousel"
-import clsx from "clsx";
+} from "@/components/ui/carousel";
+import { db } from "@/firebase/config";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
   
 const ArticleCard: React.FC<ArticleT> = (article) => {
     const router = useRouter();
@@ -81,7 +80,7 @@ export default function Articles() {
     return (
         <main className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] py-20 px-2">
             <h1 className="border-b-2 border-[#25BA9E] pb-2 font-playfairDSC text-5xl italic text-center">
-                Profypsy's Articles
+                Profypsy&apos;s Articles
             </h1>
             <div className="mb-10 max-w-3xl rounded-2xl bg-white p-2 flex flex-col items-center ">
                 <h4 className="border-b-2 px-2 pb-2 text-center text-3xl italic w-fit">
@@ -103,11 +102,6 @@ export default function Articles() {
                                             Read more
                                         </Link>
                                     </div>
-
-                                    {/* <img
-                                        src={article.image}
-                                        className=" rounded-3xl max-w-xs"
-                                    /> */}
                                 </div>
                             </CarouselItem>
                         ))}
