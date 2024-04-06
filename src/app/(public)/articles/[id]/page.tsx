@@ -69,14 +69,14 @@ export default function Article({ params }: { params: { id: string } }) {
             </div>
             <div className="hidden w-1/4 flex-col items-center gap-10 border-l-2 border-black pt-20 md:flex">
                 <div className=" flex w-1/2 flex-col items-center gap-3">
-                    <h3 className="text-center  text-xl">
+                    <h3 className="text-center text-xl">
                         Get the latest articles straight to your email box
                     </h3>
                     <GradientButton>Subscribe to our newsletter</GradientButton>
                 </div>
                 <div className="sticky top-20 flex w-2/3 flex-col items-center justify-center gap-2">
                     <h2 className="self-start text-3xl">Newest Posts:</h2>
-                    <hr className="w-full border border-black" />
+                    <hr className="w-full border border-black"/>
                     <div className="space-y-4 pt-4">
                         {articles!.slice(0, 6).map((article) => (
                             <div
@@ -87,7 +87,7 @@ export default function Article({ params }: { params: { id: string } }) {
                                     src={article.image}
                                     className="h-auto w-full rounded-xl"
                                 />
-                                <h4 className="text-xl  md:max-lg:text-center">
+                                <h4 className="text-xl md:max-lg:text-center">
                                     {article.title}
                                 </h4>
                             </div>

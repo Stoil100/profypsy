@@ -4,6 +4,7 @@ import ChatInterface from "@/components/Chat";
 import GradientButton from "@/components/GradientButton";
 import { useAuth } from "@/components/Providers";
 import { PsychologistProfile } from "@/components/forms/appliance";
+import EditForm from "@/components/forms/edit";
 import {
     Accordion,
     AccordionContent,
@@ -11,7 +12,8 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
@@ -29,13 +31,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type ProfileT = PsychologistProfile & AppointmentT;
+export type ProfileT = PsychologistProfile & AppointmentT;
 
 export default function Page() {
     const { user } = useAuth();
     const [profile, setProfile] = useState<ProfileT>();
     const [chatProps,setChatProps] = useState({senderUid:"",receiverUid:"",receiverUsername:{firstName:"",lastName:""}});
     const router = useRouter();
+    const [isEditing,setIsEditing]=useState(false)
     useEffect(() => {
        if (!user?.uid) {
             router.push("/login");
@@ -74,7 +77,7 @@ export default function Page() {
             )}
         >
             {user.uid && profile! && (
-                <div className="flex w-full flex-col items-center justify-center gap-4 rounded-xl bg-white p-4 sm:w-[600px]">
+                <div className="flex w-full max-w-2xl flex-col items-center justify-center gap-4 rounded-xl bg-white p-4">
                     <h2 className="font-playfairDSC text-4xl font-bold ">
                         Profile
                     </h2>
@@ -89,7 +92,7 @@ export default function Page() {
                                 <User size={42} />
                             </div>
                         )}
-                        <div>
+                        <div className="space-y-2">
                             {profile!.userName && (
                                 <h2 className="text-3xl">
                                     {profile!.userName.firstName}{" "}
@@ -103,6 +106,7 @@ export default function Page() {
                                 account
                             </p>
                             {profile!.variant && (
+                                <div className="flex gap-4 items-center">
                                 <Badge
                                     className={cn(
                                         profile!.variant === "Deluxe"
@@ -116,7 +120,22 @@ export default function Page() {
                                 >
                                     {profile!.variant}
                                 </Badge>
+                                <Dialog onOpenChange={setIsEditing}>
+                                <DialogTrigger asChild>
+                                    <GradientButton className="px-1 py-1 border-[#25BA9E] border-2">
+                                        Edit Profile
+                                    </GradientButton>
+                                </DialogTrigger>
+                                <DialogContent className="mt-8 max-h-[90vh] max-w-3xl overflow-y-scroll">
+                                    <EditForm
+                                        profile={profile}
+                                        setIsEditing={setIsEditing}
+                                    />
+                                </DialogContent>
+                            </Dialog>
+                            </div>
                             )}
+                            
                         </div>
                     </div>
                     <Tabs defaultValue="settings">
@@ -138,7 +157,7 @@ export default function Page() {
                         </TabsList>
                         <TabsContent
                             value="settings"
-                            className="w-full space-y-4 break-all"
+                            className="mt-8 w-full space-y-4 "
                         >
                             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="h-full">
@@ -184,14 +203,14 @@ export default function Page() {
                                         </div>
                                         <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                             <p>About:</p>
-                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2  border-dashed border-black p-2 ">
+                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 break-all rounded-2xl border-2  border-dashed border-black p-2 ">
                                                 <p>{profile!.about}</p>
                                             </div>
                                         </div>
                                         <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                             <p>Quote:</p>
-                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-full border-2  border-dashed border-black p-2 ">
-                                                <p className="italic text-center">
+                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 break-all rounded-full border-2  border-dashed border-black p-2 ">
+                                                <p className="text-center italic">
                                                     &quot;{profile!.quote}&quot;
                                                 </p>
                                             </div>
@@ -199,7 +218,7 @@ export default function Page() {
                                         {profile!.educations && (
                                             <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                                 <p>Education:</p>
-                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2  border-dashed border-black p-2 ">
+                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 break-all rounded-2xl border-2  border-dashed border-black p-2 ">
                                                     {profile!.educations.map(
                                                         (education) => (
                                                             <p
@@ -220,7 +239,7 @@ export default function Page() {
                                         {profile!.experiences && (
                                             <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                                 <p>Experience:</p>
-                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-2xl border-2  border-dashed border-black p-2 ">
+                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 break-all rounded-2xl border-2  border-dashed border-black p-2 ">
                                                     {profile!.experiences.map(
                                                         (experience) => (
                                                             <p
@@ -374,9 +393,14 @@ export default function Page() {
                                     )
                                 ) : (
                                     <p>
-                                        You don&apos;t have any appointments at the
-                                        moment. <br/> You can book one{" "}
-                                        <Link href={"/search"} className="text-[#25BA9E] underline ">here</Link>
+                                        You don&apos;t have any appointments at
+                                        the moment. <br /> You can book one{" "}
+                                        <Link
+                                            href={"/search"}
+                                            className="text-[#25BA9E] underline "
+                                        >
+                                            here
+                                        </Link>
                                     </p>
                                 )}
                             </Accordion>
@@ -524,7 +548,8 @@ export default function Page() {
                                     )
                                 ) : (
                                     <div>
-                                        You don&apos;t have any upcoming sessions
+                                        You don&apos;t have any upcoming
+                                        sessions
                                     </div>
                                 )}
                             </Accordion>
