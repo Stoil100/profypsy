@@ -9,7 +9,7 @@ import {
     Twitter,
 } from "lucide-react";
 import React from "react";
-import GradientButton from "./GradientButton";
+import GradientButton from "./MainButton";
 import { Button } from "./ui/button";
 import clsx from "clsx";
 import Link from "next/link";

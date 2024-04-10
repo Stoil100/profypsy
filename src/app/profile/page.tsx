@@ -1,7 +1,7 @@
 "use client";
 import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import ChatInterface from "@/components/Chat";
-import GradientButton from "@/components/GradientButton";
+import GradientButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
 import { PsychologistProfile } from "@/components/forms/appliance";
 import EditForm from "@/components/forms/edit";

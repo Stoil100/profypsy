@@ -1,5 +1,5 @@
 "use client";
-import GradientButton from "@/components/GradientButton";
+import GradientButton from "@/components/MainButton";
 import { ArticleT } from "@/components/schemas/article";
 import { db } from "@/firebase/config";
 import {

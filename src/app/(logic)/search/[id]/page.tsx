@@ -1,5 +1,5 @@
 "use client";
-import GradientButton from "@/components/GradientButton";
+import GradientButton from "@/components/MainButton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {

@@ -8,7 +8,7 @@ type Props = {
     onClick?: () => void | (()=>{})|Function;
 };
 
-export default function GradientButton({
+export default function MainButton({
     children,
     className,
     onClick,

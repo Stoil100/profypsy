@@ -28,7 +28,7 @@ import {
 } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
-import GradientButton from "../GradientButton";
+import GradientButton from "../MainButton";
 
 const articlesFormSchema = z.object({
     title: z.string(),
