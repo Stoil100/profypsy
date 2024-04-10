@@ -398,7 +398,7 @@ const Page: React.FC = () => {
     }
 
     return (
-        <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans ">
+        <main className="bg-[#F7F4E0] flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans ">
             {!finnishedOptions && <OptionsSection fetchItems={fetchItems} />}
             {isLoading && <Loader />}
             {psychologists.length !== 0 ? (

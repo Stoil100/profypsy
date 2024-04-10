@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthContextProvider } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
+import Navigation from "@/components/Navigation";
 
 export const metadata: Metadata = {
     title: "Profypsy",
@@ -17,8 +18,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className="font-openSans">
-                <AuthContextProvider>{children}</AuthContextProvider>
-                <Toaster/>
+                <AuthContextProvider>
+                    <Navigation />
+                    <main className="pt-[calc(40px+1rem)]">{children}</main>
+                </AuthContextProvider>
+                <Toaster />
             </body>
         </html>
     );

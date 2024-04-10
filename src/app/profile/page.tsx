@@ -70,7 +70,7 @@ export default function Page() {
     return (
         <main
             className={cn(
-                "flex h-fit min-h-screen items-center justify-center bg-gradient-to-b py-4 pt-[10vh]",
+                "flex h-fit min-h-screen items-center justify-center bg-gradient-to-b py-4",
                 user.role === "psychologist"
                     ? "from-[#40916C] to-[#52B788]"
                     : "from-[#F7F4E0] to-[#F1ECCC]",

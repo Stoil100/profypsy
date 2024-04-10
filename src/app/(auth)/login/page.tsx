@@ -16,19 +16,19 @@ export default function Login() {
     return (
         <>
             {!user.uid && (
-                <main className="flex h-screen max-h-screen items-center justify-around overflow-hidden bg-[#FCFBF4]">
-                    <div className="relative flex h-full w-full px-10 md:p-0 md:w-1/2 flex-col items-center justify-center space-y-5 drop-shadow-lg">
+                <main className="flex h-max min-h-screen items-center bg-[#FCFBF4]">
+                    <div className="relative flex h-full w-full flex-col items-center justify-center space-y-5 px-10 drop-shadow-lg md:w-1/2 md:p-0">
                         <div className="z-10 w-full md:w-2/3">
                             <AuthForm variant="login" />
                         </div>
                     </div>
-                    <div className="relative md:flex hidden h-full w-1/2 flex-col items-center justify-center gap-8 ">
+                    <div className="relative hidden h-full w-1/2 flex-col items-center justify-center gap-8 md:flex ">
                         <img
                             src="/auth/session.png"
-                            className="z-10 ml-10 object-cover max-h-[550px] drop-shadow-lg"
+                            className="z-10 ml-10 max-h-[550px] object-cover drop-shadow-lg"
                         />
                         <img
-                            className="absolute object-cover h-full right-0"
+                            className="absolute right-0 h-max min-h-screen object-cover"
                             src="/auth/pattern.png"
                         />
                     </div>

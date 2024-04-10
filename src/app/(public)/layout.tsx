@@ -1,5 +1,4 @@
 import { Guidance } from "@/components/Guidance";
-import Navigation from "@/components/Navigation";
 
 export default function PublicLayout({
     children,
@@ -8,7 +7,6 @@ export default function PublicLayout({
 }) {
     return (
         <section>
-            <Navigation />
             {children}
             <Guidance variant="footer"/>
         </section>

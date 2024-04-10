@@ -1,5 +1,4 @@
-import  { Guidance } from "@/components/Guidance";
-import Navigation from "@/components/Navigation";
+import { Guidance } from "@/components/Guidance";
 
 export default function ProfileLayout({
     children,
@@ -8,7 +7,6 @@ export default function ProfileLayout({
 }) {
     return (
         <section>
-            <Navigation />
             {children}
             <Guidance variant="footer" />
         </section>
