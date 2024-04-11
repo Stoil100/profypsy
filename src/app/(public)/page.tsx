@@ -73,6 +73,13 @@ const carouselItems = [
         experience: "10+ year of practical experience",
     },
 ];
+const missionItems =[
+    {title:"Our Mission:",description:"Our mission is to provide an accessible, convenient, and effective platform for psychotherapy, which helps people improve their mental well-being and live more fully and happily. We created this platform with the belief that every individual deserves support and care for their mental health, regardless of financial or geographical constraints."},
+    {title:"Meaning for the Creators:",description:"For us, the creators of this platform, the meaning lies in the opportunity to make a positive change in people's lives by providing them with an easy and accessible way to receive quality psychotherapeutic assistance. Our goal is to eliminate barriers to access to mental health and to create a society where everyone can take care of themselves and develop their unlimited potential."},
+    {title:"Meaning for the Users:",description:"For our client users, the meaning lies in the opportunity to receive personalized and quality psychotherapy that meets their needs and goals. We believe that everyone deserves to feel supported and understood, and that psychotherapy can be a powerful tool for personal development and overcoming life challenges."},
+    {title:"Meaning for the Psychologists:",description:" For our psychologist users, the meaning lies in the opportunity to expand their practice and reach more people in need of their assistance. The platform provides them with the opportunity to work at a convenient time and place, allowing them to focus on what they do best - helping others feel better."},
+    {title:"Vision and Values:",description:"Our vision is to build a world and future where everyone has access to psychotherapeutic assistance that supports them in their development and growth. We value transparency, trust, and respect for each of our users and strive for continuous improvement and innovation in the field of mental health."}
+]
 const BottomLine = () => (
     <hr className="w-full rounded-full border-2 border-[#FCFBF4] drop-shadow-lg" />
 );
@@ -111,6 +118,32 @@ function HeroSection() {
             </div>
         </section>
     );
+}
+function MissionSection() {
+    return (
+        <section className="flex h-fit py-10 w-full flex-col items-center justify-center gap-4 md:gap-10 px-4">
+            <h2 className="text-4xl md:text-5xl font-playfairDSC text bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">Our mission</h2>
+            <Carousel className="w-full md:max-w-[70vw]" opts={{ loop: true,align:"start"}}>
+                <CarouselContent className="lg:-ml-1">
+                    {missionItems.map((item, index) => (
+                        <CarouselItem className="pl-4 lg:basis-1/2 ">
+                            <div className="bg-white rounded-2xl p-4 flex flex-col border-[#25BA9E] border-4 h-full w-full">
+                            <div className="flex gap-2 w-full justify-between">
+                                <h2 className="mb-3 text-3xl font-bold text-[#205041]">{item.title}</h2>
+                                <p className="border-2 text-[#25BA9E] border-[#25BA9E] rounded-full text-xl size-10 flex items-center justify-center">{index + 1}</p>
+                            </div>
+                            <p className="text-lg px-4 flex justify-center items-center h-full">
+                                {item.description}
+                            </p>
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden md:flex"/>
+                <CarouselNext className="hidden md:flex"/>
+            </Carousel>
+        </section>
+    )
 }
 function TherapistsSection() {
     return (
@@ -565,8 +598,9 @@ export default function Home() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#F7F4E0] from-85% to-[#E5CA8B]">
             <HeroSection />
-            <TherapistsSection />
-            <ReviewsSection />
+            <MissionSection/>
+            {/* <TherapistsSection />
+            <ReviewsSection /> */}
             <ApproachSection />
             <FaQSection />
             <JoinSection />
