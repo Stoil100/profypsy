@@ -10,7 +10,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { db } from "@/firebase/config";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -55,6 +55,7 @@ export default function Articles() {
 
             const q = query(
                 collection(db, "articles"),
+                where("approved", "==", true),
                 orderBy("createdAt"),
             );
             const unsubscribe = onSnapshot(

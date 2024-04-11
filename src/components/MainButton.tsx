@@ -15,6 +15,7 @@ export default function MainButton({
 }: Props) {
     return (
         <Button
+            type="button"
             onClick={onClick}
             className={cn(
                 "text-light flex h-fit items-center rounded-full bg-white  text-[#25BA9E] drop-shadow-lg transition-transform duration-300 hover:scale-[1.1] hover:bg-white",

@@ -17,13 +17,9 @@ import Image from "next/image";
 import { MapPin, Pin } from "lucide-react";
 import { useAuth } from "@/components/Providers";
 import { useRouter } from "next/navigation";
-import ArticlesAdmin from "@/components/schemas/article";
+import { ArticlesSchema } from "@/components/schemas/article";
 
-type ProfileProps = Omit<
-    PsychologistProfile,
-    "appointments" | "approved" | "duration" | "rating" | "trial" | "variant"
->;
-const ProfileInfo: React.FC<ProfileProps> = (profile) => {
+const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
     async function ApprovePsychologist(uid: string) {
         const psychologistsRef = doc(db, "psychologists", uid);
         await updateDoc(psychologistsRef, {
@@ -128,36 +124,18 @@ export default function AdminPage() {
     }, []);
 
     return (
-        <main className="min-h-screen w-full bg-[#F1ECCC] space-y-4 pt-10">
+        <main className="min-h-screen w-full space-y-4 bg-[#F1ECCC] pt-10">
             {user.role === "admin" && (
                 <>
-                <div className="h-fit p-3">
-                    {profilesToApprove?.map((profile, index) => (
-                        <ProfileInfo
-                            uid={profile.uid}
-                            image={profile.image}
-                            about={profile.about}
-                            age={profile.age}
-                            cost={profile.cost}
-                            educations={profile.educations}
-                            email={profile.email}
-                            experiences={profile.experiences}
-                            languages={profile.languages}
-                            location={profile.location}
-                            phone={profile.phone}
-                            quote={profile.quote}
-                            specializations={profile.specializations}
-                            cv={profile.cv}
-                            diploma={profile.diploma}
-                            letter={profile.letter}
-                            userName={profile.userName}
-                            key={index}
-                        />
-                    ))}
-                </div>
-                <div>
-                    <ArticlesAdmin/>
-                </div>
+                    <div className="h-fit p-3">
+                        {profilesToApprove?.map((profile, index) => (
+                            <ProfileInfo {...profile} key={index} />
+                        ))}
+                    </div>
+                    <div>
+                        <h2 className="text-center text-3xl">Articles Section:</h2>
+                        <ArticlesSchema variant="admin" />
+                    </div>
                 </>
             )}
         </main>

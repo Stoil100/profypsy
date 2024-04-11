@@ -21,21 +21,21 @@ import {
     getDocs,
     setDoc,
 } from "firebase/firestore";
-import {
-    ChangeEvent,
-    useEffect,
-    useState
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import GradientButton from "../MainButton";
+import { useAuth } from "../Providers";
 
 const articlesFormSchema = z.object({
     title: z.string(),
     titleDesc: z.string().optional(),
     image: z.string().optional(),
     descriptions: z.array(
-        z.object({ descTitle: z.string().optional(), description: z.string().optional() }),
+        z.object({
+            descTitle: z.string().optional(),
+            description: z.string().optional(),
+        }),
     ),
     tables: z
         .array(
@@ -45,32 +45,28 @@ const articlesFormSchema = z.object({
             }),
         )
         .optional(),
-        footer:z.string().optional(),
+    footer: z.string().optional(),
 });
 
 type ArticleFormValues = z.infer<typeof articlesFormSchema>;
 
-interface ArticleT extends ArticleFormValues{
-    createdAt?:Timestamp;
-    id?:number;
+interface ArticleT extends ArticleFormValues {
+    createdAt?: Timestamp;
+    id?: number;
+    creator: string;
+    approved: boolean;
 }
-export type {ArticleT}
-export default function ArticlesAdmin() {
+export type { ArticleT };
+type ArticleSchemaProps ={
+    variant:"admin"|"psychologist"
+}
+export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
     const [bValue, setBValue] = useState(false);
-    const [uploadedArticles, setUploadedArticles] =
-        useState<ArticleT[]>();
+    const [uploadedArticles, setUploadedArticles] = useState<ArticleT[]>();
     const [isLoading, setLoading] = useState(false);
     const [submitImage, setSubmitImage] = useState("");
-    const [submitValues, setSubmitValues] = useState<ArticleT>({
-        title: "",
-        titleDesc:"",
-        image: "",
-        descriptions: [{ descTitle: "", description: "" }],
-        tables: [{ tableTitle: "", tableItems: [""] }],
-        footer:"",
-        id:undefined,
-        createdAt:undefined,
-    });
+    const [submitValues, setSubmitValues] = useState<ArticleT>();
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchUploadedContent = async () => {
@@ -96,7 +92,7 @@ export default function ArticlesAdmin() {
         resolver: zodResolver(articlesFormSchema),
         defaultValues: {
             title: "",
-            titleDesc:"",
+            titleDesc: "",
             image: "",
             descriptions: [{ descTitle: "", description: "" }],
             tables: [
@@ -105,48 +101,43 @@ export default function ArticlesAdmin() {
                     tableItems: [],
                 },
             ],
-            footer:"",
+            footer: "",
         },
     });
 
     async function onSubmit(values: z.infer<typeof articlesFormSchema>) {
-        const submitFormValues:ArticleT = {
+        const submitFormValues: ArticleT = {
             title: values.title,
-            titleDesc:values.titleDesc,
+            titleDesc: values.titleDesc,
             image:
                 submitImage !== ""
                     ? `${submitImage}`
                     : "https://porositweb.com/wp-content/uploads/2019/11/krijo-nje-blog.jpg",
             descriptions: values.descriptions,
             tables: values.tables,
-            footer:values.footer,
+            footer: values.footer,
             createdAt: Timestamp.now(),
             id: Date.now(),
+            creator: user.uid!,
+            approved: (variant==="admin"?true:false),
         };
         setSubmitValues(submitFormValues);
     }
     async function uploadContent() {
         setLoading(true);
-        await setDoc(doc(db, "articles",`${submitValues!.id!}` ), {
-            title: submitValues.title,
-            titleDesc:submitValues.titleDesc,
-            descriptions: submitValues.descriptions,
-            image: submitValues.image,
-            tables: submitValues.tables,
-            footer:submitValues.footer,
+        await setDoc(doc(db, "articles", `${submitValues!.id!}`), {
+            title: submitValues!.title,
+            titleDesc: submitValues!.titleDesc,
+            descriptions: submitValues!.descriptions,
+            image: submitValues!.image,
+            tables: submitValues!.tables,
+            footer: submitValues!.footer,
             createdAt: Timestamp.now(),
-            id:submitValues.id,
+            id: submitValues!.id,
         });
         setLoading(false);
         setSubmitImage("");
-        setSubmitValues({
-            title: "",
-            titleDesc:"",
-            image: "",
-            descriptions: [{ descTitle: "", description: "" }],
-            tables: [{ tableTitle: "", tableItems: [] }],
-            footer:"",
-        });
+        setSubmitValues(undefined);
         articlesForm.reset;
     }
     async function getImageData(event: ChangeEvent<HTMLInputElement>) {
@@ -167,7 +158,6 @@ export default function ArticlesAdmin() {
 
     return (
         <div className="h-fit w-full space-y-2 rounded border p-2 text-[#205041]">
-            <h1 className="text-center text-6xl">Articles:</h1>
             <Form {...articlesForm}>
                 <form
                     onSubmitCapture={articlesForm.handleSubmit(onSubmit)}
@@ -274,11 +264,10 @@ export default function ArticlesAdmin() {
                         </div>
                     ))}
                     <GradientButton
-
                         onClick={() =>
                             appendDesc({ descTitle: "", description: "" })
                         }
-                        className="w-1/2 border-[#25BA9E] border-2"
+                        className="w-fit border-2 border-[#25BA9E]"
                     >
                         Add more descriptions
                     </GradientButton>
@@ -321,8 +310,16 @@ export default function ArticlesAdmin() {
                                                     <FormControl>
                                                         <Input
                                                             placeholder="Enter articles table item here..."
-                                                            //@ts-ignore
-                                                            onInput={(event,) => {field.value[tableItemIndex] =event.target.value;}}
+                                                            
+                                                            onInput={(
+                                                                event,
+                                                            ) => {
+                                                                field.value![
+                                                                    tableItemIndex
+                                                                ] =
+                                                                    //@ts-ignore
+                                                                    event.target.value;
+                                                            }}
                                                         />
                                                     </FormControl>
 
@@ -331,7 +328,7 @@ export default function ArticlesAdmin() {
                                             ),
                                         )}
                                         <GradientButton
-                                          className="w-1/3 border-[#25BA9E] border-2 mt-2"
+                                            className="mt-2 border-2 border-[#25BA9E]"
                                             key={index}
                                             onClick={() => {
                                                 field.value!.push("");
@@ -353,7 +350,7 @@ export default function ArticlesAdmin() {
                                 tableItems: [""],
                             })
                         }
-                        className="w-1/2 border-[#25BA9E] border-2"
+                        className="w-fit border-2 border-[#25BA9E]"
                     >
                         Add more tables
                     </GradientButton>
@@ -376,39 +373,43 @@ export default function ArticlesAdmin() {
                     <Button
                         disabled={isLoading}
                         type="submit"
-                        className="bg-[#25BA9E] border-2"
+                        className="border-2 bg-[#25BA9E]"
                     >
                         Preview
                     </Button>
                 </form>
             </Form>
-            {submitValues.title !== "" && (
+            {submitValues && (
                 <>
                     <h2 className="text-4xl">Preview article before upload:</h2>
                     <div className="flex flex-col rounded border border-black bg-white p-6">
                         <h2 className="mb-4 text-center text-7xl font-bold underline decoration-4">
-                            {submitValues.title}
+                            {submitValues!.title}
                         </h2>
-                        <h4 className="text-center text-4xl mb-2">{submitValues.titleDesc!}</h4>
+                        <h4 className="mb-2 text-center text-4xl">
+                            {submitValues!.titleDesc!}
+                        </h4>
                         <img
                             className="max-h-[81vh] w-full object-cover"
-                            src={submitValues.image!}
+                            src={submitValues!.image!}
                             alt="article image"
                         />
                         <div className="px-4 pt-2">
-                            {submitValues.descriptions!.map(
+                            {submitValues!.descriptions!.map(
                                 (description, index) => (
                                     <div key={index} className="space-y-2">
                                         <h4 className="text-4xl">
                                             {description.descTitle}
                                         </h4>
-                                        <p className="px-2 text-xl">{description.description}</p>
+                                        <p className="px-2 text-xl">
+                                            {description.description}
+                                        </p>
                                     </div>
                                 ),
                             )}
                         </div>
                         <div className="p-4">
-                            {submitValues.tables!.map((table, tableIndex) => (
+                            {submitValues!.tables!.map((table, tableIndex) => (
                                 <>
                                     <h5 className="text-3xl">
                                         {table.tableTitle}
@@ -426,7 +427,7 @@ export default function ArticlesAdmin() {
                                 </>
                             ))}
                         </div>
-                        <h5>{submitValues.footer!}</h5>
+                        <h5>{submitValues!.footer!}</h5>
                         <Button type="button" onClick={uploadContent}>
                             Upload
                         </Button>
