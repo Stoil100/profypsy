@@ -79,7 +79,7 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
                 >
                     Blog
                 </Link>
-                {user.role==="admin"&& <Link
+                {user.admin&& <Link
                     href="/admin"
                     className="transition-transform hover:scale-110"
                 >

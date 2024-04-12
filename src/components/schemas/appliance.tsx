@@ -141,10 +141,7 @@ const formSchema = z.object({
                 ),
         }),
     ),
-    userName: z.object({
-        firstName: z.string().min(1, "Enter a valid name"),
-        lastName: z.string().min(1, "Enter a valid last name"),
-    }),
+    userName: z.string().min(3, "Enter a valid name"),
     location: z
         .string()
         .min(1, "Enter a valid city")
@@ -168,7 +165,7 @@ interface SubmitValues extends z.infer<typeof formSchema> {
     trial: boolean;
     approved: boolean;
     uid: string;
-    appointments:AppointmentT[],
+    appointments: AppointmentT[];
 }
 export type { SubmitValues as PsychologistProfile };
 type Props = {
@@ -185,7 +182,7 @@ export default function ApplianceForm({ className }: Props) {
         }
     }, []);
     const [tab, setTab] = useState("info");
-    const [submitImage, setSubmitImage] = useState("");
+    const [submitImage, setSubmitImage] = useState(user.image);
     const [submitCV, setSubmitCV] = useState("");
     const [submitDiploma, setSubmitDiploma] = useState("");
     const [submitLetter, setSubmitLetter] = useState("");
@@ -197,13 +194,10 @@ export default function ApplianceForm({ className }: Props) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            userName: {
-                firstName: "",
-                lastName: "",
-            },
-            phone: "",
+            userName: user.userName!,
+            phone: user.phone!,
             about: "",
-            image: undefined,
+            image: user.image!,
             cost: {
                 dates: ["saturday", "sunday"],
                 price: "",
@@ -216,7 +210,7 @@ export default function ApplianceForm({ className }: Props) {
             diploma: undefined,
             letter: undefined,
             languages: [],
-            age:"18",
+            age: "18",
         },
     });
     const imageRef = form.register("image", { required: false });
@@ -231,7 +225,7 @@ export default function ApplianceForm({ className }: Props) {
             ...values,
             image: submitImage,
             email: user.email!,
-            appointments:user.appointments!,
+            appointments: user.appointments!,
             cv: submitCV,
             diploma: submitDiploma,
             letter: submitLetter,
@@ -244,7 +238,7 @@ export default function ApplianceForm({ className }: Props) {
         };
         submitData(tempValues);
     };
-    const submitData = async (values:SubmitValues) => {
+    const submitData = async (values: SubmitValues) => {
         if (user.uid) {
             try {
                 await setDoc(doc(db, "psychologists", user.uid!), values);
@@ -265,7 +259,7 @@ export default function ApplianceForm({ className }: Props) {
                     title: "Error uploading document",
                     description: `${firestoreError.message}`,
                 });
-                router.push("/")
+                router.push("/");
             }
         }
     };
@@ -472,7 +466,7 @@ export default function ApplianceForm({ className }: Props) {
                                 }}
                             >
                                 <Info className="size-8 md:size-6" />
-                                <p className="md:block hidden">Personal Info</p>
+                                <p className="hidden md:block">Personal Info</p>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="education"
@@ -505,9 +499,9 @@ export default function ApplianceForm({ className }: Props) {
                         </TabsList>
                         <TabsContent value="info" className="space-y-4">
                             <div className="relative flex items-center justify-center">
-                                {submitImage !== "" ? (
+                                {submitImage ? (
                                     <img
-                                        src={submitImage}
+                                        src={submitImage!}
                                         className="absolute -z-10 size-[150px] rounded-full"
                                     />
                                 ) : (
@@ -548,43 +542,24 @@ export default function ApplianceForm({ className }: Props) {
                                     )}
                                 />
                             </div>
-                            <div className="flex items-center gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name="userName.firstName"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>First Name:</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Enter your name..."
-                                                    {...field}
-                                                    className="rounded-2xl border-2 border-black"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                                <FormField
-                                    control={form.control}
-                                    name="userName.lastName"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>Last Name:</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Enter your last name..."
-                                                    {...field}
-                                                    className="rounded-2xl border-2 border-black"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <div className="flex w-full items-end gap-2 justify-center">
+                            <FormField
+                                control={form.control}
+                                name="userName"
+                                render={({ field }) => (
+                                    <FormItem className="w-full">
+                                        <FormLabel>User Name:</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Enter your name..."
+                                                {...field}
+                                                className="rounded-2xl border-2 border-black"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <div className="flex w-full items-end justify-center gap-2">
                                 <div className="w-full">
                                     <Label>Telephone:</Label>
                                     <div className="flex items-center justify-center rounded-full border-2 border-black px-2">
@@ -615,9 +590,7 @@ export default function ApplianceForm({ className }: Props) {
                                     name="age"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel>
-                                                Age:
-                                            </FormLabel>
+                                            <FormLabel>Age:</FormLabel>
                                             <Select
                                                 onValueChange={field.onChange}
                                                 defaultValue={`${field.value}`}

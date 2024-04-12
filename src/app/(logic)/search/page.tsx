@@ -138,7 +138,7 @@ const ProfileCard = ({
         )}
         <div className="flex w-full flex-col items-start justify-center gap-2 break-all">
             <h4 className="text-3xl text-[#205041]">
-                {userName.firstName} {userName.lastName}
+                {userName}
             </h4>
             <div className="flex  w-fit items-center justify-center gap-1">
                 <Pin color="#08BF6B" />

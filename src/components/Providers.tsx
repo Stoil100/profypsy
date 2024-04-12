@@ -22,9 +22,7 @@ import {
 import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
 import { AuthT } from "@/models/auth";
 import { useRouter } from "next/navigation";
-import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import { UserType } from "@/models/user";
-
 
 interface AuthContextType {
     user: UserType;
@@ -53,6 +51,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         uid: null,
         role: null,
         appointments: null,
+        userName: null,
+        image: null,
+        phone: null,
+        admin: null,
     });
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
@@ -72,8 +74,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                             setUser({
                                 email: user.email,
                                 uid: user.uid,
+                                userName: user.displayName,
+                                image: user.photoURL,
+                                phone: user.phoneNumber,
                                 role: docSnap.data().role,
                                 appointments: docSnap.data().appointments,
+                                admin: docSnap.data().admin,
                             });
                             setLoading(false); // Set loading to false after initial data is fetched
                         } else {
@@ -94,7 +100,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                             setUser((prevUser) => ({
                                 ...prevUser,
                                 role: doc.data().role,
-                                appointments:doc.data().appointments
+                                appointments: doc.data().appointments,
+                                admin: doc.data().admin,
                             }));
                         }
                     },
@@ -111,6 +118,10 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                     uid: null,
                     role: null,
                     appointments: null,
+                    userName: null,
+                    image: null,
+                    phone: null,
+                    admin: null,
                 });
                 setLoading(false);
             }
@@ -129,6 +140,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             uid: user.uid,
             role: user.role,
             appointments: user.appointments,
+            image: user.image,
+            userName: user.userName,
+            phone: user.phone,
         });
     };
 
@@ -147,13 +161,19 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             if (userCredential.user) {
                 await sendEmailVerification(userCredential.user);
                 // Inform the user to check their email for a verification link
-                alert("Please verify your email before continuing to your profile.");
-              }
+                alert(
+                    "Please verify your email before continuing to your profile.",
+                );
+            }
             await handleUserAfterAuth({
                 email: userCredential.user.email,
                 uid: userCredential.user.uid,
+                userName: userCredential.user.displayName,
+                image: userCredential.user.photoURL,
+                phone: userCredential.user.phoneNumber,
                 role: "user",
                 appointments: [],
+                admin: false,
             });
             return true;
         } catch (error) {
@@ -173,8 +193,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             setUser({
                 email: userCredential.user.email,
                 uid: userCredential.user.uid,
+                userName: userCredential.user.displayName,
+                image: userCredential.user.photoURL,
+                phone: userCredential.user.phoneNumber,
                 role: docSnap.data()!.role,
                 appointments: docSnap.data()!.appointments,
+                admin: docSnap.data()!.admin,
             });
             router.push(`/profile`);
         } catch (error) {
@@ -193,8 +217,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 await handleUserAfterAuth({
                     email: result.user.email,
                     uid: result.user.uid,
+                    userName: result.user.displayName,
+                    image: result.user.photoURL,
+                    phone: result.user.phoneNumber,
                     role: "user",
                     appointments: [],
+                    admin: false,
                 });
             } else {
                 const userRef = doc(db, "users", result.user.uid);
@@ -202,8 +230,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 setUser({
                     email: result.user.email,
                     uid: result.user.uid,
+                    userName: result.user.displayName,
+                    image: result.user.photoURL,
+                    phone: result.user.phoneNumber,
                     role: docSnap.data()!.role,
                     appointments: docSnap.data()!.appointments,
+                    admin: docSnap.data()!.admin,
                 });
                 router.push(`/profile/${result.user.uid}`);
             }
@@ -223,8 +255,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 await handleUserAfterAuth({
                     email: result.user.email,
                     uid: result.user.uid,
+                    userName: result.user.displayName,
+                    image: result.user.photoURL,
+                    phone: result.user.phoneNumber,
                     role: "user",
                     appointments: [],
+                    admin: false,
                 });
             } else {
                 const userRef = doc(db, "users", result.user.uid);
@@ -232,8 +268,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 setUser({
                     email: result.user.email,
                     uid: result.user.uid,
+                    userName: result.user.displayName,
+                    image: result.user.photoURL,
+                    phone: result.user.phoneNumber,
                     role: docSnap.data()!.role,
                     appointments: docSnap.data()!.appointments,
+                    admin: docSnap.data()!.admin,
                 });
                 router.push(`/profile`);
             }
@@ -253,8 +293,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 await handleUserAfterAuth({
                     email: result.user.email,
                     uid: result.user.uid,
+                    userName: result.user.displayName,
+                    image: result.user.photoURL,
+                    phone: result.user.phoneNumber,
                     role: "user",
                     appointments: [],
+                    admin: false,
                 });
             } else {
                 const userRef = doc(db, "users", result.user.uid);
@@ -262,8 +306,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                 setUser({
                     email: result.user.email,
                     uid: result.user.uid,
+                    userName: result.user.displayName,
+                    image: result.user.photoURL,
+                    phone: result.user.phoneNumber,
                     role: docSnap.data()!.role,
                     appointments: docSnap.data()!.appointments,
+                    admin: docSnap.data()!.admin,
                 });
                 router.push(`/profile`);
             }
@@ -275,14 +323,21 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     const logOut = async (): Promise<void> => {
         try {
             await signOut(auth);
-            setUser({ email: null, uid: null, role: null, appointments: null });
+            setUser({
+                email: null,
+                uid: null,
+                role: null,
+                appointments: null,
+                userName: null,
+                image: null,
+                phone: null,
+                admin: null,
+            });
             router.push("/");
         } catch (error) {
             console.error("Logout Error:", error);
         }
     };
-
-    // Rest of the AuthContextProvider component remains the same...
 
     return (
         <AuthContext.Provider
@@ -301,4 +356,3 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         </AuthContext.Provider>
     );
 };
-

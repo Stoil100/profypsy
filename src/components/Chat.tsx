@@ -47,7 +47,7 @@ const formSchema = z.object({
 type ChatProps = {
     senderUid: string;
     receiverUid: string;
-    receiverUsername: {firstName: string, lastName: string},
+    receiverUsername: string,
 };
 interface Message {
     // Define the structure of your message object
@@ -150,22 +150,21 @@ export default function Chat({ senderUid, receiverUid,receiverUsername }: ChatPr
                 className="space-y-3 p-2"
             >
                 <h2 className="text-2xl">
-                    Private chat with {receiverUsername.firstName}{" "}
-                    {receiverUsername.lastName}
+                    Private chat with {receiverUsername}
                 </h2>
-                <div className="flex flex-col gap-2 rounded-xl border bg-white p-2 max-h-[50vh] overflow-y-auto">
+                <div className="flex max-h-[50vh] flex-col gap-2 overflow-y-auto rounded-xl border bg-white p-2">
                     {messages.map((message, index) => (
                         <p
                             key={index}
                             className={cn(
-                                "min-w-[50px] rounded-2xl px-2 text-xl break-all",
+                                "min-w-[50px] break-all rounded-2xl px-2 text-xl",
                                 user.role === "psychologist"
                                     ? message.senderUid === senderUid
-                                        ? "self-end bg-[#40916C] text-white text-right"
-                                        : "self-start border-2 border-[#40916C] text-[#40916C] text-left"
+                                        ? "self-end bg-[#40916C] text-right text-white"
+                                        : "self-start border-2 border-[#40916C] text-left text-[#40916C]"
                                     : message.senderUid === senderUid
-                                      ? "self-end bg-[#40916C] text-white text-right"
-                                      : "self-start border-2 border-[#40916C] text-[#40916C] text-right",
+                                      ? "self-end bg-[#40916C] text-right text-white"
+                                      : "self-start border-2 border-[#40916C] text-right text-[#40916C]",
                             )}
                         >
                             {message.content}

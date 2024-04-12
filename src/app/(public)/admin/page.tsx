@@ -38,7 +38,7 @@ const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
                     />
 
                     <h1 className="text-4xl">
-                        {profile.userName.firstName} {profile.userName.lastName}
+                        {profile.userName}
                     </h1>
                     <div className="flex items-center justify-between gap-2 text-xl">
                         <p>{profile.email}</p>
@@ -194,7 +194,7 @@ export default function AdminPage() {
     const { user } = useAuth();
     const router = useRouter();
     useEffect(() => {
-        if (user?.role !== "admin") {
+        if (!user?.admin) {
             router.push("/");
         }
     }, [user, router]);
@@ -210,7 +210,7 @@ export default function AdminPage() {
 
     return (
         <main className="min-h-screen w-full space-y-4 bg-[#F1ECCC] pt-10">
-            {user.role === "admin" && (
+            {user.admin && (
                 <>
                     <div className="h-fit p-3">
                         {profilesToApprove?.map((profile, index) => (

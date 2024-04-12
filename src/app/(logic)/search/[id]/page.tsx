@@ -111,6 +111,8 @@ type BookingDialogProps = {
     profile: PsychologistProfile | null;
     user: {
         email: string | null;
+        userName: string | null;
+        phone: string | null;
         uid: string | null;
         role: string | null;
     };
@@ -121,10 +123,7 @@ type BookingDatesProps = {
     selectedAppointmentTime: string | null;
 };
 const formSchema = z.object({
-    userName: z.object({
-        firstName: z.string().min(1, "Enter a valid name"),
-        lastName: z.string().min(1, "Enter a valid last name"),
-    }),
+    userName: z.string().min(3, "Enter a valid name"),
     info: z
         .string()
         .min(2, "Enter some information about your case")
@@ -346,11 +345,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            userName: {
-                firstName: "",
-                lastName: "",
-            },
-            phone: "",
+            userName:user.userName!,
+            phone: user.phone!,
             email: user.email!,
             session: "",
             age: "18",
@@ -468,10 +464,10 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                                 "w-full space-y-4 bg-white py-2",
                                             )}
                                         >
-                                            <div className="flex items-center gap-2">
+                                          
                                                 <FormField
                                                     control={form.control}
-                                                    name="userName.firstName"
+                                                    name="userName"
                                                     render={({ field }) => (
                                                         <FormItem className="w-full">
                                                             <FormLabel>
@@ -488,26 +484,6 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                                         </FormItem>
                                                     )}
                                                 />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="userName.lastName"
-                                                    render={({ field }) => (
-                                                        <FormItem className="w-full">
-                                                            <FormLabel>
-                                                                Last Name:
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input
-                                                                    placeholder="Enter your last name..."
-                                                                    {...field}
-                                                                    className="rounded-2xl border-2 border-[#52B788] "
-                                                                />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
                                             <div className="flex w-full items-end justify-center gap-2">
                                                 <div className="w-full">
                                                     <Label>Telephone:</Label>
@@ -814,7 +790,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             {profile?.image ? (
                                 <img
                                     src={profile?.image}
-                                    alt={profile?.userName.firstName}
+                                    alt={profile?.userName}
                                     className="h-32 w-32 rounded-full"
                                 />
                             ) : (
@@ -823,8 +799,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                 </div>
                             )}
                             <h3 className="text-3xl">
-                                {profile?.userName.firstName}{" "}
-                                {profile?.userName.lastName}
+                                {profile?.userName}
                             </h3>
                             <div className=" space-y-2 rounded-2xl border-4 border-[#40916C] px-4 py-2">
                                 <h4 className="text-2xl">About me:</h4>

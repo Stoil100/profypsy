@@ -131,10 +131,7 @@ const formSchema = z.object({
                 ),
         }),
     ),
-    userName: z.object({
-        firstName: z.string().min(1, "Enter a valid name"),
-        lastName: z.string().min(1, "Enter a valid last name"),
-    }),
+    userName:  z.string().min(3, "Enter a valid name"),
     location: z
         .string()
         .min(1, "Enter a valid city")
@@ -170,10 +167,7 @@ export default function EditForm({ className,profile }: Props) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            userName: {
-                firstName: profile?.userName.firstName,
-                lastName: profile?.userName.lastName,
-            },
+            userName: profile.userName,
             phone: profile?.phone,
             about: profile?.about,
             quote: profile?.quote,
@@ -355,13 +349,12 @@ export default function EditForm({ className,profile }: Props) {
                                     )}
                                 />
                             </div>
-                            <div className="flex items-center gap-2">
                                 <FormField
                                     control={form.control}
-                                    name="userName.firstName"
+                                    name="userName"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel>First Name:</FormLabel>
+                                            <FormLabel>User Name:</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     placeholder="Enter your name..."
@@ -373,24 +366,7 @@ export default function EditForm({ className,profile }: Props) {
                                         </FormItem>
                                     )}
                                 />
-                                <FormField
-                                    control={form.control}
-                                    name="userName.lastName"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>Last Name:</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Enter your last name..."
-                                                    {...field}
-                                                    className="rounded-2xl border-2 border-black"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
+                               
                             <div className="flex w-full items-end gap-2 justify-center">
                                 <div className="w-full">
                                     <Label>Telephone:</Label>

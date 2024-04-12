@@ -3,8 +3,8 @@ import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import ChatInterface from "@/components/Chat";
 import GradientButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
-import { PsychologistProfile } from "@/components/forms/appliance";
-import EditForm from "@/components/forms/edit";
+import { PsychologistProfile } from "@/components/schemas/appliance";
+import EditForm from "@/components/schemas/edit";
 import {
     Accordion,
     AccordionContent,
@@ -36,7 +36,7 @@ export type ProfileT = PsychologistProfile & AppointmentT;
 export default function Page() {
     const { user } = useAuth();
     const [profile, setProfile] = useState<ProfileT>();
-    const [chatProps,setChatProps] = useState({senderUid:"",receiverUid:"",receiverUsername:{firstName:"",lastName:""}});
+    const [chatProps,setChatProps] = useState({senderUid:"",receiverUid:"",receiverUsername:""});
     const router = useRouter();
     const [isEditing,setIsEditing]=useState(false)
     useEffect(() => {
@@ -64,7 +64,7 @@ export default function Page() {
         getUserData();
     }, []);
 
-    function toggleChat(senderUid:string,receiverUid:string,receiverUsername:{firstName:string,lastName:string}){
+    function toggleChat(senderUid:string,receiverUid:string,receiverUsername:string){
         setChatProps({senderUid,receiverUid,receiverUsername })
     }
     return (
@@ -95,8 +95,7 @@ export default function Page() {
                         <div className="space-y-2">
                             {profile!.userName && (
                                 <h2 className="text-3xl">
-                                    {profile!.userName.firstName}{" "}
-                                    {profile!.userName.lastName}
+                                    {profile!.userName}
                                 </h2>
                             )}
                             <p>
@@ -106,36 +105,35 @@ export default function Page() {
                                 account
                             </p>
                             {profile!.variant && (
-                                <div className="flex gap-4 items-center">
-                                <Badge
-                                    className={cn(
-                                        profile!.variant === "Deluxe"
-                                            ? "bg-[#FCD96A]"
-                                            : profile!.variant === "Premium"
-                                              ? "bg-[#FC8A6A]"
-                                              : profile!.variant === "Basic"
-                                                ? "bg-[#99B6ED]"
-                                                : "border-none bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] text-black",
-                                    )}
-                                >
-                                    {profile!.variant}
-                                </Badge>
-                                <Dialog onOpenChange={setIsEditing}>
-                                <DialogTrigger asChild>
-                                    <GradientButton className="px-1 py-1 border-[#25BA9E] border-2">
-                                        Edit Profile
-                                    </GradientButton>
-                                </DialogTrigger>
-                                <DialogContent className="mt-8 max-h-[90vh] max-w-3xl overflow-y-scroll">
-                                    <EditForm
-                                        profile={profile}
-                                        setIsEditing={setIsEditing}
-                                    />
-                                </DialogContent>
-                            </Dialog>
-                            </div>
+                                <div className="flex items-center gap-4">
+                                    <Badge
+                                        className={cn(
+                                            profile!.variant === "Deluxe"
+                                                ? "bg-[#FCD96A]"
+                                                : profile!.variant === "Premium"
+                                                  ? "bg-[#FC8A6A]"
+                                                  : profile!.variant === "Basic"
+                                                    ? "bg-[#99B6ED]"
+                                                    : "border-none bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] text-black",
+                                        )}
+                                    >
+                                        {profile!.variant}
+                                    </Badge>
+                                    <Dialog onOpenChange={setIsEditing}>
+                                        <DialogTrigger asChild>
+                                            <GradientButton className="border-2 border-[#25BA9E] px-1 py-1">
+                                                Edit Profile
+                                            </GradientButton>
+                                        </DialogTrigger>
+                                        <DialogContent className="mt-8 max-h-[90vh] max-w-3xl overflow-y-scroll">
+                                            <EditForm
+                                                profile={profile}
+                                                setIsEditing={setIsEditing}
+                                            />
+                                        </DialogContent>
+                                    </Dialog>
+                                </div>
                             )}
-                            
                         </div>
                     </div>
                     <Tabs defaultValue="settings">
@@ -181,7 +179,9 @@ export default function Page() {
                                     </div>
                                     <div className="mt-2 flex items-center justify-between rounded-lg bg-gray-100 p-2">
                                         <p>Phone:</p>
-                                        <p>{profile!.phone}</p>
+                                        {user.phone}{" "}
+                                        {user.phone !== profile!.phone &&
+                                            profile!.phone}
                                     </div>
                                 </div>
                                 {user.role === "psychologist" && (
@@ -309,14 +309,7 @@ export default function Page() {
                                                             <div className="pl-8">
                                                                 <h4 className="text-md text-2xl font-medium">
                                                                     {
-                                                                        appointment
-                                                                            .userName
-                                                                            .firstName
-                                                                    }{" "}
-                                                                    {
-                                                                        appointment
-                                                                            .userName
-                                                                            .lastName
+                                                                        appointment.userName
                                                                     }
                                                                 </h4>
                                                             </div>
@@ -411,10 +404,7 @@ export default function Page() {
                                         setChatProps({
                                             senderUid: "",
                                             receiverUid: "",
-                                            receiverUsername: {
-                                                lastName: "",
-                                                firstName: "",
-                                            },
+                                            receiverUsername: "",
                                         });
                                     }}
                                 >
@@ -464,16 +454,7 @@ export default function Page() {
                                                             </h3>
                                                             <div className="pl-8">
                                                                 <h4 className="text-md text-2xl font-medium">
-                                                                    {
-                                                                        appointment
-                                                                            .userName
-                                                                            .firstName
-                                                                    }{" "}
-                                                                    {
-                                                                        appointment
-                                                                            .userName
-                                                                            .lastName
-                                                                    }
+                                                                    {appointment.userName}
                                                                 </h4>
                                                             </div>
                                                             <div className="space-y-2 pl-8">
@@ -560,10 +541,7 @@ export default function Page() {
                                         setChatProps({
                                             senderUid: "",
                                             receiverUid: "",
-                                            receiverUsername: {
-                                                firstName: "",
-                                                lastName: "",
-                                            },
+                                            receiverUsername: "",
                                         });
                                     }}
                                 >
