@@ -1,6 +1,7 @@
 "use client";
 import { AppointmentT } from "@/app/(logic)/search/[id]/page";
 import ChatInterface from "@/components/Chat";
+import MainButton from "@/components/MainButton";
 import GradientButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
 import { PsychologistProfile } from "@/components/schemas/appliance";
@@ -21,8 +22,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 import { Dialog } from "@radix-ui/react-dialog";
-import { collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
-import { BellDot, Calendar, Mail, NewspaperIcon, Phone, Settings, User } from "lucide-react";
+import { collection, deleteDoc, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
+import { BellDot, Calendar, Mail, NewspaperIcon, Phone, Settings, Trash2Icon, TrashIcon, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -95,6 +96,9 @@ export default function Page() {
         receiverUsername: string,
     ) {
         setChatProps({ senderUid, receiverUid, receiverUsername });
+    }
+    async function deleteArticle(id: number) {
+        await deleteDoc(doc(db, "articles", `${id}`));
     }
     return (
         <main
@@ -622,10 +626,11 @@ export default function Page() {
                                             articles!.map((article, index) => (
                                                 <div
                                                     key={index}
-                                                    className="w-full"
+                                                    className="w-full space-y-3"
                                                 >
                                                     <img src={article.image} />
-                                                    <h3>{article.title}</h3>
+                                                    <h3 className="text-2xl">{article.title}</h3>
+                                                    <MainButton onClick={()=>{deleteArticle(article!.id!)}} className=" border-2  border-red-500 text-red-500"><Trash2Icon/> Delete article</MainButton>
                                                 </div>
                                             ))
                                         ) : (
