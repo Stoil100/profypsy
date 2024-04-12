@@ -54,13 +54,12 @@ interface ArticleT extends ArticleFormValues {
     createdAt?: Timestamp;
     id?: number;
     creator: string;
+    creatorImage: string;
+    creatorUserName: string;
     approved: boolean;
 }
 export type { ArticleT };
-type ArticleSchemaProps ={
-    variant:"admin"|"psychologist"
-}
-export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
+export default function ArticlesSchema() {
     const [bValue, setBValue] = useState(false);
     const [uploadedArticles, setUploadedArticles] = useState<ArticleT[]>();
     const [isLoading, setLoading] = useState(false);
@@ -119,7 +118,9 @@ export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
             createdAt: Timestamp.now(),
             id: Date.now(),
             creator: user.uid!,
-            approved: (variant==="admin"?false:false),
+            creatorImage: user.image!,
+            creatorUserName: user.userName!,
+            approved: user.admin ? true : false,
         };
         setSubmitValues(submitFormValues);
     }
@@ -134,8 +135,10 @@ export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
             footer: submitValues!.footer,
             createdAt: Timestamp.now(),
             id: submitValues!.id,
-            creator:submitValues!.creator,
-            approved:submitValues!.approved,
+            creator: submitValues!.creator,
+            creatorImage: submitValues!.creatorImage,
+            creatorUserName: submitValues!.creatorUserName,
+            approved: submitValues!.approved,
         });
         setLoading(false);
         setSubmitImage("");
@@ -312,7 +315,6 @@ export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
                                                     <FormControl>
                                                         <Input
                                                             placeholder="Enter articles table item here..."
-                                                            
                                                             onInput={(
                                                                 event,
                                                             ) => {
