@@ -52,7 +52,7 @@ function useArticles(articleId: string) {
 export default function Article({ params }: { params: { id: string } }) {
     const { articles, currentArticle, loading, error } = useArticles(params.id);
     return (
-        <main className="flex h-fit w-full bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] pt-20 pb-4">
+        <main className="flex h-fit w-full bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] pb-4 pt-20">
             <div className="w-full space-y-4 p-3 text-[#205041] md:w-3/4 md:p-8">
                 <h2 className="text-center text-4xl font-bold">
                     {currentArticle?.title}
@@ -76,11 +76,11 @@ export default function Article({ params }: { params: { id: string } }) {
                 </div>
                 <div className="sticky top-20 flex w-2/3 flex-col items-center justify-center gap-2">
                     <h2 className="self-start text-3xl">Newest Posts:</h2>
-                    <hr className="w-full border border-black"/>
+                    <hr className="w-full border border-black" />
                     <div className="space-y-4 pt-4">
                         {articles!.slice(0, 6).map((article) => (
                             <div
-                                className="flex cursor-pointer items-start justify-center gap-4 flex-col transition-transform hover:scale-105"
+                                className="flex cursor-pointer flex-col items-start justify-center gap-4 transition-transform hover:scale-105"
                                 key={article.id}
                             >
                                 <img

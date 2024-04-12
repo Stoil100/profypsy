@@ -8,7 +8,7 @@ export default function PublicLayout({
     return (
         <section>
             {children}
-            <Guidance variant="footer"/>
+            <Guidance variant="footer" />
         </section>
     );
 }

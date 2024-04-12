@@ -7,7 +7,7 @@
 import { db } from "@/firebase/config";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CollectionReference,
+    CollectionReference,
     DocumentReference,
     UpdateData,
     addDoc,
@@ -21,33 +21,33 @@ import {
     DocumentData,
     Timestamp,
     getDoc,
-    setDoc
+    setDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "./Providers";
 
 const formSchema = z.object({
-  message: z.string().min(1,"Please enter a valid message")
-})
+    message: z.string().min(1, "Please enter a valid message"),
+});
 type ChatProps = {
     senderUid: string;
     receiverUid: string;
-    receiverUsername: string,
+    receiverUsername: string;
 };
 interface Message {
     // Define the structure of your message object
@@ -55,15 +55,19 @@ interface Message {
     timestamp: Date;
     senderUid: string;
 }
-export default function Chat({ senderUid, receiverUid,receiverUsername }: ChatProps) {
-    const {user}=useAuth();
-  const [messages,setMessages]=useState<Message[]>([]);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      message: "",
-    },
-  })
+export default function Chat({
+    senderUid,
+    receiverUid,
+    receiverUsername,
+}: ChatProps) {
+    const { user } = useAuth();
+    const [messages, setMessages] = useState<Message[]>([]);
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            message: "",
+        },
+    });
     function getConversationId(senderUid: string, receiverUid: string) {
         return senderUid < receiverUid
             ? `${senderUid}_${receiverUid}`
@@ -71,78 +75,90 @@ export default function Chat({ senderUid, receiverUid,receiverUsername }: ChatPr
     }
 
     useEffect(() => {
-      // Listen for new messages when a user is selected
-      const conversationId = getConversationId(senderUid, receiverUid);
-      const messagesRef = collection(
-          db,
-          "conversations",
-          conversationId,
-          "messages",
-      );
-      const q = query(messagesRef, orderBy("createdAt"), limit(50));
-    
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const messages = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          // Ensure the data matches the Message interface. Adjust as necessary for your data structure.
-          const message: Message = {
-            content: data.content,
-            timestamp: data.timestamp, // Convert Firestore Timestamp to Date
-            senderUid: data.senderUid, //
-          };
-          return {
-            ...message,
-          };
+        // Listen for new messages when a user is selected
+        const conversationId = getConversationId(senderUid, receiverUid);
+        const messagesRef = collection(
+            db,
+            "conversations",
+            conversationId,
+            "messages",
+        );
+        const q = query(messagesRef, orderBy("createdAt"), limit(50));
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const messages = querySnapshot.docs.map((doc) => {
+                const data = doc.data();
+                // Ensure the data matches the Message interface. Adjust as necessary for your data structure.
+                const message: Message = {
+                    content: data.content,
+                    timestamp: data.timestamp, // Convert Firestore Timestamp to Date
+                    senderUid: data.senderUid, //
+                };
+                return {
+                    ...message,
+                };
+            });
+            setMessages(messages);
         });
-        setMessages(messages);
-      });
-      return () => unsubscribe();
+        return () => unsubscribe();
     }, [db, senderUid, receiverUid]);
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        const conversationId: string = getConversationId(senderUid, receiverUid);
-    
-        const messageRef = collection(db, "conversations", conversationId, "messages");
+        const conversationId: string = getConversationId(
+            senderUid,
+            receiverUid,
+        );
+
+        const messageRef = collection(
+            db,
+            "conversations",
+            conversationId,
+            "messages",
+        );
         const newMessage = {
             senderUid: senderUid,
             content: values.message,
             createdAt: Timestamp.now(),
         };
-    
+
         try {
             await addDoc(messageRef, newMessage);
         } catch (error) {
             console.error(error);
         }
         const batch = writeBatch(db);
-    
+
         // Update the last message in the conversation
         const conversationDocRef = doc(db, "conversations", conversationId); // Fixed line
         const docSnap = await getDoc(conversationDocRef);
         if (!docSnap.exists()) {
             // Document does not exist, create it first
-            await setDoc(conversationDocRef, { lastMessage: newMessage }, { merge: true });
+            await setDoc(
+                conversationDocRef,
+                { lastMessage: newMessage },
+                { merge: true },
+            );
         } else {
             // Document exists, update it
             batch.update(conversationDocRef, { lastMessage: newMessage });
         }
-    
+
         const userUpdate = {
             [`conversations.${conversationId}`]: newMessage,
         };
-    
+
         const senderDocRef: DocumentReference = doc(db, "users", senderUid);
         const receiverDocRef: DocumentReference = doc(db, "users", receiverUid); // Fixed line
         batch.update(senderDocRef, userUpdate);
         batch.update(receiverDocRef, userUpdate);
-    
+
         form.reset();
         try {
             await batch.commit();
         } catch (error) {
             console.error(error);
         }
-    };
+    }
     return (
         <Form {...form}>
             <form

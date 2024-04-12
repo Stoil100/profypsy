@@ -137,9 +137,7 @@ const ProfileCard = ({
             </div>
         )}
         <div className="flex w-full flex-col items-start justify-center gap-2 break-all">
-            <h4 className="text-3xl text-[#205041]">
-                {userName}
-            </h4>
+            <h4 className="text-3xl text-[#205041]">{userName}</h4>
             <div className="flex  w-fit items-center justify-center gap-1">
                 <Pin color="#08BF6B" />
                 <p className="text-[#205041]">{location}</p>
@@ -363,8 +361,8 @@ const Page: React.FC = () => {
     const [psychologists, setPsychologists] = useState<PsychologistProfile[]>(
         [],
     );
-    const {user}=useAuth();
-    const router=useRouter();
+    const { user } = useAuth();
+    const router = useRouter();
     useEffect(() => {
         if (!user.uid) {
             router.push("/login");
@@ -398,7 +396,7 @@ const Page: React.FC = () => {
     }
 
     return (
-        <main className="bg-[#F7F4E0] flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans ">
+        <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-[#F7F4E0] font-openSans ">
             {!finnishedOptions && <OptionsSection fetchItems={fetchItems} />}
             {isLoading && <Loader />}
             {psychologists.length !== 0 ? (

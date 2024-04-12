@@ -26,7 +26,13 @@ import { uploadImage } from "@/firebase/utils/upload";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { FirestoreError, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+    FirestoreError,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+} from "firebase/firestore";
 import {
     Briefcase,
     GraduationCap,
@@ -36,7 +42,14 @@ import {
     UserRound,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    Dispatch,
+    ReactNode,
+    SetStateAction,
+    useEffect,
+    useState,
+} from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import z from "zod";
 import { useAuth } from "../Providers";
@@ -131,7 +144,7 @@ const formSchema = z.object({
                 ),
         }),
     ),
-    userName:  z.string().min(3, "Enter a valid name"),
+    userName: z.string().min(3, "Enter a valid name"),
     location: z
         .string()
         .min(1, "Enter a valid city")
@@ -148,14 +161,14 @@ const formSchema = z.object({
         }),
 });
 interface SubmitValues extends z.infer<typeof formSchema> {
-    approved:boolean;
+    approved: boolean;
 }
 type Props = {
     className?: string;
-    profile:ProfileT;
-    setIsEditing:Dispatch<SetStateAction<boolean>>;
+    profile: ProfileT;
+    setIsEditing: Dispatch<SetStateAction<boolean>>;
 };
-export default function EditForm({ className,profile }: Props) {
+export default function EditForm({ className, profile }: Props) {
     const { user } = useAuth();
     const [tab, setTab] = useState("info");
     const [submitImage, setSubmitImage] = useState(profile?.image);
@@ -184,7 +197,7 @@ export default function EditForm({ className,profile }: Props) {
             diploma: profile?.diploma,
             letter: profile?.letter,
             languages: profile?.languages,
-            age:profile?.age,
+            age: profile?.age,
         },
     });
     const imageRef = form.register("image", { required: false });
@@ -205,10 +218,12 @@ export default function EditForm({ className,profile }: Props) {
         };
         submitData(tempValues);
     };
-    const submitData = async (values:SubmitValues) => {
+    const submitData = async (values: SubmitValues) => {
         if (user.uid) {
             try {
-                await updateDoc(doc(db, "psychologists", user.uid!), {...values});
+                await updateDoc(doc(db, "psychologists", user.uid!), {
+                    ...values,
+                });
                 toast({
                     title: "Your changes have been submitted!",
                     description: `While we are reviewing your changes, your profile will be unavailable to the public`,
@@ -244,7 +259,7 @@ export default function EditForm({ className,profile }: Props) {
         control: form.control,
         name: "experiences",
     });
-   
+
     return (
         <>
             <Form {...form}>
@@ -273,7 +288,7 @@ export default function EditForm({ className,profile }: Props) {
                                 }}
                             >
                                 <Info className="size-8 md:size-6" />
-                                <p className="md:block hidden">Personal Info</p>
+                                <p className="hidden md:block">Personal Info</p>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="education"
@@ -349,25 +364,25 @@ export default function EditForm({ className,profile }: Props) {
                                     )}
                                 />
                             </div>
-                                <FormField
-                                    control={form.control}
-                                    name="userName"
-                                    render={({ field }) => (
-                                        <FormItem className="w-full">
-                                            <FormLabel>User Name:</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Enter your name..."
-                                                    {...field}
-                                                    className="rounded-2xl border-2 border-black"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                               
-                            <div className="flex w-full items-end gap-2 justify-center">
+                            <FormField
+                                control={form.control}
+                                name="userName"
+                                render={({ field }) => (
+                                    <FormItem className="w-full">
+                                        <FormLabel>User Name:</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Enter your name..."
+                                                {...field}
+                                                className="rounded-2xl border-2 border-black"
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            <div className="flex w-full items-end justify-center gap-2">
                                 <div className="w-full">
                                     <Label>Telephone:</Label>
                                     <div className="flex items-center justify-center rounded-full border-2 border-black px-2">
@@ -398,9 +413,7 @@ export default function EditForm({ className,profile }: Props) {
                                     name="age"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel>
-                                                Age:
-                                            </FormLabel>
+                                            <FormLabel>Age:</FormLabel>
                                             <Select
                                                 onValueChange={field.onChange}
                                                 defaultValue={`${field.value}`}
@@ -550,21 +563,21 @@ export default function EditForm({ className,profile }: Props) {
                                     name="languages"
                                     render={(field) => (
                                         <div className="flex h-full w-full flex-col items-center gap-2 md:flex-row">
-                                                <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-xl border-2 border-dashed border-black p-1 md:w-1/2">
-                                                    <h2 className="text-lg">
-                                                        Selected Languages:
-                                                    </h2>
-                                                    {field.field.value?.map(
-                                                        (value, index) => (
-                                                            <p
-                                                                key={index}
-                                                                className=" w-full rounded-xl border-2 border-[#25BA9E] px-2 text-center text-xl text-[#25BA9E]"
-                                                            >
-                                                                {value}
-                                                            </p>
-                                                        ),
-                                                    )}
-                                                </div>
+                                            <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-xl border-2 border-dashed border-black p-1 md:w-1/2">
+                                                <h2 className="text-lg">
+                                                    Selected Languages:
+                                                </h2>
+                                                {field.field.value?.map(
+                                                    (value, index) => (
+                                                        <p
+                                                            key={index}
+                                                            className=" w-full rounded-xl border-2 border-[#25BA9E] px-2 text-center text-xl text-[#25BA9E]"
+                                                        >
+                                                            {value}
+                                                        </p>
+                                                    ),
+                                                )}
+                                            </div>
                                             <Select>
                                                 <SelectTrigger className="h-full w-full rounded-xl border-2 border-black text-xl">
                                                     <SelectValue placeholder="Select languages:" />

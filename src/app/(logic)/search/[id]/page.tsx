@@ -345,7 +345,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            userName:user.userName!,
+            userName: user.userName!,
             phone: user.phone!,
             email: user.email!,
             session: "",
@@ -464,26 +464,25 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
                                                 "w-full space-y-4 bg-white py-2",
                                             )}
                                         >
-                                          
-                                                <FormField
-                                                    control={form.control}
-                                                    name="userName"
-                                                    render={({ field }) => (
-                                                        <FormItem className="w-full">
-                                                            <FormLabel>
-                                                                First Name:
-                                                            </FormLabel>
-                                                            <FormControl>
-                                                                <Input
-                                                                    placeholder="Enter your name..."
-                                                                    {...field}
-                                                                    className="rounded-2xl border-2 border-[#52B788]"
-                                                                />
-                                                            </FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
+                                            <FormField
+                                                control={form.control}
+                                                name="userName"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel>
+                                                            First Name:
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <Input
+                                                                placeholder="Enter your name..."
+                                                                {...field}
+                                                                className="rounded-2xl border-2 border-[#52B788]"
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
                                             <div className="flex w-full items-end justify-center gap-2">
                                                 <div className="w-full">
                                                     <Label>Telephone:</Label>
@@ -798,9 +797,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                     <User />
                                 </div>
                             )}
-                            <h3 className="text-3xl">
-                                {profile?.userName}
-                            </h3>
+                            <h3 className="text-3xl">{profile?.userName}</h3>
                             <div className=" space-y-2 rounded-2xl border-4 border-[#40916C] px-4 py-2">
                                 <h4 className="text-2xl">About me:</h4>
                                 <p className="line-clamp-3 break-all text-xl ">

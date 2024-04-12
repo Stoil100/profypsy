@@ -10,11 +10,17 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { db } from "@/firebase/config";
-import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import {
+    collection,
+    onSnapshot,
+    orderBy,
+    query,
+    where,
+} from "firebase/firestore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-  
+
 const ArticleCard: React.FC<ArticleT> = (article) => {
     const router = useRouter();
     return (
@@ -79,20 +85,25 @@ export default function Articles() {
         fetchItems();
     }, []);
     return (
-        <main className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] py-20 px-2">
-            <h1 className="border-b-2 border-[#25BA9E] pb-2 font-playfairDSC text-5xl italic text-center">
+        <main className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] px-2 py-20">
+            <h1 className="border-b-2 border-[#25BA9E] pb-2 text-center font-playfairDSC text-5xl italic">
                 Profypsy&apos;s Articles
             </h1>
-            <div className="mb-10 max-w-3xl rounded-2xl bg-white p-2 flex flex-col items-center ">
-                <h4 className="border-b-2 px-2 pb-2 text-center text-3xl italic w-fit">
+            <div className="mb-10 flex max-w-3xl flex-col items-center rounded-2xl bg-white p-2 ">
+                <h4 className="w-fit border-b-2 px-2 pb-2 text-center text-3xl italic">
                     Our most popular articles:
                 </h4>
                 <Carousel>
                     <CarouselContent>
                         {articles?.map((article, index) => (
                             <CarouselItem key={index} className="">
-                                <div style={{ backgroundImage: `url(${article.image})`}} className="bg-cover items-end flex min-h-[30vh] flex-wrap  gap-10 rounded-xl ">
-                                    <div className="h-full w-full text-white bg-black/70 p-2 rounded-b-xl">
+                                <div
+                                    style={{
+                                        backgroundImage: `url(${article.image})`,
+                                    }}
+                                    className="flex min-h-[30vh] flex-wrap items-end gap-10  rounded-xl bg-cover "
+                                >
+                                    <div className="h-full w-full rounded-b-xl bg-black/70 p-2 text-white">
                                         <h2 className="text-2xl italic">
                                             &quot;{article.title}&quot;
                                         </h2>

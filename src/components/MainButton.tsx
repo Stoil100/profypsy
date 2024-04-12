@@ -5,14 +5,10 @@ import { cn } from "@/lib/utils";
 type Props = {
     children: React.ReactNode;
     className?: string;
-    onClick?: () => void | (()=>{})|Function;
+    onClick?: () => void | (() => {}) | Function;
 };
 
-export default function MainButton({
-    children,
-    className,
-    onClick,
-}: Props) {
+export default function MainButton({ children, className, onClick }: Props) {
     return (
         <Button
             type="button"

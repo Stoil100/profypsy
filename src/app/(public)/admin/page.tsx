@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Pin } from "lucide-react";
 import { useAuth } from "@/components/Providers";
 import { useRouter } from "next/navigation";
-import { ArticleT, ArticlesSchema } from "@/components/schemas/article";
+import ArticlesSchema, { ArticleT } from "@/components/schemas/article";
 
 const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
     async function ApprovePsychologist(uid: string) {
@@ -37,9 +37,7 @@ const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
                         className="size-[150px] rounded-full border-2 "
                     />
 
-                    <h1 className="text-4xl">
-                        {profile.userName}
-                    </h1>
+                    <h1 className="text-4xl">{profile.userName}</h1>
                     <div className="flex items-center justify-between gap-2 text-xl">
                         <p>{profile.email}</p>
                         <p>Age: {profile.age}</p>
@@ -221,7 +219,7 @@ export default function AdminPage() {
                         <h2 className="text-center text-3xl">
                             Articles Section:
                         </h2>
-                        <ArticlesSchema variant="admin" />
+                        <ArticlesSchema />
                         <div className="flex flex-col">
                             {articlesToApprove?.map((article, index) => (
                                 <ArticleInfo {...article} key={index} />

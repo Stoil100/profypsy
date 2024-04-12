@@ -19,14 +19,7 @@ import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 import { Dialog } from "@radix-ui/react-dialog";
 import { doc, getDoc } from "firebase/firestore";
-import {
-    BellDot,
-    Calendar,
-    Mail,
-    Phone,
-    Settings,
-    User
-} from "lucide-react";
+import { BellDot, Calendar, Mail, Phone, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -36,11 +29,15 @@ export type ProfileT = PsychologistProfile & AppointmentT;
 export default function Page() {
     const { user } = useAuth();
     const [profile, setProfile] = useState<ProfileT>();
-    const [chatProps,setChatProps] = useState({senderUid:"",receiverUid:"",receiverUsername:""});
+    const [chatProps, setChatProps] = useState({
+        senderUid: "",
+        receiverUid: "",
+        receiverUsername: "",
+    });
     const router = useRouter();
-    const [isEditing,setIsEditing]=useState(false)
+    const [isEditing, setIsEditing] = useState(false);
     useEffect(() => {
-       if (!user?.uid) {
+        if (!user?.uid) {
             router.push("/login");
         }
     }, [user, router]);
@@ -64,8 +61,12 @@ export default function Page() {
         getUserData();
     }, []);
 
-    function toggleChat(senderUid:string,receiverUid:string,receiverUsername:string){
-        setChatProps({senderUid,receiverUid,receiverUsername })
+    function toggleChat(
+        senderUid: string,
+        receiverUid: string,
+        receiverUsername: string,
+    ) {
+        setChatProps({ senderUid, receiverUid, receiverUsername });
     }
     return (
         <main
@@ -454,7 +455,9 @@ export default function Page() {
                                                             </h3>
                                                             <div className="pl-8">
                                                                 <h4 className="text-md text-2xl font-medium">
-                                                                    {appointment.userName}
+                                                                    {
+                                                                        appointment.userName
+                                                                    }
                                                                 </h4>
                                                             </div>
                                                             <div className="space-y-2 pl-8">
