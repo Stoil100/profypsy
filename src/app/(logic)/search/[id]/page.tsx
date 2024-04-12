@@ -11,7 +11,7 @@ import {
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import { useAuth } from "@/components/Providers";
-import { PsychologistProfile } from "@/components/forms/appliance";
+import { PsychologistProfile } from "@/components/schemas/appliance";
 import {
     Form,
     FormControl,

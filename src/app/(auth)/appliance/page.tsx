@@ -1,4 +1,4 @@
-import ApplianceForm from '@/components/forms/appliance'
+import ApplianceForm from '@/components/schemas/appliance'
 import React from 'react'
 
 export default function Appliance

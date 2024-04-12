@@ -9,15 +9,15 @@ import {
     doc,
     updateDoc,
     onSnapshot,
+    WhereFilterOp,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
-import { PsychologistProfile } from "@/components/forms/appliance";
+import { PsychologistProfile } from "@/components/schemas/appliance";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { MapPin, Pin } from "lucide-react";
 import { useAuth } from "@/components/Providers";
 import { useRouter } from "next/navigation";
-import { ArticlesSchema } from "@/components/schemas/article";
+import { ArticleT, ArticlesSchema } from "@/components/schemas/article";
 
 const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
     async function ApprovePsychologist(uid: string) {
@@ -97,6 +97,98 @@ const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
         </div>
     );
 };
+const ArticleInfo: React.FC<ArticleT> = (article) => {
+    async function ApprovePsychologist(id: string) {
+        const articlesRef = doc(db, "articles", id);
+        await updateDoc(articlesRef, {
+            approved: true,
+        });
+    }
+
+    return (
+        <div className="flex h-fit w-full flex-col gap-4">
+            <h2 className="text-4xl">Preview article before upload:</h2>
+            <div className="flex flex-col rounded border border-black bg-white p-6">
+                <h2 className="mb-4 text-center text-7xl font-bold underline decoration-4">
+                    {article!.title}
+                </h2>
+                <h4 className="mb-2 text-center text-4xl">
+                    {article!.titleDesc!}
+                </h4>
+                <img
+                    className="w-full max-w-sm object-cover"
+                    src={article!.image!}
+                    alt="article image"
+                />
+                <div className="px-4 pt-2">
+                    {article!.descriptions!.map((description, index) => (
+                        <div key={index} className="space-y-2">
+                            <h4 className="text-4xl">
+                                {description.descTitle}
+                            </h4>
+                            <p className="px-2 text-xl">
+                                {description.description}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+                <div className="p-4">
+                    {article!.tables!.map((table, tableIndex) => (
+                        <>
+                            <h5 className="text-3xl">{table.tableTitle}</h5>
+                            <ul
+                                key={tableIndex}
+                                className="list-decimal px-10 py-2 text-lg"
+                            >
+                                {table.tableItems!.map((item, listIndex) => (
+                                    <li key={listIndex}>{item}</li>
+                                ))}
+                            </ul>
+                        </>
+                    ))}
+                </div>
+                <h5>{article!.footer!}</h5>
+            </div>
+            <div className="flex items-center gap-2">
+                <Button
+                    onClick={() => {
+                        ApprovePsychologist(article.id!.toString()!);
+                    }}
+                    className="w-full"
+                >
+                    Approve
+                </Button>
+            </div>
+        </div>
+    );
+};
+
+function useFirestoreCollection<T>(
+    collectionName: string,
+    condition: [string, WhereFilterOp, any],
+) {
+    const [data, setData] = useState<T[]>();
+
+    useEffect(() => {
+        const [field, operator, value] = condition;
+        const q = query(
+            collection(db, collectionName),
+            where(field, operator, value),
+        );
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            const tempValues: T[] = [];
+            querySnapshot.forEach((doc) => {
+                tempValues.push(doc.data() as T);
+            });
+            setData(tempValues);
+        });
+
+        return () => unsubscribe();
+    }, [collectionName, condition]);
+
+    return data;
+}
 
 export default function AdminPage() {
     const { user } = useAuth();
@@ -106,22 +198,15 @@ export default function AdminPage() {
             router.push("/");
         }
     }, [user, router]);
-    const [profilesToApprove, setProfilesToApprove] =
-        useState<PsychologistProfile[]>();
-    useEffect(() => {
-        const q = query(
-            collection(db, "psychologists"),
-            where("approved", "==", false),
-        );
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const tempValues: PsychologistProfile[] = [];
-            querySnapshot.forEach((doc) => {
-                tempValues.push(doc.data() as PsychologistProfile);
-            });
-            setProfilesToApprove(tempValues);
-        });
-        return () => unsubscribe();
-    }, []);
+    const profilesToApprove = useFirestoreCollection<PsychologistProfile>(
+        "psychologists",
+        ["approved", "==", false],
+    );
+    const articlesToApprove = useFirestoreCollection<ArticleT>("articles", [
+        "approved",
+        "==",
+        false,
+    ]);
 
     return (
         <main className="min-h-screen w-full space-y-4 bg-[#F1ECCC] pt-10">
@@ -133,8 +218,15 @@ export default function AdminPage() {
                         ))}
                     </div>
                     <div>
-                        <h2 className="text-center text-3xl">Articles Section:</h2>
+                        <h2 className="text-center text-3xl">
+                            Articles Section:
+                        </h2>
                         <ArticlesSchema variant="admin" />
+                        <div className="flex flex-col">
+                            {articlesToApprove?.map((article, index) => (
+                                <ArticleInfo {...article} key={index} />
+                            ))}
+                        </div>
                     </div>
                 </>
             )}

@@ -14,7 +14,7 @@ import { Slider } from "@/components/ui/slider";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 // import { ListProfile, ListProfiles } from "@/models/listProfile";
-import { PsychologistProfile } from "@/components/forms/appliance";
+import { PsychologistProfile } from "@/components/schemas/appliance";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ChevronRight, Pin, SearchCheck, User } from "lucide-react";
 import Image from "next/image";

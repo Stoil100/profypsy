@@ -119,7 +119,7 @@ export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
             createdAt: Timestamp.now(),
             id: Date.now(),
             creator: user.uid!,
-            approved: (variant==="admin"?true:false),
+            approved: (variant==="admin"?false:false),
         };
         setSubmitValues(submitFormValues);
     }
@@ -134,6 +134,8 @@ export  const ArticlesSchema:React.FC<ArticleSchemaProps>=({variant}) =>{
             footer: submitValues!.footer,
             createdAt: Timestamp.now(),
             id: submitValues!.id,
+            creator:submitValues!.creator,
+            approved:submitValues!.approved,
         });
         setLoading(false);
         setSubmitImage("");
