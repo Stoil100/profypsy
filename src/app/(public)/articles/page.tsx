@@ -39,7 +39,7 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
             </div>
             <h2 className="text-xl font-bold">{article.title}</h2>
             <p className="line-clamp-4">
-                {article.descriptions[0].description}
+                {article.descriptions![0].description}
             </p>
             <Link
                 href={`articles/${article.id}`}

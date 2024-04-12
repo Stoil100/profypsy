@@ -59,7 +59,7 @@ export default function Article({ params }: { params: { id: string } }) {
                 </h2>
                 <img src={currentArticle?.image} />
                 <div className="space-y-4 px-2">
-                    {currentArticle?.descriptions.map((desc) => (
+                    {currentArticle?.descriptions!.map((desc) => (
                         <div key={desc.descTitle}>
                             <h3 className="text-3xl">{desc.descTitle}</h3>
                             <p className="px-4 text-lg">{desc.description}</p>

@@ -10,6 +10,7 @@ import {
     updateDoc,
     onSnapshot,
     WhereFilterOp,
+    deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { PsychologistProfile } from "@/components/schemas/appliance";
@@ -191,6 +192,26 @@ function useFirestoreCollection<T>(
 export default function AdminPage() {
     const { user } = useAuth();
     const router = useRouter();
+    const [uploadedArticles, setUploadedArticles] = useState<ArticleT[]>();
+    useEffect(() => {
+        const fetchUploadedContent = async () => {
+            const querySnapshot = await getDocs(collection(db, "articles"));
+            const content: any = [];
+            querySnapshot.forEach((doc) => {
+                content.push({
+                    id: doc.id,
+                    title: doc.data().title!,
+                    image: doc.data().image!,
+                });
+            });
+            setUploadedArticles(content);
+        };
+        fetchUploadedContent();
+    }, []);
+
+    async function deleteArticle(id: number) {
+        await deleteDoc(doc(db, "articles", `${id}`));
+    }
     useEffect(() => {
         if (!user?.admin) {
             router.push("/");
@@ -223,6 +244,31 @@ export default function AdminPage() {
                         <div className="flex flex-col">
                             {articlesToApprove?.map((article, index) => (
                                 <ArticleInfo {...article} key={index} />
+                            ))}
+                        </div>
+                        <div className="h-fit w-full rounded border border-black">
+                            <h2 className="text-4xl">Delete articles:</h2>
+                            {uploadedArticles?.map((article, index) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-col items-center justify-center gap-1 p-3 sm:w-1/2 md:w-1/3"
+                                >
+                                    <div className=" flex flex-col items-center justify-center gap-2">
+                                        <h2 className="text-4xl ">
+                                            {article.title}
+                                        </h2>
+                                        <img src={article.image} />
+                                    </div>
+                                    <Button
+                                        type="button"
+                                        className="w-full"
+                                        onClick={() => {
+                                            deleteArticle(article.id!);
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </div>
                             ))}
                         </div>
                     </div>

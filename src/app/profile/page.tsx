@@ -4,6 +4,7 @@ import ChatInterface from "@/components/Chat";
 import GradientButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
 import { PsychologistProfile } from "@/components/schemas/appliance";
+import ArticlesSchema, { ArticleT } from "@/components/schemas/article";
 import EditForm from "@/components/schemas/edit";
 import {
     Accordion,
@@ -14,12 +15,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/components/ui/use-toast";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 import { Dialog } from "@radix-ui/react-dialog";
-import { doc, getDoc } from "firebase/firestore";
-import { BellDot, Calendar, Mail, Phone, Settings, User } from "lucide-react";
+import { collection, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
+import { BellDot, Calendar, Mail, NewspaperIcon, Phone, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,6 +32,7 @@ export type ProfileT = PsychologistProfile & AppointmentT;
 export default function Page() {
     const { user } = useAuth();
     const [profile, setProfile] = useState<ProfileT>();
+    const [articles,setArticles] = useState<ArticleT[]>();
     const [chatProps, setChatProps] = useState({
         senderUid: "",
         receiverUid: "",
@@ -59,6 +63,30 @@ export default function Page() {
             }
         }
         getUserData();
+    }, []);
+    useEffect(() => {
+        function fetchItems() {
+            const q = query(
+                collection(db, "articles"),
+                where("creator", "==", user.uid),
+            );
+            const unsubscribe = onSnapshot(
+                q,
+                (querySnapshot) => {
+                    const tempValues: ArticleT[] = [];
+                    querySnapshot.forEach((doc) => {
+                        tempValues.push(doc.data() as ArticleT);
+                    });
+                    setArticles(tempValues);
+                },
+                (error) => {
+                    console.error("Error fetching items: ", error);
+                },
+            );
+
+            return unsubscribe;
+        }
+        fetchItems();
     }, []);
 
     function toggleChat(
@@ -148,10 +176,20 @@ export default function Page() {
                                 <p className="hidden sm:block">Appointments</p>
                             </TabsTrigger>
                             {user.role === "psychologist" && (
-                                <TabsTrigger value="sessions">
-                                    <BellDot className="sm:mr-2" />
-                                    <p className="hidden sm:block">Sessions</p>
-                                </TabsTrigger>
+                                <>
+                                    <TabsTrigger value="sessions">
+                                        <BellDot className="sm:mr-2" />
+                                        <p className="hidden sm:block">
+                                            Sessions
+                                        </p>
+                                    </TabsTrigger>
+                                    <TabsTrigger value="articles">
+                                        <NewspaperIcon className="sm:mr-2" />
+                                        <p className="hidden sm:block">
+                                            Articles
+                                        </p>
+                                    </TabsTrigger>
+                                </>
                             )}
                         </TabsList>
                         <TabsContent
@@ -428,146 +466,188 @@ export default function Page() {
                                 </Dialog>
                             )}
                         </TabsContent>
-                        <TabsContent value="sessions">
-                            <Accordion
-                                type="single"
-                                collapsible
-                                className="rounded-2xl bg-[#FCFBF4] p-4"
-                            >
-                                {profile!.appointments.length > 0 ? (
-                                    profile!.appointments?.map(
-                                        (appointment, index) => (
-                                            <AccordionItem
-                                                value={`item-${index}`}
-                                                key={index}
-                                            >
-                                                <AccordionTrigger>
-                                                    {appointment.selectedDate}
-                                                </AccordionTrigger>
-                                                <AccordionContent className="p-4">
-                                                    <div className="space-y-4 break-all">
-                                                        <div>
-                                                            <h3 className="flex items-center space-x-2 text-lg font-semibold">
-                                                                <User className="h-5 w-5" />{" "}
-                                                                <span>
-                                                                    Client info:
-                                                                </span>
-                                                            </h3>
-                                                            <div className="pl-8">
-                                                                <h4 className="text-md text-2xl font-medium">
-                                                                    {
-                                                                        appointment.userName
-                                                                    }
-                                                                </h4>
-                                                            </div>
-                                                            <div className="space-y-2 pl-8">
-                                                                <p className="flex items-center text-xl">
-                                                                    <Mail className="mr-2 h-4 w-4" />
-                                                                    {
-                                                                        appointment.email
-                                                                    }
-                                                                </p>
-                                                                <p className="flex items-center text-xl">
-                                                                    <Phone className="mr-2 h-4 w-4" />
-                                                                    {
-                                                                        appointment.phone
-                                                                    }
-                                                                </p>
-                                                                <p className="text-xl">
-                                                                    Age:{" "}
-                                                                    {
-                                                                        appointment.age
-                                                                    }
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <h3 className="flex items-center space-x-2 text-lg font-semibold">
-                                                                <Calendar className="h-5 w-5" />{" "}
-                                                                <span>
-                                                                    Appointment
-                                                                    info:
-                                                                </span>
-                                                            </h3>
-                                                            <div className="px-8">
-                                                                <div>
-                                                                    <p className="">
-                                                                        Info:
-                                                                    </p>
-                                                                    <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
-                                                                        {
-                                                                            appointment.info
-                                                                        }
-                                                                    </p>
-                                                                </div>
-                                                                <div className="flex flex-col gap-2">
-                                                                    <p>
-                                                                        Session
-                                                                        type:
-                                                                    </p>
-                                                                    <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
-                                                                        {
-                                                                            appointment.session
-                                                                        }
-                                                                    </h4>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <GradientButton
-                                                            className="w-full border-2 border-[#25BA9E] text-xl"
-                                                            onClick={() => {
-                                                                toggleChat(
-                                                                    user!.uid!,
-                                                                    appointment.clientUid!,
-                                                                    appointment.userName,
-                                                                );
-                                                            }}
-                                                        >
-                                                            Chat now
-                                                        </GradientButton>
-                                                    </div>
-                                                </AccordionContent>
-                                            </AccordionItem>
-                                        ),
-                                    )
-                                ) : (
-                                    <div>
-                                        You don&apos;t have any upcoming
-                                        sessions
-                                    </div>
-                                )}
-                            </Accordion>
-                            {chatProps.senderUid !== "" && (
-                                <Dialog
-                                    open={chatProps.senderUid !== ""}
-                                    onOpenChange={() => {
-                                        setChatProps({
-                                            senderUid: "",
-                                            receiverUid: "",
-                                            receiverUsername: "",
-                                        });
-                                    }}
-                                >
-                                    <DialogContent
-                                        className={cn(
-                                            " max-w-[550px] bg-gradient-to-b",
-                                            user.role === "psychologist"
-                                                ? "from-[#40916C] to-[#52B788]"
-                                                : "from-[#F7F4E0] to-[#F1ECCC]",
-                                        )}
+                        {user.role === "psychologist" && (
+                            <>
+                                <TabsContent value="sessions">
+                                    <Accordion
+                                        type="single"
+                                        collapsible
+                                        className="rounded-2xl bg-[#FCFBF4] p-4"
                                     >
-                                        {" "}
-                                        <ChatInterface
-                                            senderUid={chatProps.senderUid}
-                                            receiverUid={chatProps.receiverUid}
-                                            receiverUsername={
-                                                chatProps.receiverUsername
-                                            }
-                                        />
-                                    </DialogContent>
-                                </Dialog>
-                            )}
-                        </TabsContent>
+                                        {profile!.appointments.length > 0 ? (
+                                            profile!.appointments?.map(
+                                                (appointment, index) => (
+                                                    <AccordionItem
+                                                        value={`item-${index}`}
+                                                        key={index}
+                                                    >
+                                                        <AccordionTrigger>
+                                                            {
+                                                                appointment.selectedDate
+                                                            }
+                                                        </AccordionTrigger>
+                                                        <AccordionContent className="p-4">
+                                                            <div className="space-y-4 break-all">
+                                                                <div>
+                                                                    <h3 className="flex items-center space-x-2 text-lg font-semibold">
+                                                                        <User className="h-5 w-5" />{" "}
+                                                                        <span>
+                                                                            Client
+                                                                            info:
+                                                                        </span>
+                                                                    </h3>
+                                                                    <div className="pl-8">
+                                                                        <h4 className="text-md text-2xl font-medium">
+                                                                            {
+                                                                                appointment.userName
+                                                                            }
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div className="space-y-2 pl-8">
+                                                                        <p className="flex items-center text-xl">
+                                                                            <Mail className="mr-2 h-4 w-4" />
+                                                                            {
+                                                                                appointment.email
+                                                                            }
+                                                                        </p>
+                                                                        <p className="flex items-center text-xl">
+                                                                            <Phone className="mr-2 h-4 w-4" />
+                                                                            {
+                                                                                appointment.phone
+                                                                            }
+                                                                        </p>
+                                                                        <p className="text-xl">
+                                                                            Age:{" "}
+                                                                            {
+                                                                                appointment.age
+                                                                            }
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <h3 className="flex items-center space-x-2 text-lg font-semibold">
+                                                                        <Calendar className="h-5 w-5" />{" "}
+                                                                        <span>
+                                                                            Appointment
+                                                                            info:
+                                                                        </span>
+                                                                    </h3>
+                                                                    <div className="px-8">
+                                                                        <div>
+                                                                            <p className="">
+                                                                                Info:
+                                                                            </p>
+                                                                            <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
+                                                                                {
+                                                                                    appointment.info
+                                                                                }
+                                                                            </p>
+                                                                        </div>
+                                                                        <div className="flex flex-col gap-2">
+                                                                            <p>
+                                                                                Session
+                                                                                type:
+                                                                            </p>
+                                                                            <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
+                                                                                {
+                                                                                    appointment.session
+                                                                                }
+                                                                            </h4>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <GradientButton
+                                                                    className="w-full border-2 border-[#25BA9E] text-xl"
+                                                                    onClick={() => {
+                                                                        toggleChat(
+                                                                            user!
+                                                                                .uid!,
+                                                                            appointment.clientUid!,
+                                                                            appointment.userName,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    Chat now
+                                                                </GradientButton>
+                                                            </div>
+                                                        </AccordionContent>
+                                                    </AccordionItem>
+                                                ),
+                                            )
+                                        ) : (
+                                            <div>
+                                                You don&apos;t have any upcoming
+                                                sessions
+                                            </div>
+                                        )}
+                                    </Accordion>
+                                    {chatProps.senderUid !== "" && (
+                                        <Dialog
+                                            open={chatProps.senderUid !== ""}
+                                            onOpenChange={() => {
+                                                setChatProps({
+                                                    senderUid: "",
+                                                    receiverUid: "",
+                                                    receiverUsername: "",
+                                                });
+                                            }}
+                                        >
+                                            <DialogContent
+                                                className={cn(
+                                                    " max-w-[550px] bg-gradient-to-b",
+                                                    user.role === "psychologist"
+                                                        ? "from-[#40916C] to-[#52B788]"
+                                                        : "from-[#F7F4E0] to-[#F1ECCC]",
+                                                )}
+                                            >
+                                                {" "}
+                                                <ChatInterface
+                                                    senderUid={
+                                                        chatProps.senderUid
+                                                    }
+                                                    receiverUid={
+                                                        chatProps.receiverUid
+                                                    }
+                                                    receiverUsername={
+                                                        chatProps.receiverUsername
+                                                    }
+                                                />
+                                            </DialogContent>
+                                        </Dialog>
+                                    )}
+                                </TabsContent>
+                                <TabsContent value="articles" className="py-4 flex items-center flex-col">
+                                    <div className="w-full">
+                                        {articles!.length > 0 ? (
+                                            articles!.map((article, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="w-full"
+                                                >
+                                                    <img src={article.image} />
+                                                    <h3>{article.title}</h3>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <h2 className="text-center text-xl">
+                                                You haven't created any articles
+                                                yet!
+                                            </h2>
+                                        )}
+                                    </div>
+                                    <Dialog>
+                                        <DialogTrigger  className="w-fit px-2 text-center border-2 border-[#25BA9E] text-[#25BA9E] transition-transform hover:scale-105 py-1 rounded-full text-xl mt-4">
+                                            Upload an article
+                                        </DialogTrigger>
+                                        <DialogContent className=" p-1 border-8 !rounded-3xl border-[#25BA9E] max-w-3xl">
+                                        <ScrollArea className="max-h-[70vh] w-full rounded-md border p-4">
+                                            <ArticlesSchema />
+                                            </ScrollArea>
+                                        </DialogContent>
+                                    </Dialog>
+                                </TabsContent>
+                            </>
+                        )}
                     </Tabs>
                 </div>
             )}

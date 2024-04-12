@@ -36,7 +36,7 @@ const articlesFormSchema = z.object({
             descTitle: z.string().optional(),
             description: z.string().optional(),
         }),
-    ),
+    ).optional(),
     tables: z
         .array(
             z.object({
@@ -61,31 +61,11 @@ interface ArticleT extends ArticleFormValues {
 export type { ArticleT };
 export default function ArticlesSchema() {
     const [bValue, setBValue] = useState(false);
-    const [uploadedArticles, setUploadedArticles] = useState<ArticleT[]>();
     const [isLoading, setLoading] = useState(false);
     const [submitImage, setSubmitImage] = useState("");
     const [submitValues, setSubmitValues] = useState<ArticleT>();
     const { user } = useAuth();
 
-    useEffect(() => {
-        const fetchUploadedContent = async () => {
-            const querySnapshot = await getDocs(collection(db, "articles"));
-            const content: any = [];
-            querySnapshot.forEach((doc) => {
-                content.push({
-                    id: doc.id,
-                    title: doc.data().title!,
-                    image: doc.data().image!,
-                });
-            });
-            setUploadedArticles(content);
-        };
-        fetchUploadedContent();
-    }, []);
-
-    async function deleteArticle(id: number) {
-        await deleteDoc(doc(db, "articles", `${id}`));
-    }
 
     const articlesForm = useForm<z.infer<typeof articlesFormSchema>>({
         resolver: zodResolver(articlesFormSchema),
@@ -162,7 +142,7 @@ export default function ArticlesSchema() {
     });
 
     return (
-        <div className="h-fit w-full space-y-2 rounded border p-2 text-[#205041]">
+        <div className="h-fit w-full space-y-2 p-2 text-[#205041]">
             <Form {...articlesForm}>
                 <form
                     onSubmitCapture={articlesForm.handleSubmit(onSubmit)}
@@ -174,7 +154,7 @@ export default function ArticlesSchema() {
                         name="title"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title:</FormLabel>
+                                <FormLabel>Title*:</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="Enter articles title here..."
@@ -438,30 +418,6 @@ export default function ArticlesSchema() {
                     </div>
                 </>
             )}
-
-            <div className="h-fit w-full rounded border border-black">
-                <h2 className="text-4xl">Delete articles:</h2>
-                {uploadedArticles?.map((article, index) => (
-                    <div
-                        key={index}
-                        className="flex flex-col items-center justify-center gap-1 p-3 sm:w-1/2 md:w-1/3"
-                    >
-                        <div className=" flex flex-col items-center justify-center gap-2">
-                            <h2 className="text-4xl ">{article.title}</h2>
-                            <img src={article.image} />
-                        </div>
-                        <Button
-                            type="button"
-                            className="w-full"
-                            onClick={() => {
-                                deleteArticle(article.id!);
-                            }}
-                        >
-                            Delete
-                        </Button>
-                    </div>
-                ))}
-            </div>
         </div>
     );
 }
