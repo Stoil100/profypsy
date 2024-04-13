@@ -635,7 +635,7 @@ export default function Page() {
                                             ))
                                         ) : (
                                             <h2 className="text-center text-xl">
-                                                You haven't created any articles
+                                                You haven&apos;t created any articles
                                                 yet!
                                             </h2>
                                         )}
