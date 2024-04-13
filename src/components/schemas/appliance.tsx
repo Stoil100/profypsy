@@ -19,7 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import { AppointmentT } from "@/app/(logic)/search/[id]/page";
+import { AppointmentT } from "@/app/[locale]/(logic)/search/[id]/page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";

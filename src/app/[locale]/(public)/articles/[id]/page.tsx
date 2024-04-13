@@ -4,9 +4,6 @@ import { ArticleT } from "@/components/schemas/article";
 import { db } from "@/firebase/config";
 import {
     collection,
-    doc,
-    getDoc,
-    limit,
     onSnapshot,
     orderBy,
     query,
