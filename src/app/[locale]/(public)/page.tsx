@@ -1,4 +1,5 @@
 "use client";
+import MainButton from "@/components/MainButton";
 import GradientButton from "@/components/MainButton";
 import {
     Accordion,
@@ -32,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { HeaderT } from "@/models/header";
 import AutoScroll from "embla-carousel-auto-scroll";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -73,37 +75,12 @@ const carouselItems = [
         experience: "10+ year of practical experience",
     },
 ];
-const missionItems = [
-    {
-        title: "Our Mission:",
-        description:
-            "Our mission is to provide an accessible, convenient, and effective platform for psychotherapy, which helps people improve their mental well-being and live more fully and happily. We created this platform with the belief that every individual deserves support and care for their mental health, regardless of financial or geographical constraints.",
-    },
-    {
-        title: "Meaning for the Creators:",
-        description:
-            "For us, the creators of this platform, the meaning lies in the opportunity to make a positive change in people's lives by providing them with an easy and accessible way to receive quality psychotherapeutic assistance. Our goal is to eliminate barriers to access to mental health and to create a society where everyone can take care of themselves and develop their unlimited potential.",
-    },
-    {
-        title: "Meaning for the Users:",
-        description:
-            "For our client users, the meaning lies in the opportunity to receive personalized and quality psychotherapy that meets their needs and goals. We believe that everyone deserves to feel supported and understood, and that psychotherapy can be a powerful tool for personal development and overcoming life challenges.",
-    },
-    {
-        title: "Meaning for the Psychologists:",
-        description:
-            " For our psychologist users, the meaning lies in the opportunity to expand their practice and reach more people in need of their assistance. The platform provides them with the opportunity to work at a convenient time and place, allowing them to focus on what they do best - helping others feel better.",
-    },
-    {
-        title: "Vision and Values:",
-        description:
-            "Our vision is to build a world and future where everyone has access to psychotherapeutic assistance that supports them in their development and growth. We value transparency, trust, and respect for each of our users and strive for continuous improvement and innovation in the field of mental health.",
-    },
-];
+
 const BottomLine = () => (
     <hr className="w-full rounded-full border-2 border-[#FCFBF4] drop-shadow-lg" />
 );
 function HeroSection() {
+    const t = useTranslations("HomePage");
     function HeaderCard({ title, image }: HeaderT) {
         return (
             <Link
@@ -122,23 +99,28 @@ function HeroSection() {
         <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 bg-gradient-to-b from-[#40916C] to-[#52B788] pt-16 text-white md:pt-10">
             <div className="flex w-2/3 flex-col items-center gap-7 text-center">
                 <h1 className="font-playfairDSC text-3xl font-thin capitalize md:text-5xl">
-                    Your Journey to <br /> Mental Wellness Begins Here
+                    {t("title")}
                 </h1>
                 <h3 className="font-openSans text-xl md:text-2xl">
-                    Choose your therapist and begin
-                    <br /> your session now
+                    {t("titleDescription")}
                 </h3>
-                <Link href={"/login"}>
-                    <GradientButton className="text-3xl">
-                        Get Started
-                    </GradientButton>
+                <Link href={"login"}>
+                    <MainButton className="text-3xl">
+                        {t("button.getStarted")}
+                    </MainButton>
                 </Link>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-4 p-2 md:gap-10">
-                <HeaderCard title="For you" image="/homepage/person.png" />
-                <HeaderCard title="For couples" image="/homepage/couples.png" />
                 <HeaderCard
-                    title="For families"
+                    title={t("services.you")}
+                    image="/homepage/person.png"
+                />
+                <HeaderCard
+                    title={t("services.couples")}
+                    image="/homepage/couples.png"
+                />
+                <HeaderCard
+                    title={t("services.family")}
                     image="/homepage/families.png"
                 />
             </div>
@@ -146,18 +128,50 @@ function HeroSection() {
     );
 }
 function MissionSection() {
+    const t = useTranslations("HomePage");
+    const missionItems = [
+        {
+            title: t("mission.missionTitle"),
+            description: t("mission.missionDescription") 
+        },
+        {
+            title: t("mission.creatorsTitle"),
+            description: t("mission.creatorsDescription") 
+        },
+        {
+            title: t("mission.usersTitle"),
+            description: t("mission.usersDescription") 
+        },
+        {
+            title: t("mission.psychologistsTitle"),
+            description: t("mission.psychologistsDescription") 
+        },
+        {
+            title: t("mission.visionTitle"),
+            description: t("mission.visionDescription") 
+        },
+    ];
     return (
         <section className="flex h-fit w-full flex-col items-center justify-center gap-4 px-4 py-10 md:gap-10">
             <h2 className="text bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text font-playfairDSC text-4xl text-transparent md:text-5xl">
-                Our mission
+                {t('mission.sectionTitle')}
             </h2>
             <Carousel
-                className="w-full md:max-w-[70vw]"
-                opts={{ loop: true, align: "start" }}
+                className="w-full"
+                plugins={[
+                    AutoScroll({
+                        playOnInit: true,
+                        speed: 2,
+                    }),
+                ]}
+                opts={{
+                    loop: true,
+                    align:"start"
+                }}
             >
                 <CarouselContent className="lg:-ml-1">
                     {missionItems.map((item, index) => (
-                        <CarouselItem className="pl-4 lg:basis-1/2 ">
+                        <CarouselItem key={index} className="pl-4 sm:basis-1/2 lg:basis-1/3 ">
                             <div className="flex h-full w-full flex-col rounded-2xl border-4 border-[#25BA9E] bg-white p-4">
                                 <div className="flex w-full justify-between gap-2">
                                     <h2 className="mb-3 text-3xl font-bold text-[#205041]">
@@ -174,12 +188,11 @@ function MissionSection() {
                         </CarouselItem>
                     ))}
                 </CarouselContent>
-                <CarouselPrevious className="hidden md:flex" />
-                <CarouselNext className="hidden md:flex" />
             </Carousel>
         </section>
     );
 }
+
 function TherapistsSection() {
     return (
         <section className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 md:gap-10 md:px-[100px] lg:px-[150px] xl:px-[200px]">
@@ -314,11 +327,12 @@ function ReviewsSection() {
     );
 }
 function ApproachSection() {
+    const t = useTranslations("HomePage");
     const [activeElement, setActiveElement] = useState("first");
     return (
         <section className="w-full space-y-5 px-2 py-5 md:px-[100px] lg:px-[150px] xl:px-[200px]">
             <h3 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent">
-                How Profypsy Works
+                {t('approach.approachTitle')}
             </h3>
             <div className="flex w-full items-center justify-around">
                 <div className="w-full space-y-5 md:w-1/3">
@@ -335,12 +349,12 @@ function ApproachSection() {
                             1
                         </p>
                         <p className="text-xl text-[#205041]">
-                            Set Up a free account
+                            {t('approach.stepOneTitle')}
                         </p>
                     </div>
                     <div
                         className={cn(
-                            "flex w-full items-center justify-start gap-2  rounded-3xl p-2 font-openSans drop-shadow-md transition-all md:p-3 hover:md:scale-110",
+                            "flex w-full items-center justify-start gap-2 rounded-3xl p-2 font-openSans drop-shadow-md transition-all md:p-3 hover:md:scale-110",
                             activeElement === "second" && "bg-white",
                         )}
                         onMouseEnter={() => {
@@ -351,7 +365,7 @@ function ApproachSection() {
                             2
                         </p>
                         <p className="text-lg text-[#205041] md:text-xl">
-                            Get matched with a therapist
+                            {t('approach.stepTwoTitle')}
                         </p>
                     </div>
                     <div
@@ -367,20 +381,20 @@ function ApproachSection() {
                             3
                         </p>
                         <p className="text-xl text-[#205041]">
-                            Begin your therapy
+                            {t('approach.stepThreeTitle')}
                         </p>
                     </div>
                 </div>
                 <img
                     src="/homepage/approach.png"
-                    alt="how profypsy works"
+                    alt={t('approach.approachImageAlt')}
                     className="hidden max-h-[400px] md:block"
                 />
             </div>
             <div className="flex w-full justify-center px-4">
                 <Link href={"/login"}>
                     <GradientButton className="text-2xl">
-                        Start Now
+                        {t('button.startNow')}
                     </GradientButton>
                 </Link>
             </div>
@@ -389,192 +403,42 @@ function ApproachSection() {
     );
 }
 function FaQSection() {
+    const t = useTranslations("HomePage");
     return (
         <section className="mb-5 flex w-full flex-col items-center justify-center gap-4 px-4 md:px-[100px] lg:px-[150px] xl:px-[200px]">
             <h3 className="text-center font-playfairDSC text-4xl text-[#205041]">
-                Frequently Asked Questions
+                {t('faq.faqTitle')}
             </h3>
             <div className="w-full rounded-2xl bg-white p-2 font-openSans text-xl">
                 <Accordion type="single" collapsible>
                     <AccordionItem value="item-1">
                         <AccordionTrigger className="text-left">
-                            Is online therapy effective?
+                            {t('faq.faqQuestion1')}
                         </AccordionTrigger>
                         <AccordionContent>
-                            Yes, online therapy can be effective, especially
-                            when utilized by individuals with appropriate
-                            training and experience in the field of
-                            psychotherapy. This provides access to therapy for
-                            people who might otherwise be unable to access it
-                            due to various reasons such as geographical
-                            location, financial constraints, or mobility issues.
-                            It is important to choose a qualified and licensed
-                            therapist and ensure appropriate communication and
-                            confidentiality.
+                            {t('faq.faqAnswer1')}
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
                         <AccordionTrigger className="text-left">
-                            What is the difference between therapy and
-                            psychiatry?
+                            {t('faq.faqQuestion2')}
                         </AccordionTrigger>
                         <AccordionContent>
-                            <ul>
-                                <li>
-                                    <h2 className="text-xl font-bold">
-                                        Psychologist:
-                                    </h2>
-                                    <ul className="list-disc px-6 py-2  text-base">
-                                        <li>
-                                            Psychologists study human behavior
-                                            and thoughts.
-                                        </li>
-                                        <li>
-                                            They typically hold a
-                                            bachelor&apos;s, master&apos;s, or
-                                            doctoral degree in psychology.
-                                        </li>
-                                        <li>
-                                            They can conduct psychological
-                                            assessments, consultations, and
-                                            provide counseling but cannot
-                                            prescribe medication.
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <h2 className="text-xl font-bold">
-                                        Psychotherapist:
-                                    </h2>
-                                    <ul className="list-disc px-6 py-2 text-base">
-                                        <li>
-                                            Psychotherapists specialize in
-                                            treating mental disorders and issues
-                                            through various therapeutic methods.
-                                        </li>
-                                        <li>
-                                            They usually have specialized
-                                            training or a master&apos;s degree
-                                            in psychology, psychiatry, social
-                                            work, or a related field.
-                                        </li>
-                                        <li>
-                                            They perform psychotherapy,
-                                            including individual sessions, group
-                                            therapies, and other techniques.
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <h2 className="text-xl font-bold">
-                                        Psychiatrist:
-                                    </h2>
-                                    <ul className="list-disc px-6 py-2 text-base">
-                                        <li>
-                                            Psychiatrists are medical doctors
-                                            specialized in diagnosing, treating,
-                                            and managing mental disorders.
-                                        </li>
-                                        <li>
-                                            They hold a medical degree and are
-                                            licensed to prescribe medication.
-                                        </li>
-                                        <li>
-                                            They may conduct therapy sessions,
-                                            but their primary role is related to
-                                            medication management and treatment
-                                            of mental health.
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            {t('faq.faqAnswer2')}
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
                         <AccordionTrigger className="text-left">
-                            How do I get matched with a professional?
+                            {t('faq.faqQuestion3')}
                         </AccordionTrigger>
                         <AccordionContent>
-                            <h2 className="text-2xl">
-                                Choosing the right therapist is crucial for the
-                                success of therapy.
-                            </h2>
-                            <p className="text-lg">
-                                Here are a few steps to help you choose the
-                                right therapist for you:
-                            </p>
-
-                            <ol className="list-decimal px-6 py-2 text-base">
-                                <li>
-                                    <strong>
-                                        Identify your needs and goals:
-                                    </strong>{" "}
-                                    Understand what problems or challenges you
-                                    want to address through therapy and what
-                                    goals you want to achieve.
-                                </li>
-
-                                <li>
-                                    <strong>
-                                        Explore different therapy methods:
-                                    </strong>{" "}
-                                    There are many different therapy methods,
-                                    such as cognitive-behavioral therapy,
-                                    psychoanalysis, gestalt therapy, and others.
-                                    Choose a method that inspires confidence and
-                                    that you believe will be suitable for your
-                                    needs.
-                                </li>
-
-                                <li>
-                                    <strong>
-                                        Look for licensed and qualified
-                                        professionals:
-                                    </strong>{" "}
-                                    Make sure that your potential therapist is
-                                    licensed and has appropriate educational
-                                    background and experience. Check their
-                                    qualifications and certificates.
-                                </li>
-
-                                <li>
-                                    <strong>Ask for recommendations:</strong>{" "}
-                                    Ask friends, family, or your doctor for
-                                    recommendations for good therapists.
-                                    Additionally, browse online reviews and
-                                    ratings for potential candidates.
-                                </li>
-
-                                <li>
-                                    <strong>Try the first session:</strong> Many
-                                    therapists offer free initial consultations.
-                                    Take advantage of this opportunity to assess
-                                    your compatibility with the therapist and to
-                                    determine whether their style and methods
-                                    meet your needs.
-                                </li>
-
-                                <li>
-                                    <strong>Establish trust:</strong> It is
-                                    important to feel comfortable and confident
-                                    in your therapist&apos;s abilities. Trust
-                                    and good communication are key to successful
-                                    therapy.
-                                </li>
-                            </ol>
-
-                            <p>
-                                By following these steps, it will be easier to
-                                choose the right therapist for you, who will
-                                help you achieve your goals and improve your
-                                mental well-being.
-                            </p>
+                            {t('faq.faqAnswer3')}
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
                 <Link href={"/login"}>
                     <GradientButton className="text-2xl">
-                        Begin Now
+                        {t('button.beginNow')}
                     </GradientButton>
                 </Link>
             </div>
@@ -583,25 +447,25 @@ function FaQSection() {
     );
 }
 function JoinSection() {
+    const t = useTranslations("HomePage");
     const [calcPrice, setCalcPrice] = useState(10400);
     return (
         <section className="flex w-full items-center justify-between px-4 py-5 md:px-[100px] lg:px-[150px] xl:px-[200px]">
             <img
                 src="/homepage/join.png"
-                alt="join as a psychologist"
+                alt={t('join.joinImageAlt')}
                 className="hidden md:block md:max-h-[300px] lg:max-h-[400px] xl:max-h-[500px]"
             />
             <div className="flex flex-col items-center gap-4 text-center md:items-end md:text-right">
                 <h2 className="font-playfairDSC text-3xl font-thin text-[#205041] md:text-4xl">
-                    Would You Like To Join As A Psychologist?
+                    {t('join.joinTitle')}
                 </h2>
                 <h4 className="text-2xl">
-                    We are now over 2000 specialists, and still searching for
-                    more specisalists in the field
+                    {t('join.joinSubtitle')}
                 </h4>
                 <div className="w-full rounded-2xl bg-[#188665BF] p-4 text-center font-openSans md:w-2/3">
                     <h3 className="text-2xl text-[#FCFBF4]">
-                        As a Profypsy therapist you can earn an estimated
+                        {t('join.earningsIntro')}
                     </h3>
                     <div className="flex w-full items-center justify-between text-[#F1ECCC] ">
                         <div className="flex w-1/2 flex-col items-center">
@@ -626,26 +490,27 @@ function JoinSection() {
                                     )}
                                 </SelectContent>
                             </Select>
-                            <p>Weekly hours</p>
+                            <p>{t('join.weeklyHoursLabel')}</p>
                         </div>
                         <p className="text-3xl">=</p>
                         <div className="w-1/2">
                             <h5 className="font-playfairDSC text-3xl">
                                 ${calcPrice}
                             </h5>
-                            <p>Estimated annual earnings</p>
+                            <p>{t('join.estimatedEarningsLabel')}</p>
                         </div>
                     </div>
                 </div>
                 <Link href={"/login"}>
                     <GradientButton className="text-3xl">
-                        Apply Now
+                        {t('button.applyNow')}
                     </GradientButton>
                 </Link>
             </div>
         </section>
     );
 }
+
 export default function Home() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#F7F4E0] from-85% to-[#E5CA8B]">

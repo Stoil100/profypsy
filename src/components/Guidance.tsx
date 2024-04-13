@@ -1,5 +1,6 @@
 "use client";
 
+import {useTranslations} from "next-intl"
 import {
     Facebook,
     Instagram,
@@ -28,6 +29,7 @@ interface AboutProps {
 }
 
 export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
+    const t =  useTranslations("Navigation");
     const { user, logOut } = useAuth();
     const router = useRouter();
     const SocialMediaLinks = () => (
@@ -50,7 +52,7 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
                 href="/search"
                 className="text-inherit transition-transform hover:scale-110"
             >
-                For You
+                {t('Services.You')}
             </Link>
             <Link
                 href="/search"

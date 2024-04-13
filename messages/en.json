@@ -1,0 +1,54 @@
+{
+    "HomePage": {
+        "title": "Your Journey To Mental Wellness Begins Here",
+        "titleDescription": "Choose your therapist and begin your session now",
+        "button": {
+            "getStarted": "Get Started",
+            "startNow": "Start Now",
+            "beginNow": "Begin Now",
+            "applyNow": "Apply Now"
+        },
+        "services": {
+            "you": "For you",
+            "couples": "For couples",
+            "family": "For families"
+        },
+        "mission": {
+            "sectionTitle": "Our mission",
+            "missionTitle": "Our Mission:",
+            "missionDescription": "Our mission is to provide an accessible, convenient, and effective platform for psychotherapy, which helps people improve their mental well-being and live more fully and happily. We created this platform with the belief that every individual deserves support and care for their mental health, regardless of financial or geographical constraints.",
+            "creatorsTitle": "Meaning for the Creators:",
+            "creatorsDescription": "For us, the creators of this platform, the meaning lies in the opportunity to make a positive change in people's lives by providing them with an easy and accessible way to receive quality psychotherapeutic assistance. Our goal is to eliminate barriers to access to mental health and to create a society where everyone can take care of themselves and develop their unlimited potential.",
+            "usersTitle": "Meaning for the Users:",
+            "usersDescription": "For our client users, the meaning lies in the opportunity to receive personalized and quality psychotherapy that meets their needs and goals. We believe that everyone deserves to feel supported and understood, and that psychotherapy can be a powerful tool for personal development and overcoming life challenges.",
+            "psychologistsTitle": "Meaning for the Psychologists:",
+            "psychologistsDescription": "For our psychologist users, the meaning lies in the opportunity to expand their practice and reach more people in need of their assistance. The platform provides them with the opportunity to work at a convenient time and place, allowing them to focus on what they do best - helping others feel better.",
+            "visionTitle": "Vision and Values:",
+            "visionDescription": "Our vision is to build a world and future where everyone has access to psychotherapeutic assistance that supports them in their development and growth. We value transparency, trust, and respect for each of our users and strive for continuous improvement and innovation in the field of mental health."
+        },
+        "approach": {
+            "approachTitle": "How Profypsy Works",
+            "stepOneTitle": "Set Up a free account",
+            "stepTwoTitle": "Get matched with a therapist",
+            "stepThreeTitle": "Begin your therapy",
+            "approachImageAlt": "how profypsy works"
+        },
+        "faq": {
+            "faqTitle": "Frequently Asked Questions",
+            "faqQuestion1": "Is online therapy effective?",
+            "faqAnswer1": "Yes, online therapy can be effective, especially when utilized by individuals with appropriate training and experience in the field of psychotherapy. This provides access to therapy for people who might otherwise be unable to access it due to various reasons such as geographical location, financial constraints, or mobility issues. It is important to choose a qualified and licensed therapist and ensure appropriate communication and confidentiality.",
+            "faqQuestion2": "What is the difference between therapy and psychiatry?",
+            "faqAnswer2": "Psychologists study human behavior and thoughts and are trained to conduct psychological assessments and provide counseling but cannot prescribe medication. Psychotherapists specialize in treating mental disorders and issues through various therapeutic methods. Psychiatrists are medical doctors specialized in diagnosing, treating, and managing mental disorders, and they are licensed to prescribe medication.",
+            "faqQuestion3": "How do I get matched with a professional?",
+            "faqAnswer3": "Choosing the right therapist is crucial for the success of therapy. Identify your needs and goals, explore different therapy methods, look for licensed and qualified professionals, ask for recommendations, try the first session to assess compatibility, and establish trust with your therapist. By following these steps, it will be easier to choose the right therapist for you, who will help you achieve your goals and improve your mental well-being."
+        },
+        "join": {
+            "joinTitle": "Would You Like To Join As A Psychologist?",
+            "joinSubtitle": "We are now over 2000 specialists, and still searching for more specialists in the field",
+            "earningsIntro": "As a Profypsy therapist you can earn an estimated",
+            "weeklyHoursLabel": "Weekly hours",
+            "estimatedEarningsLabel": "Estimated annual earnings",
+            "joinImageAlt": "join as a psychologist"
+        }
+    }
+}
