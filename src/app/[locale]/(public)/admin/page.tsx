@@ -15,7 +15,7 @@ import {
 import { db } from "@/firebase/config";
 import { PsychologistProfile } from "@/components/schemas/appliance";
 import { Button } from "@/components/ui/button";
-import { MapPin, Pin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useAuth } from "@/components/Providers";
 import { useRouter } from "next/navigation";
 import ArticlesSchema, { ArticleT } from "@/components/schemas/article";

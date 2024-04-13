@@ -19,7 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import { AppointmentT } from "@/app/(logic)/search/[id]/page";
+import { ProfileT } from "@/app/[locale]/profile/page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";
@@ -29,26 +29,20 @@ import { Label } from "@radix-ui/react-label";
 import {
     FirestoreError,
     doc,
-    getDoc,
-    setDoc,
-    updateDoc,
+    updateDoc
 } from "firebase/firestore";
 import {
     Briefcase,
     GraduationCap,
     Info,
-    Medal,
-    Tag,
-    UserRound,
+    UserRound
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import {
     ChangeEvent,
     Dispatch,
     ReactNode,
     SetStateAction,
-    useEffect,
-    useState,
+    useState
 } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import z from "zod";
@@ -56,8 +50,6 @@ import { useAuth } from "../Providers";
 import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/use-toast";
-import { PsychologistProfile } from "./appliance";
-import { ProfileT } from "@/app/profile/page";
 
 type LanguageT = {
     icon: ReactNode;

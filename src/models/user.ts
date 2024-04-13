@@ -1,4 +1,4 @@
-import { AppointmentT } from "@/app/(logic)/search/[id]/page";
+import { AppointmentT } from "@/app/[locale]/(logic)/search/[id]/page";
 
 type UserType ={
     email: string | null;
