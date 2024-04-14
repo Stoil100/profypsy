@@ -5,20 +5,19 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
+    FormMessage
 } from "@/components/ui/form";
 import { Icons } from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { AuthT } from "@/models/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Facebook } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useAuth } from "../Providers";
-import { Eye, EyeOff, Facebook } from "lucide-react";
-import Link from "next/link";
 
 type FormVariant = {
     variant: "register" | "login";

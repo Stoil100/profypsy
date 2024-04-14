@@ -1,6 +1,5 @@
 "use client";
-import MainButton from "@/components/MainButton";
-import GradientButton from "@/components/MainButton";
+import { default as GradientButton, default as MainButton } from "@/components/MainButton";
 import {
     Accordion,
     AccordionContent,

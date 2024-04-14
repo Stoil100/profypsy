@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import Navigation from "@/components/Navigation";
 import { AuthContextProvider } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
-import Navigation from "@/components/Navigation";
+import type { Metadata } from "next";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+import "./globals.css";
 
 export const metadata: Metadata = {
     title: "Profypsy",

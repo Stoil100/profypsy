@@ -1,12 +1,11 @@
 "use client";
 
-import { HomeIcon, LogIn, LogInIcon, SearchIcon } from "lucide-react";
+import clsx from "clsx";
+import { LogInIcon, SearchIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import LanguageButton from "./LanguageButton";
 import Menu from "./Menu";
 import { useAuth } from "./Providers";
-import LanguageButton from "./LanguageButton";
-import clsx from "clsx";
 
 export default function Navigation() {
     const { user } = useAuth();

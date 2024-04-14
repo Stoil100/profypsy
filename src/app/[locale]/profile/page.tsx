@@ -1,10 +1,7 @@
 "use client";
-import { AppointmentT } from "@/models/appointment";
 import ChatInterface from "@/components/Chat";
-import MainButton from "@/components/MainButton";
-import GradientButton from "@/components/MainButton";
+import { default as GradientButton, default as MainButton } from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
-import { PsychologistProfile } from "@/components/schemas/appliance";
 import ArticlesSchema, { ArticleT } from "@/components/schemas/article";
 import EditForm from "@/components/schemas/edit";
 import {
@@ -14,21 +11,21 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/components/ui/use-toast";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
+import { AppointmentT } from "@/models/appointment";
+import { PsychologistT } from "@/models/psychologist";
 import { Dialog } from "@radix-ui/react-dialog";
 import { collection, deleteDoc, doc, getDoc, onSnapshot, query, where } from "firebase/firestore";
-import { BellDot, Calendar, Mail, NewspaperIcon, Phone, Settings, Trash2Icon, TrashIcon, User } from "lucide-react";
+import { BellDot, Calendar, Mail, NewspaperIcon, Phone, Settings, Trash2Icon, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type ProfileT = PsychologistProfile & AppointmentT;
+export type ProfileT = PsychologistT & AppointmentT;
 
 export default function Page() {
     const { user } = useAuth();

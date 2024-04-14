@@ -15,13 +15,10 @@ import { uploadImage } from "@/firebase/utils/upload";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     Timestamp,
-    collection,
-    deleteDoc,
     doc,
-    getDocs,
-    setDoc,
+    setDoc
 } from "firebase/firestore";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import GradientButton from "../MainButton";

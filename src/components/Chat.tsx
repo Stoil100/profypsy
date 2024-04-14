@@ -4,41 +4,36 @@
 // import { collection, addDoc, query, where, onSnapshot, orderBy, Timestamp } from 'firebase/firestore';
 // import { db } from '@/firebase/config';
 
-import { db } from "@/firebase/config";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    CollectionReference,
-    DocumentReference,
-    UpdateData,
-    addDoc,
-    collection,
-    doc,
-    limit,
-    onSnapshot,
-    orderBy,
-    writeBatch,
-    query,
-    DocumentData,
-    Timestamp,
-    getDoc,
-    setDoc,
-} from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
+    FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Send } from "lucide-react";
+import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    DocumentReference,
+    Timestamp,
+    addDoc,
+    collection,
+    doc,
+    getDoc,
+    limit,
+    onSnapshot,
+    orderBy,
+    query,
+    setDoc,
+    writeBatch
+} from "firebase/firestore";
+import { Send } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { useAuth } from "./Providers";
 
 const formSchema = z.object({
@@ -50,7 +45,6 @@ type ChatProps = {
     receiverUsername: string;
 };
 interface Message {
-    // Define the structure of your message object
     content: string;
     timestamp: Date;
     senderUid: string;
@@ -169,18 +163,14 @@ export default function Chat({
                     Private chat with {receiverUsername}
                 </h2>
                 <div className="flex max-h-[50vh] flex-col gap-2 overflow-y-auto rounded-xl border bg-white p-2">
-                    {messages.map((message, index) => (
+                    {messages!.map((message, index) => (
                         <p
                             key={index}
                             className={cn(
-                                "min-w-[50px] break-all rounded-2xl px-2 text-xl",
-                                user.role === "psychologist"
-                                    ? message.senderUid === senderUid
-                                        ? "self-end bg-[#40916C] text-right text-white"
-                                        : "self-start border-2 border-[#40916C] text-left text-[#40916C]"
-                                    : message.senderUid === senderUid
+                                "min-w-[50px] max-w-[90%] break-all rounded-2xl px-2 text-xl",
+                                    message.senderUid === senderUid
                                       ? "self-end bg-[#40916C] text-right text-white"
-                                      : "self-start border-2 border-[#40916C] text-right text-[#40916C]",
+                                      : "self-start border-2 border-[#40916C] text-left text-[#40916C]",
                             )}
                         >
                             {message.content}

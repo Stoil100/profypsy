@@ -1,6 +1,7 @@
 "use client";
 
-import {useTranslations} from "next-intl"
+import { UserType } from "@/models/user";
+import clsx from "clsx";
 import {
     Facebook,
     Instagram,
@@ -9,16 +10,14 @@ import {
     LogOutIcon,
     Twitter,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import GradientButton from "./MainButton";
-import { Button } from "./ui/button";
-import clsx from "clsx";
-import Link from "next/link";
 import { useAuth } from "./Providers";
-import { UserType } from "@/models/user";
-import { NextRouter } from "next/router";
-import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { Button } from "./ui/button";
 
 interface GuidanceProps {
     variant: "footer" | "navigation";

@@ -315,7 +315,7 @@ export default function EditForm({ className, profile }: Props) {
                             <div className="relative flex items-center justify-center">
                                 {submitImage !== "" ? (
                                     <img
-                                        src={submitImage}
+                                        src={submitImage!}
                                         className="absolute -z-10 size-[150px] rounded-full"
                                     />
                                 ) : (

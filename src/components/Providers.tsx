@@ -1,28 +1,28 @@
 "use client";
-import React, {
+import { auth, db } from "@/firebase/config";
+import { AuthT } from "@/models/auth";
+import { UserType } from "@/models/user";
+import {
+    AuthError,
+    FacebookAuthProvider,
+    GoogleAuthProvider,
+    OAuthProvider,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    sendEmailVerification,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    signOut,
+} from "firebase/auth";
+import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import {
+    ReactNode,
     createContext,
     useContext,
     useEffect,
     useState,
-    ReactNode,
 } from "react";
-import { auth, db } from "@/firebase/config";
-import {
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    signOut,
-    GoogleAuthProvider,
-    OAuthProvider,
-    FacebookAuthProvider,
-    AuthError,
-    sendEmailVerification,
-} from "firebase/auth";
-import { doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
-import { AuthT } from "@/models/auth";
-import { useRouter } from "next/navigation";
-import { UserType } from "@/models/user";
 
 interface AuthContextType {
     user: UserType;

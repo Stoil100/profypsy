@@ -11,7 +11,6 @@ import {
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 import { useAuth } from "@/components/Providers";
-import { PsychologistProfile } from "@/components/schemas/appliance";
 import {
     Form,
     FormControl,
@@ -35,6 +34,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
+import { AppointmentT } from "@/models/appointment";
+import { PsychologistT } from "@/models/psychologist";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import {
@@ -50,7 +51,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { AppointmentT } from "@/models/appointment";
 const Loader = () => (
     <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#F1ECCC]">
         <SearchCheck className="animate-bounce text-[#205041]" size={90} />
@@ -109,7 +109,7 @@ const Loader = () => (
 type BookingDialogProps = {
     isOpen: boolean;
     onClose: () => void;
-    profile: PsychologistProfile | null;
+    profile: PsychologistT | null;
     user: {
         email: string | null;
         userName: string | null;
@@ -119,7 +119,7 @@ type BookingDialogProps = {
     };
 };
 type BookingDatesProps = {
-    profile: PsychologistProfile | null;
+    profile: PsychologistT | null;
     setSelectedAppointmentTime: (value: string) => void;
     selectedAppointmentTime: string | null;
 };
@@ -682,7 +682,7 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
 export default function Page({ params }: { params: { id: string } }) {
     const { user } = useAuth();
     const router = useRouter();
-    const [profile, setProfile] = useState<PsychologistProfile | null>(null);
+    const [profile, setProfile] = useState<PsychologistT | null>(null);
     const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
     const [selectedAppointmentTime, setSelectedAppointmentTime] =
         useState(null);
@@ -697,7 +697,7 @@ export default function Page({ params }: { params: { id: string } }) {
             try {
                 const docRef = doc(db, "psychologists", params.id);
                 const docSnap = await getDoc(docRef);
-                setProfile(docSnap.data()! as PsychologistProfile);
+                setProfile(docSnap.data()! as PsychologistT);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -707,8 +707,8 @@ export default function Page({ params }: { params: { id: string } }) {
     return (
         <>
             {!profile && <Loader />}
-            <section className="flex min-h-screen w-full flex-col items-center justify-center gap-5 py-2 text-center text-[#205041]">
-                <div className="mt-20 flex w-full max-w-[90vw]  flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3">
+            <section className="flex bg-[#F1ECCC]  min-h-screen w-full flex-col items-center justify-center gap-5 py-2 text-center text-[#205041]">
+                <div className="mt-20 flex w-full max-w-[90vw] flex-col gap-8 md:grid md:grid-cols-2 lg:grid-cols-3">
                     <div className="order-2 h-full w-full rounded-2xl bg-gradient-to-b from-[#40916C] to-[#52B788] p-3 shadow-2xl transition-transform hover:scale-105  md:col-span-1 lg:order-1">
                         <div className="flex  h-full w-full flex-col justify-between space-y-6 rounded-xl bg-[#FCFBF4] px-2 py-4">
                             <div className="flex w-fit items-center justify-center self-center rounded-full border-2 border-[#205041] p-2">

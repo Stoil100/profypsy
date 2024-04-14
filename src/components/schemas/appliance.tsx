@@ -19,11 +19,11 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import { AppointmentT } from "@/models/appointment";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";
 import { cn } from "@/lib/utils";
+import { PsychologistT } from "@/models/psychologist";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { FirestoreError, doc, setDoc } from "firebase/firestore";
@@ -157,17 +157,6 @@ const formSchema = z.object({
             message: "You have to select at least one language.",
         }),
 });
-interface SubmitValues extends z.infer<typeof formSchema> {
-    email: string;
-    variant?: "Basic" | "Premium" | "Deluxe";
-    duration: "Monthly" | "Yearly";
-    rating: number;
-    trial: boolean;
-    approved: boolean;
-    uid: string;
-    appointments: AppointmentT[];
-}
-export type { SubmitValues as PsychologistProfile };
 type Props = {
     className: string;
 };
@@ -221,7 +210,7 @@ export default function ApplianceForm({ className }: Props) {
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!user) return; // Additional user validation could be added here
 
-        const tempValues: SubmitValues = {
+        const tempValues: PsychologistT = {
             ...values,
             image: submitImage,
             email: user.email!,
@@ -238,7 +227,7 @@ export default function ApplianceForm({ className }: Props) {
         };
         submitData(tempValues);
     };
-    const submitData = async (values: SubmitValues) => {
+    const submitData = async (values: PsychologistT) => {
         if (user.uid) {
             try {
                 await setDoc(doc(db, "psychologists", user.uid!), values);

@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import {
-    collection,
-    query,
-    where,
-    getDocs,
-    doc,
-    updateDoc,
-    onSnapshot,
-    WhereFilterOp,
-    deleteDoc,
-} from "firebase/firestore";
-import { db } from "@/firebase/config";
-import { PsychologistProfile } from "@/components/schemas/appliance";
-import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
 import { useAuth } from "@/components/Providers";
-import { useRouter } from "next/navigation";
 import ArticlesSchema, { ArticleT } from "@/components/schemas/article";
+import { Button } from "@/components/ui/button";
+import { db } from "@/firebase/config";
+import { PsychologistT } from "@/models/psychologist";
+import {
+    WhereFilterOp,
+    collection,
+    deleteDoc,
+    doc,
+    getDocs,
+    onSnapshot,
+    query,
+    updateDoc,
+    where,
+} from "firebase/firestore";
+import { MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
-const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
+const ProfileInfo: React.FC<PsychologistT> = (profile) => {
     async function ApprovePsychologist(uid: string) {
         const psychologistsRef = doc(db, "psychologists", uid);
         await updateDoc(psychologistsRef, {
@@ -33,7 +33,7 @@ const ProfileInfo: React.FC<PsychologistProfile> = (profile) => {
             <div className="flex h-fit w-full items-center gap-2 py-4">
                 <div className="flex h-full w-1/3 flex-col items-center justify-between gap-2 border">
                     <img
-                        src={profile.image}
+                        src={profile.image!}
                         alt="Profile Image"
                         className="size-[150px] rounded-full border-2 "
                     />
@@ -217,7 +217,7 @@ export default function AdminPage() {
             router.push("/");
         }
     }, [user, router]);
-    const profilesToApprove = useFirestoreCollection<PsychologistProfile>(
+    const profilesToApprove = useFirestoreCollection<PsychologistT>(
         "psychologists",
         ["approved", "==", false],
     );

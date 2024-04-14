@@ -2,7 +2,6 @@
 
 import GradientButton from "@/components/MainButton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
     Carousel,
     CarouselApi,
@@ -14,14 +13,14 @@ import { Slider } from "@/components/ui/slider";
 import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 // import { ListProfile, ListProfiles } from "@/models/listProfile";
-import { PsychologistProfile } from "@/components/schemas/appliance";
+import { useAuth } from "@/components/Providers";
+import { PsychologistT } from "@/models/psychologist";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ChevronRight, Pin, SearchCheck, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { useAuth } from "@/components/Providers";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 interface OptionProps {
     name: string;
     iconSrc: string;
@@ -107,7 +106,7 @@ const ProfileCard = ({
     variant,
     uid,
     trial,
-}: PsychologistProfile) => (
+}: PsychologistT) => (
     <div className="relative flex w-fit max-w-[300px] flex-col items-center justify-between gap-4 rounded-3xl bg-[#FCFBF4] p-6">
         <Badge
             className={cn(
@@ -358,7 +357,7 @@ const Page: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [finnishedOptions, setFinnishedOptions] = useState(false);
     const [isShown, setIsShown] = useState(false);
-    const [psychologists, setPsychologists] = useState<PsychologistProfile[]>(
+    const [psychologists, setPsychologists] = useState<PsychologistT[]>(
         [],
     );
     const { user } = useAuth();
@@ -379,9 +378,9 @@ const Page: React.FC = () => {
         const unsubscribe = onSnapshot(
             q,
             (querySnapshot) => {
-                const tempValues: PsychologistProfile[] = [];
+                const tempValues: PsychologistT[] = [];
                 querySnapshot.forEach((doc) => {
-                    tempValues.push(doc.data() as PsychologistProfile);
+                    tempValues.push(doc.data() as PsychologistT);
                 });
                 setPsychologists(tempValues);
                 setIsLoading(false);

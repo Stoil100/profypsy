@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "./ui/button";
 import { Languages } from "lucide-react";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 type LanguageT = "БГ" | "EN";
 
