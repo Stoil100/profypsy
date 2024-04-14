@@ -1,5 +1,5 @@
 "use client";
-import { AppointmentT } from "../(logic)/search/[id]/page";
+import { AppointmentT } from "@/models/appointment";
 import ChatInterface from "@/components/Chat";
 import MainButton from "@/components/MainButton";
 import GradientButton from "@/components/MainButton";

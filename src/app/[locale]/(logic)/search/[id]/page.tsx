@@ -50,6 +50,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { AppointmentT } from "@/models/appointment";
 const Loader = () => (
     <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#F1ECCC]">
         <SearchCheck className="animate-bounce text-[#205041]" size={90} />
@@ -138,7 +139,6 @@ const formSchema = z.object({
     email: z.string().email(),
     age: z.string().min(1, "Please select a valid age"),
 });
-
 const BookingDates: React.FC<BookingDatesProps> = ({
     profile,
     setSelectedAppointmentTime,
@@ -322,13 +322,6 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     );
 };
 
-interface AppointmentT extends z.infer<typeof formSchema> {
-    selectedDate: string;
-    clientUid: string;
-    psychologistUid: string;
-}
-
-export type { AppointmentT };
 
 const BookingDialog: React.FC<BookingDialogProps> = ({
     isOpen,
