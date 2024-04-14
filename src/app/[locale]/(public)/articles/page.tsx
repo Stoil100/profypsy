@@ -93,10 +93,10 @@ export default function Articles() {
                 <h4 className="w-fit border-b-2 px-2 pb-2 text-center text-3xl italic">
                     Our most popular articles:
                 </h4>
-                <Carousel>
+                <Carousel className="w-full">
                     <CarouselContent>
                         {articles?.map((article, index) => (
-                            <CarouselItem key={index} className="">
+                            <CarouselItem key={index}>
                                 <div
                                     style={{
                                         backgroundImage: `url(${article.image})`,
@@ -120,13 +120,13 @@ export default function Articles() {
                     </CarouselContent>
                     {articles!.length! > 1 && (
                         <>
-                            <CarouselPrevious />
-                            <CarouselNext />
+                            <CarouselPrevious className="md:flex hidden"/>
+                            <CarouselNext className="md:flex hidden" />
                         </>
                     )}
                 </Carousel>
             </div>
-            <div className="flex w-full max-w-2xl flex-wrap items-center justify-center">
+            <div className="flex w-full flex-wrap items-center justify-around gap-2 max-w-6xl">
                 {articles?.map((article, index) => (
                     <ArticleCard {...article} key={index} />
                 ))}
