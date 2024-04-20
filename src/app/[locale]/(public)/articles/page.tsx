@@ -17,12 +17,14 @@ import {
     query,
     where,
 } from "firebase/firestore";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const ArticleCard: React.FC<ArticleT> = (article) => {
     const router = useRouter();
+    const t = useTranslations("Article");
     return (
         <div
             className="max-w-xs space-y-3 rounded-xl transition-transform hover:scale-105"
@@ -32,10 +34,11 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
         >
             <div className="relative flex h-fit items-end">
                 <img
-                    src={article.image!}
+                    src={article.image}
+                    alt={article.title}
                     className="top-0 h-auto w-full rounded-xl"
                 />
-                <Badge className="absolute z-50">Most recent</Badge>
+                <Badge className="absolute z-50">{t("mostRecent")}</Badge>
             </div>
             <h2 className="text-xl font-bold">{article.title}</h2>
             <p className="line-clamp-4">
@@ -45,7 +48,7 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
                 href={`articles/${article.id}`}
                 className="block w-fit rounded-full bg-[#25BA9E] p-1 px-2 text-white"
             >
-                Read more
+                {t("readMore")}
             </Link>
         </div>
     );
@@ -54,7 +57,7 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
 export default function Articles() {
     const [articles, setArticles] = useState<ArticleT[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-
+    const t = useTranslations("Article");
     useEffect(() => {
         function fetchItems() {
             setIsLoading(true);
@@ -87,11 +90,11 @@ export default function Articles() {
     return (
         <main className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] px-2 py-20">
             <h1 className="border-b-2 border-[#25BA9E] pb-2 text-center font-playfairDSC text-5xl italic">
-                Profypsy&apos;s Articles
+                {t("pageTitle")}
             </h1>
             <div className="mb-10 flex max-w-3xl flex-col items-center rounded-2xl bg-white p-2 ">
                 <h4 className="w-fit border-b-2 px-2 pb-2 text-center text-3xl italic">
-                    Our most popular articles:
+                    {t("popularArticlesHeader")}
                 </h4>
                 <Carousel className="w-full">
                     <CarouselContent>
@@ -101,7 +104,7 @@ export default function Articles() {
                                     style={{
                                         backgroundImage: `url(${article.image})`,
                                     }}
-                                    className="flex min-h-[30vh] flex-wrap items-end gap-10  rounded-xl bg-cover "
+                                    className="flex min-h-[30vh] flex-wrap items-end gap-10 rounded-xl bg-cover "
                                 >
                                     <div className="h-full w-full rounded-b-xl bg-black/70 p-2 text-white">
                                         <h2 className="text-2xl italic">
@@ -111,22 +114,22 @@ export default function Articles() {
                                             href={`articles/${article.id}`}
                                             className="block w-fit rounded-full bg-[#25BA9E] p-1 px-2 text-white transition-transform hover:scale-105"
                                         >
-                                            Read more
+                                            {t("readMore")}
                                         </Link>
                                     </div>
                                 </div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    {articles!.length! > 1 && (
+                    {articles && articles.length > 1 && (
                         <>
-                            <CarouselPrevious className="md:flex hidden"/>
-                            <CarouselNext className="md:flex hidden" />
+                            <CarouselPrevious className="hidden md:flex" />
+                            <CarouselNext className="hidden md:flex" />
                         </>
                     )}
                 </Carousel>
             </div>
-            <div className="flex w-full flex-wrap items-center justify-around gap-2 max-w-6xl">
+            <div className="flex w-full max-w-6xl flex-wrap items-center justify-around gap-2">
                 {articles?.map((article, index) => (
                     <ArticleCard {...article} key={index} />
                 ))}

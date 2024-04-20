@@ -43,124 +43,118 @@ import { useAuth } from "../Providers";
 import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/use-toast";
+import { useTranslations } from "next-intl";
 
 type LanguageT = {
     icon: ReactNode;
     language: string;
 };
-const languageOptions: LanguageT[] = [
-    {
-        icon: <img src="/logic/bg.png" />,
-        language: "Bulgarian",
-    },
-    {
-        icon: <img src="/logic/en.png" />,
-        language: "English",
-    },
-];
-const specializationOptions = [
-    {
-        specialization: "For you",
-    },
-    {
-        specialization: "For couples",
-    },
-    {
-        specialization: "For families",
-    },
-];
-const dateOptions = [
-    { id: "monday", label: "Monday" },
-    { id: "tuesday", label: "Tuesday" },
-    { id: "wednesday", label: "Wednesday" },
-    { id: "thursday", label: "Thursday" },
-    { id: "friday", label: "Friday" },
-    { id: "saturday", label: "Saturday" },
-    { id: "sunday", label: "Sunday" },
-];
-const formSchema = z.object({
-    phone: z
-        .string()
-        .regex(
-            /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
-            "Invalid phone number",
-        ),
-    age: z.string().min(1, "Please select your age."),
-    about: z
-        .string()
-        .min(
-            10,
-            "You should add a description about yourself of 10 or more characters",
-        )
-        .max(500, "Your description should not exceed 500 characters"),
-    quote: z
-        .string()
-        .min(5, "You should add a personal quote of 5 or more characters")
-        .max(100, "Your quote should not exceed 100 characters"),
-    image: z.any().optional(),
-    cv: z
-        .any()
-        .refine((file) => file?.length == 1, "Please upload a valid CV file"),
-    letter: z
-        .any()
-        .refine(
-            (file) => file?.length == 1,
-            "Please upload a valid motivational letter",
-        ),
-    diploma: z
-        .any()
-        .refine(
-            (file) => file?.length == 1,
-            "Please upload a valid diploma file",
-        ),
-    cost: z.object({
-        dates: z
-            .array(z.string())
-            .refine((value) => value.some((item) => item), {
-                message: "You have to select at least one item.",
-            }),
-        price: z.string().min(1, "Please select a price per hour."),
-    }),
-    educations: z.array(
-        z.object({
-            education: z
-                .string()
-                .min(
-                    1,
-                    "Enter a valid education/school/university/college information",
-                ),
-        }),
-    ),
-    experiences: z.array(
-        z.object({
-            experience: z
-                .string()
-                .min(
-                    1,
-                    "Enter a valid experience/work/job environment information",
-                ),
-        }),
-    ),
-    userName: z.string().min(3, "Enter a valid name"),
-    location: z
-        .string()
-        .min(1, "Enter a valid city")
-        .max(60, "Please do not exceed the 60 character limit"),
-    specializations: z
-        .array(z.string())
-        .refine((value) => value.some((item) => item), {
-            message: "You have to select at least one item.",
-        }),
-    languages: z
-        .array(z.string())
-        .refine((value) => value.some((item) => item), {
-            message: "You have to select at least one language.",
-        }),
-});
+
 type Props = {
     className: string;
 };
 export default function ApplianceForm({ className }: Props) {
+    const t = useTranslations("Auth.appliance");
+    const languageOptions: LanguageT[] = [
+        {
+            icon: <img src="/logic/bg.png" />,
+            language: t("languages.bulgarian"),
+        },
+        {
+            icon: <img src="/logic/en.png" />,
+            language: t("languages.english"),
+        },
+    ];
+    const specializationOptions = [
+        {
+            specialization: t("specializations.you"),
+        },
+        {
+            specialization: t("specializations.couples"),
+        },
+        {
+            specialization: t("specializations.families"),
+        },
+    ];
+    const dateOptions = [
+        { id: "monday", label: t("dates.monday") },
+        { id: "tuesday", label: t("dates.tuesday") },
+        { id: "wednesday", label: t("dates.wednesday") },
+        { id: "thursday", label: t("dates.thursday") },
+        { id: "friday", label: t("dates.friday") },
+        { id: "saturday", label: t("dates.saturday") },
+        { id: "sunday", label: t("dates.sunday") },
+    ];
+    const formSchema = z.object({
+        phone: z
+            .string()
+            .regex(
+                /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+                t("formSchemaErrors.invalidPhoneNumber"),
+            ),
+        age: z.string().min(1, t("formSchemaErrors.selectAge")),
+        about: z
+            .string()
+            .min(10, t("formSchemaErrors.shortDescription"))
+            .max(500, t("formSchemaErrors.longDescription")),
+        quote: z
+            .string()
+            .min(5, t("formSchemaErrors.shortQuote"))
+            .max(100, t("formSchemaErrors.longQuote")),
+        image: z.any().optional(),
+        cv: z
+            .any()
+            .refine((file) => file?.length == 1, t("formSchemaErrors.validCV")),
+        letter: z
+            .any()
+            .refine(
+                (file) => file?.length == 1,
+                t("formSchemaErrors.validLetter"),
+            ),
+        diploma: z
+            .any()
+            .refine(
+                (file) => file?.length == 1,
+                t("formSchemaErrors.validDiploma"),
+            ),
+        cost: z.object({
+            dates: z
+                .array(z.string())
+                .refine((value) => value.some((item) => item), {
+                    message: t("formSchemaErrors.selectAtLeastOneDate"),
+                }),
+            price: z.string().min(1, t("formSchemaErrors.selectPricePerHour")),
+        }),
+        educations: z.array(
+            z.object({
+                education: z
+                    .string()
+                    .min(1, t("formSchemaErrors.validEducation")),
+            }),
+        ),
+        experiences: z.array(
+            z.object({
+                experience: z
+                    .string()
+                    .min(1, t("formSchemaErrors.validExperience")),
+            }),
+        ),
+        userName: z.string().min(3, t("formSchemaErrors.validName")),
+        location: z
+            .string()
+            .min(1, t("formSchemaErrors.validCity"))
+            .max(60, t("formSchemaErrors.cityCharacterLimit")),
+        specializations: z
+            .array(z.string())
+            .refine((value) => value.some((item) => item), {
+                message: t("formSchemaErrors.selectAtLeastOneSpecialization"),
+            }),
+        languages: z
+            .array(z.string())
+            .refine((value) => value.some((item) => item), {
+                message: t("formSchemaErrors.selectAtLeastOneLanguage"),
+            }),
+    });
     const { user } = useAuth();
     const router = useRouter();
     useEffect(() => {
@@ -238,14 +232,16 @@ export default function ApplianceForm({ className }: Props) {
                     appointments: user.appointments,
                 });
                 toast({
-                    title: "Thanks for applying to Profypsy",
-                    description: `We will reach out to you soon via ${values.email}`,
+                    title: t("upload.thanksForApplyingTitle"),
+                    description: t("upload.thanksForApplyingDescription", {
+                        email: values.email,
+                    }),
                 });
                 router.push(`/profile`);
             } catch (error) {
                 const firestoreError = error as FirestoreError;
                 toast({
-                    title: "Error uploading document",
+                    title: t("upload.errorUploadingDocumentTitle"),
                     description: `${firestoreError.message}`,
                 });
                 router.push("/");
@@ -274,7 +270,6 @@ export default function ApplianceForm({ className }: Props) {
         control: form.control,
         name: "experiences",
     });
-
     type SubsriptionOptionVariant = {
         variant: "Basic" | "Premium" | "Deluxe";
         type: "Monthly" | "Yearly";
@@ -455,7 +450,9 @@ export default function ApplianceForm({ className }: Props) {
                                 }}
                             >
                                 <Info className="size-8 md:size-6" />
-                                <p className="hidden md:block">Personal Info</p>
+                                <p className="hidden md:block">
+                                    {t("form.tabs.info")}
+                                </p>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="education"
@@ -469,7 +466,9 @@ export default function ApplianceForm({ className }: Props) {
                                 }}
                             >
                                 <GraduationCap className="size-8 sm:size-6" />
-                                <p className="hidden md:block">Education</p>
+                                <p className="hidden md:block">
+                                    {t("form.tabs.education")}
+                                </p>
                             </TabsTrigger>
                             <TabsTrigger
                                 value="experience"
@@ -483,7 +482,9 @@ export default function ApplianceForm({ className }: Props) {
                                 }}
                             >
                                 <Briefcase className="size-8 sm:size-6" />
-                                <p className="hidden md:block">Experience</p>
+                                <p className="hidden md:block">
+                                    {t("form.tabs.experience")}
+                                </p>
                             </TabsTrigger>
                         </TabsList>
                         <TabsContent value="info" className="space-y-4">
@@ -536,10 +537,14 @@ export default function ApplianceForm({ className }: Props) {
                                 name="userName"
                                 render={({ field }) => (
                                     <FormItem className="w-full">
-                                        <FormLabel>User Name:</FormLabel>
+                                        <FormLabel>
+                                            {t("form.userName.label")}
+                                        </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Enter your name..."
+                                                placeholder={t(
+                                                    "form.userName.placeholder",
+                                                )}
                                                 {...field}
                                                 className="rounded-2xl border-2 border-black"
                                             />
@@ -550,7 +555,7 @@ export default function ApplianceForm({ className }: Props) {
                             />
                             <div className="flex w-full items-end justify-center gap-2">
                                 <div className="w-full">
-                                    <Label>Telephone:</Label>
+                                    <Label>{t("form.telephone.label")}</Label>
                                     <div className="flex items-center justify-center rounded-full border-2 border-black px-2">
                                         <img
                                             src="/logic/bg.png"
@@ -563,7 +568,9 @@ export default function ApplianceForm({ className }: Props) {
                                                 <FormItem className="w-full ">
                                                     <FormControl>
                                                         <Input
-                                                            placeholder="+359"
+                                                            placeholder={t(
+                                                                "form.telephone.placeholder",
+                                                            )}
                                                             {...field}
                                                             className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                                                         />
@@ -579,7 +586,9 @@ export default function ApplianceForm({ className }: Props) {
                                     name="age"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel>Age:</FormLabel>
+                                            <FormLabel>
+                                                {t("form.age.label")}
+                                            </FormLabel>
                                             <Select
                                                 onValueChange={field.onChange}
                                                 defaultValue={`${field.value}`}
@@ -587,7 +596,9 @@ export default function ApplianceForm({ className }: Props) {
                                                 <FormControl>
                                                     <SelectTrigger className="w-full rounded-xl border-2 border-black text-xl">
                                                         <SelectValue
-                                                            placeholder="Select your age"
+                                                            placeholder={t(
+                                                                "form.age.placeholder",
+                                                            )}
                                                             defaultValue={
                                                                 field.value
                                                             }
@@ -597,7 +608,9 @@ export default function ApplianceForm({ className }: Props) {
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>
-                                                            Select your age:
+                                                            {t(
+                                                                "form.age.placeholder",
+                                                            )}
                                                         </SelectLabel>
                                                         {Array.from({
                                                             length: 100,
@@ -622,10 +635,14 @@ export default function ApplianceForm({ className }: Props) {
                                 name="location"
                                 render={({ field }) => (
                                     <FormItem className="w-full">
-                                        <FormLabel>City:</FormLabel>
+                                        <FormLabel>
+                                            {t("form.location.label")}
+                                        </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Enter the city you are working from..."
+                                                placeholder={t(
+                                                    "form.location.placeholder",
+                                                )}
                                                 {...field}
                                                 className="rounded-2xl border-2 border-black"
                                             />
@@ -640,10 +657,14 @@ export default function ApplianceForm({ className }: Props) {
                                 name="about"
                                 render={({ field }) => (
                                     <FormItem className="w-full">
-                                        <FormLabel>About you:</FormLabel>
+                                        <FormLabel>
+                                            {t("form.about.label")}
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                placeholder="Write a short and eye-catching biography to draw more clients in..."
+                                                placeholder={t(
+                                                    "form.about.placeholder",
+                                                )}
                                                 {...field}
                                                 className="rounded-2xl border-2 border-black"
                                             />
@@ -657,10 +678,14 @@ export default function ApplianceForm({ className }: Props) {
                                 name="quote"
                                 render={({ field }) => (
                                     <FormItem className="w-full">
-                                        <FormLabel>Quote:</FormLabel>
+                                        <FormLabel>
+                                            {t("form.quote.label")}
+                                        </FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                placeholder="Add your personal quote to inspire your future clients..."
+                                                placeholder={t(
+                                                    "form.quote.placeholder",
+                                                )}
                                                 {...field}
                                                 className="rounded-2xl border-2 border-black"
                                             />
@@ -670,9 +695,7 @@ export default function ApplianceForm({ className }: Props) {
                                 )}
                             />
                             <div className="space-y-2 rounded-3xl border-2 border-black p-4">
-                                <h2 className="text-xl">
-                                    Please upload your CV here:
-                                </h2>
+                                <h2 className="text-xl">{t("form.cv")}</h2>
                                 <hr className="w-full border-2 border-black" />
                                 <div className="relative h-fit">
                                     {submitCV ? (
@@ -687,9 +710,11 @@ export default function ApplianceForm({ className }: Props) {
                                                 className="h-20"
                                             />
                                             <p>
-                                                Drag and drop,{" "}
+                                                {t("form.dragDrop.text")}{" "}
                                                 <span className="text-[#25BA9E]">
-                                                    or choose a file
+                                                    {t(
+                                                        "form.dragDrop.description",
+                                                    )}
                                                 </span>
                                             </p>
                                         </div>
@@ -732,7 +757,7 @@ export default function ApplianceForm({ className }: Props) {
                                             {field.field.value.length !== 0 && (
                                                 <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-xl border-2 border-dashed border-black p-1 md:w-1/2">
                                                     <h2 className="text-lg">
-                                                        Selected Languages:
+                                                        {t("form.languages")}
                                                     </h2>
                                                     {field.field.value.map(
                                                         (value, index) => (
@@ -748,12 +773,18 @@ export default function ApplianceForm({ className }: Props) {
                                             )}
                                             <Select>
                                                 <SelectTrigger className="h-full w-full rounded-xl border-2 border-black text-xl">
-                                                    <SelectValue placeholder="Select languages:" />
+                                                    <SelectValue
+                                                        placeholder={t(
+                                                            "form.languages",
+                                                        )}
+                                                    />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>
-                                                            Select Languages:
+                                                            {t(
+                                                                "form.languages",
+                                                            )}
                                                         </SelectLabel>
 
                                                         <FormItem className="w-full">
@@ -840,7 +871,7 @@ export default function ApplianceForm({ className }: Props) {
                                         setTab("education");
                                     }}
                                 >
-                                    Next
+                                    {t("form.button.next")}
                                 </Button>
                             </div>
                         </TabsContent>
@@ -870,12 +901,15 @@ export default function ApplianceForm({ className }: Props) {
                                             render={({ field }) => (
                                                 <FormItem className="w-full border-b-2 border-black p-2 pb-6">
                                                     <FormLabel>
-                                                        Information about the
-                                                        school/university/college:
+                                                        {t(
+                                                            "form.educations.label",
+                                                        )}
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            placeholder="Enter school/university/college description here..."
+                                                            placeholder={t(
+                                                                "form.educations.placeholder",
+                                                            )}
                                                             {...field}
                                                         />
                                                     </FormControl>
@@ -898,9 +932,7 @@ export default function ApplianceForm({ className }: Props) {
                                 ))}
                             </div>
                             <div className="space-y-2 rounded-3xl border-2 border-black p-4">
-                                <h2 className="text-xl">
-                                    Please upload your diploma here:
-                                </h2>
+                                <h2 className="text-xl">{t("form.diploma")}</h2>
                                 <hr className="w-full border-2 border-black" />
                                 <div className="relative h-fit">
                                     {submitDiploma ? (
@@ -915,9 +947,11 @@ export default function ApplianceForm({ className }: Props) {
                                                 className="h-20"
                                             />
                                             <p>
-                                                Drag and drop,{" "}
+                                                {t("form.dragDrop.text")}{" "}
                                                 <span className="text-[#25BA9E]">
-                                                    or choose a file
+                                                    {t(
+                                                        "form.dragDrop.description",
+                                                    )}
                                                 </span>
                                             </p>
                                         </div>
@@ -962,7 +996,7 @@ export default function ApplianceForm({ className }: Props) {
                                         setTab("info");
                                     }}
                                 >
-                                    Previous
+                                    {t("form.button.previous")}
                                 </Button>
                                 <Button
                                     type="button"
@@ -971,7 +1005,7 @@ export default function ApplianceForm({ className }: Props) {
                                         setTab("experience");
                                     }}
                                 >
-                                    Next
+                                    {t("form.button.next")}
                                 </Button>
                             </div>
                         </TabsContent>
@@ -1001,12 +1035,15 @@ export default function ApplianceForm({ className }: Props) {
                                             render={({ field }) => (
                                                 <FormItem className="w-full border-b-2 border-black p-2 pb-6">
                                                     <FormLabel>
-                                                        Information about the
-                                                        work/job:
+                                                        {t(
+                                                            "form.experiences.label",
+                                                        )}
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            placeholder="Enter work description here..."
+                                                            placeholder={t(
+                                                                "form.experiences.placeholder",
+                                                            )}
                                                             {...field}
                                                         />
                                                     </FormControl>
@@ -1037,8 +1074,9 @@ export default function ApplianceForm({ className }: Props) {
                                             {field.field.value.length !== 0 && (
                                                 <div className="flex w-full flex-wrap items-center gap-2 rounded-xl border-2 border-dashed border-black p-1 md:w-1/2">
                                                     <h2 className="text-lg">
-                                                        Selected
-                                                        Specializations:
+                                                        {t(
+                                                            "form.specializations.label",
+                                                        )}
                                                     </h2>
                                                     {field.field.value.map(
                                                         (value, index) => (
@@ -1054,13 +1092,18 @@ export default function ApplianceForm({ className }: Props) {
                                             )}
                                             <Select>
                                                 <SelectTrigger className="h-full w-full rounded-xl border-2 border-black text-xl">
-                                                    <SelectValue placeholder="Select specializations:" />
+                                                    <SelectValue
+                                                        placeholder={t(
+                                                            "form.specializations.placeholder",
+                                                        )}
+                                                    />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>
-                                                            Select
-                                                            Specializations:
+                                                            {t(
+                                                                "form.specializations.label",
+                                                            )}
                                                         </SelectLabel>
 
                                                         <FormItem className="w-full">
@@ -1139,12 +1182,14 @@ export default function ApplianceForm({ className }: Props) {
                             <div className="flex w-full items-center gap-2">
                                 <Select>
                                     <SelectTrigger className="w-full rounded-xl border-2 border-black text-xl">
-                                        <SelectValue placeholder="Select dates:" />
+                                        <SelectValue
+                                            placeholder={t("form.cost.dates")}
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
                                             <SelectLabel>
-                                                Select Dates:
+                                                {t("form.cost.dates")}
                                             </SelectLabel>
                                             <FormField
                                                 control={form.control}
@@ -1228,7 +1273,9 @@ export default function ApplianceForm({ className }: Props) {
                                                 <FormControl>
                                                     <SelectTrigger className="w-full rounded-xl border-2 border-black text-xl">
                                                         <SelectValue
-                                                            placeholder="Select price/h"
+                                                            placeholder={t(
+                                                                "form.cost.price",
+                                                            )}
                                                             defaultValue={
                                                                 field.value
                                                             }
@@ -1238,7 +1285,9 @@ export default function ApplianceForm({ className }: Props) {
                                                 <SelectContent>
                                                     <SelectGroup>
                                                         <SelectLabel>
-                                                            Select price:
+                                                            {t(
+                                                                "form.cost.price",
+                                                            )}
                                                         </SelectLabel>
                                                         {Array.from({
                                                             length: 100,
@@ -1260,9 +1309,7 @@ export default function ApplianceForm({ className }: Props) {
                                 />
                             </div>
                             <div className="space-y-2 rounded-3xl border-2 border-black p-4">
-                                <h2 className="text-xl">
-                                    Please upload your motivational letter here:
-                                </h2>
+                                <h2 className="text-xl">{t("form.letter")}</h2>
                                 <hr className="w-full border-2 border-black" />
                                 <div className="relative h-fit">
                                     {submitLetter ? (
@@ -1277,9 +1324,11 @@ export default function ApplianceForm({ className }: Props) {
                                                 className="h-20"
                                             />
                                             <p>
-                                                Drag and drop,{" "}
+                                                {t("form.dragDrop.text")}{" "}
                                                 <span className="text-[#25BA9E]">
-                                                    or choose a file
+                                                    {t(
+                                                        "form.dragDrop.description",
+                                                    )}
                                                 </span>
                                             </p>
                                         </div>
@@ -1324,14 +1373,14 @@ export default function ApplianceForm({ className }: Props) {
                                         setTab("education");
                                     }}
                                 >
-                                    Previous
+                                    {t("form.button.previous")}
                                 </Button>
                                 <Button
                                     variant="outline"
                                     type="submit"
                                     className="rounded-full bg-[#25BA9E] text-xl text-white"
                                 >
-                                    Submit
+                                    {t("form.button.submit")}
                                 </Button>
                             </div>
                         </TabsContent>

@@ -237,7 +237,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                     appointments: docSnap.data()!.appointments,
                     admin: docSnap.data()!.admin,
                 });
-                router.push(`/profile/${result.user.uid}`);
+                router.push(`/profilе`);
             }
         } catch (error) {
             return error as AuthError;

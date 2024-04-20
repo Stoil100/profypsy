@@ -1,6 +1,6 @@
 "use client";
 
-import GradientButton from "@/components/MainButton";
+import MainButton from "@/components/MainButton";
 import { Badge } from "@/components/ui/badge";
 import {
     Carousel,
@@ -20,7 +20,8 @@ import { ChevronRight, Pin, SearchCheck, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
+import { useTranslations } from "next-intl";
 interface OptionProps {
     name: string;
     iconSrc: string;
@@ -106,60 +107,67 @@ const ProfileCard = ({
     variant,
     uid,
     trial,
-}: PsychologistT) => (
-    <div className="relative flex w-fit max-w-[300px] flex-col items-center justify-between gap-4 rounded-3xl bg-[#FCFBF4] p-6">
-        <Badge
-            className={cn(
-                "absolute -left-3 -top-3 text-white",
-                variant === "Deluxe"
-                    ? "bg-[#FCD96A]"
+}: PsychologistT) => {
+    const t = useTranslations("Search");
+    return (
+        <div className="relative flex w-fit max-w-[300px] flex-col items-center justify-between gap-4 rounded-3xl bg-[#FCFBF4] p-6">
+            <Badge
+                className={`absolute -left-3 -top-3 text-white ${
+                    variant === "Deluxe"
+                        ? "bg-[#FCD96A]"
+                        : variant === "Premium"
+                          ? "bg-[#FC8A6A]"
+                          : trial
+                            ? "bg-[#99B6ED]"
+                            : "border-none bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] text-black"
+                }`}
+            >
+                {variant === "Deluxe"
+                    ? t("bestSuited")
                     : variant === "Premium"
-                      ? "bg-[#FC8A6A]"
+                      ? t("recommendedByUs")
                       : trial
-                        ? "bg-[#99B6ED]"
-                        : "border-none bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] text-black",
+                        ? t("freshlyFound")
+                        : t("strongMatch")}
+            </Badge>
+            {image ? (
+                <img
+                    src={image}
+                    alt="Profile Image"
+                    className="size-28 rounded"
+                />
+            ) : (
+                <div className="size-20 rounded-full border-2 border-dashed border-gray-500 p-4">
+                    <User className="h-full w-full text-gray-400" />
+                </div>
             )}
-        >
-            {variant === "Deluxe"
-                ? "Best suited"
-                : variant === "Premium"
-                  ? "Recommended by us"
-                  : trial
-                    ? "Freshly found"
-                    : "Strong match"}
-        </Badge>
-        {image ? (
-            <img src={image} className="size-28 rounded" />
-        ) : (
-            <div className="size-20 rounded-full border-2 border-dashed border-gray-500 p-4">
-                <User className="h-full w-full text-gray-400" />
+            <div className="flex w-full flex-col items-start justify-center gap-2 break-all">
+                <h4 className="text-3xl text-[#205041]">{userName}</h4>
+                <div className="flex w-fit items-center justify-center gap-1">
+                    <Pin color="#08BF6B" />
+                    <p className="text-[#205041]">{location}</p>
+                </div>
+                {experiences.map((experience, index) => (
+                    <p className="line-clamp-1 text-[#20504180]" key={index}>
+                        {experience.experience}
+                    </p>
+                ))}
+                <p className="line-clamp-1 text-[#205041]">{about}</p>
             </div>
-        )}
-        <div className="flex w-full flex-col items-start justify-center gap-2 break-all">
-            <h4 className="text-3xl text-[#205041]">{userName}</h4>
-            <div className="flex  w-fit items-center justify-center gap-1">
-                <Pin color="#08BF6B" />
-                <p className="text-[#205041]">{location}</p>
-            </div>
-            {experiences.map((experience, index) => (
-                <p className="line-clamp-1 text-[#20504180] " key={index}>
-                    {experience.experience}
-                </p>
-            ))}
-            <p className="line-clamp-1 text-[#205041]">{about}</p>
+            <Link
+                href={`/search/${uid}`}
+                className="w-full rounded-xl bg-gradient-to-b from-[#40916C] to-[#52B788] py-2 text-center text-white transition-transform hover:md:scale-110"
+            >
+                {t("bookNow")}
+            </Link>
         </div>
-        <Link
-            href={`/search/${uid}`}
-            className="w-full rounded-xl bg-gradient-to-b from-[#40916C] to-[#52B788] py-2 text-center text-white transition-transform hover:md:scale-110"
-        >
-            Book Now
-        </Link>
-    </div>
-);
+    );
+};
 
 type OptionsSectionProps = { fetchItems: () => void };
 
 const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
+    const t = useTranslations("Search");
     const [api, setApi] = useState<CarouselApi>();
     const [draggedValue, setDraggedValue] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState<
@@ -175,81 +183,82 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
         >
             <CarouselContent>
                 <CarouselItem className="pb-2">
-                    <div className="text-[#205041 flex h-full w-full flex-col items-center justify-center gap-5">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-5 text-[#205041]">
                         <h2 className="px-2 text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
-                            Lets find what’s right for you
+                            {t("findRightForYou")}
                         </h2>
                         <ul className="text-md list-decimal pl-10 font-semibold text-[#205041] md:text-xl">
-                            <li>Tell us what is on your mind</li>
-                            <li>Find a psychologist that suits you</li>
-                            <li>Book your session</li>
+                            <li>{t("tellUsWhatIsOnYourMind")}</li>
+                            <li>{t("findPsychologist")}</li>
+                            <li>{t("bookYourSession")}</li>
                         </ul>
                         <img
                             src="/logic/search.png"
                             className="max-h-[200px] md:max-h-[400px]"
+                            alt={t("findRightForYou")}
                         />
-                        <GradientButton
+                        <MainButton
                             className="text-xl md:text-3xl"
                             onClick={scrollNext}
                         >
-                            Get Started
-                        </GradientButton>
+                            {t("getStarted")}
+                        </MainButton>
                     </div>
                 </CarouselItem>
                 <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1 px-2">
                         <h2 className="text-center font-playfairDSC text-3xl capitalize text-[#205041] md:text-4xl">
-                            Who is the support for you?
+                            {t("whoIsTheSupportFor")}
                         </h2>
                         <div className="w-full max-w-[500px] space-y-4">
                             <OptionComponent
-                                name="For you"
+                                name={t("forYou")}
                                 iconSrc="/homepage/person.png"
                                 isSelected={selectedOptions === "you"}
                                 onSelect={() => setSelectedOptions("you")}
                             />
                             <OptionComponent
-                                name="For couples"
+                                name={t("forCouples")}
                                 iconSrc="/homepage/couples.png"
                                 isSelected={selectedOptions === "couples"}
                                 onSelect={() => setSelectedOptions("couples")}
                             />
                             <OptionComponent
-                                name="For families"
+                                name={t("forFamilies")}
                                 iconSrc="/homepage/families.png"
                                 isSelected={selectedOptions === "families"}
                                 onSelect={() => setSelectedOptions("families")}
                             />
                         </div>
-                        <GradientButton
+                        <MainButton
                             className="text-xl md:text-3xl"
                             onClick={scrollNext}
                         >
-                            Next
-                        </GradientButton>
+                            {t("next")}
+                        </MainButton>
                     </div>
                 </CarouselItem>
                 <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1">
                         <h2 className="text-center font-playfairDSC text-3xl capitalize text-[#205041] md:text-4xl">
-                            What language would you prefer?
+                            {t("languagePreference")}
                         </h2>
                         <div className="flex w-full max-w-[500px] flex-col items-center gap-4 px-2">
                             <LanguageSelector
-                                language="Bulgarian"
+                                language={t("bulgarian")}
                                 imageSrc="/logic/bg.png"
                             />
                             <LanguageSelector
-                                language="English"
+                                language={t("english")}
                                 imageSrc="/logic/en.png"
                             />
                         </div>
-                        <GradientButton
+                        <MainButton
                             className="text-xl md:text-3xl"
                             onClick={scrollNext}
                         >
-                            Next
-                        </GradientButton>
+                            {t("next")}
+                        </MainButton>
                     </div>
                 </CarouselItem>
                 {/* <CarouselItem className="pb-2"> 
@@ -268,21 +277,21 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                                 />
                             ))}
                         </div>
-                        <GradientButton
+                        <MainButton
                             className="text-xl md:text-3xl"
                              onClick={scrollNext}
                         >
                             Next
-                        </GradientButton>
+                        </MainButton>
                     </div>
                 </CarouselItem> */}
                 <CarouselItem className="pb-2">
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-4  px-4">
+                    <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-4">
                         <h2 className="text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
-                            How much does it concern you?
+                            {t("howMuchDoesItConcernYou")}
                         </h2>
                         <p className="bg-gradient-to-b from-[#6DD864] to-[#23A53D] bg-clip-text text-transparent">
-                            Drag from left to right
+                            {t("dragFromLeftToRight")}
                         </p>
                         <div className="w-full max-w-[500px] space-y-4">
                             <div className="flex h-[40px] rounded-full border-2 border-white">
@@ -292,31 +301,23 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                                         setDraggedValue(0);
                                     }}
                                 >
-                                    A little
+                                    {t("aLittle")}
                                 </div>
                                 <div
-                                    className={cn(
-                                        "flex w-1/3 items-center justify-center text-[#FCD96A]  transition-colors duration-300",
-                                        draggedValue >= 50 &&
-                                            "bg-[#FCD96A] text-white",
-                                    )}
+                                    className={`flex w-1/3 items-center justify-center text-[#FCD96A] transition-colors duration-300 ${draggedValue >= 50 && "bg-[#FCD96A] text-white"}`}
                                     onClick={() => {
                                         setDraggedValue(50);
                                     }}
                                 >
-                                    Moderate
+                                    {t("moderate")}
                                 </div>
                                 <div
-                                    className={cn(
-                                        "flex w-1/3 items-center justify-center rounded-r-full text-[#FC8A6A]  transition-colors duration-300",
-                                        draggedValue >= 100 &&
-                                            "bg-[#FC8A6A] text-white",
-                                    )}
+                                    className={`flex w-1/3 items-center justify-center rounded-r-full text-[#FC8A6A] transition-colors duration-300 ${draggedValue >= 100 && "bg-[#FC8A6A] text-white"}`}
                                     onClick={() => {
                                         setDraggedValue(100);
                                     }}
                                 >
-                                    Quite much
+                                    {t("quiteMuch")}
                                 </div>
                             </div>
                             <Slider
@@ -330,36 +331,36 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                                 value={[draggedValue]}
                             />
                         </div>
-                        <GradientButton
+                        <MainButton
                             className="text-xl md:text-3xl"
                             onClick={fetchItems}
                         >
-                            Finnish up
-                        </GradientButton>
+                            {t("finishUp")}
+                        </MainButton>
                     </div>
                 </CarouselItem>
             </CarouselContent>
         </Carousel>
     );
 };
-const Loader = () => (
-    <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5">
-        <SearchCheck className="animate-bounce text-[#205041]" size={90} />
-        <h2 className="font-playfairDSC text-5xl text-[#205041]">
-            Selection is loading
-        </h2>
-        <p className="text-xl text-[#128665]">
-            We are looking for people tailored to your needs
-        </p>
-    </div>
-);
+const Loader = () => {
+    const t = useTranslations("Search");
+    return (
+        <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5">
+            <SearchCheck className="animate-bounce text-[#205041]" size={90} />
+            <h2 className="font-playfairDSC text-5xl text-[#205041]">
+                {t("loadingSelection")}
+            </h2>
+            <p className="text-xl text-[#128665]">{t("tailoredSearch")}</p>
+        </div>
+    );
+};
 const Page: React.FC = () => {
+    const t = useTranslations("Search");
     const [isLoading, setIsLoading] = useState(false);
     const [finnishedOptions, setFinnishedOptions] = useState(false);
     const [isShown, setIsShown] = useState(false);
-    const [psychologists, setPsychologists] = useState<PsychologistT[]>(
-        [],
-    );
+    const [psychologists, setPsychologists] = useState<PsychologistT[]>([]);
     const { user } = useAuth();
     const router = useRouter();
     useEffect(() => {
@@ -403,10 +404,10 @@ const Page: React.FC = () => {
                     <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 px-6 pb-2 md:gap-14">
                         <div className="mt-20 flex flex-col items-center justify-center gap-4">
                             <h3 className="text-center font-playfairDSC text-3xl uppercase text-[#128665]">
-                                Our top 3 psychologists
+                                {t("topPsychologists")}
                             </h3>
                             <p className="text-xl text-[#205041]">
-                                Picked specifically for you
+                                {t("pickedForYou")}
                             </p>
                         </div>
                         <div className="flex w-full flex-wrap items-center justify-center gap-10 md:w-2/3">
@@ -431,57 +432,36 @@ const Page: React.FC = () => {
                                     },
                                 )
                             ) : (
-                                <p>
-                                    There are no available psychologists at the
-                                    moment :(
-                                </p>
+                                <p>{t("noPsychologistsAvailable")}</p>
                             )}
                         </div>
                         {!isShown && (
-                            <GradientButton
+                            <MainButton
                                 onClick={() => {
                                     setIsShown(true);
                                 }}
                             >
-                                Show all psychologists (
+                                {t("showAllPsychologists")} (
                                 {psychologists.length -
                                     psychologists
                                         .filter((p) => p.variant === "Deluxe")
                                         .slice(0, 3).length}
                                 )
-                            </GradientButton>
+                            </MainButton>
                         )}
                     </section>
                     {isShown && (
                         <section className=" flex h-fit w-full flex-col items-center justify-center  gap-6 bg-gradient-to-b from-[#40916C] to-[#52B788] px-4 py-20">
                             <h2 className="font-playfairDSC text-4xl text-white drop-shadow-xl [text-shadow:_0_1px_0_rgb(0_0_0_/_40%)]">
-                                Selection of choices solely for you
+                                {t("selectionOfChoices")}
                             </h2>
                             <div className="flex  w-full flex-wrap items-center justify-center gap-10 md:w-2/3">
-                                {psychologists
-                                    .filter((p) => p.variant === "Deluxe")
-                                    .map((pyshologist, index) => (
-                                        <ProfileCard
-                                            {...pyshologist}
-                                            key={index}
-                                        />
-                                    ))}
-                                {psychologists
-                                    .filter((p) => p.variant === "Premium")
-                                    .map((pyshologist, index) => (
-                                        <ProfileCard
-                                            {...pyshologist}
-                                            key={index}
-                                        />
-                                    ))}
-                                {psychologists
-                                    .filter((p) => p.variant === "Basic")
-                                    .map((pyshologist, index) => (
-                                        <ProfileCard
-                                            {...pyshologist}
-                                            key={index}
-                                        />
-                                    ))}
+                                {psychologists.map((psychologist, index) => (
+                                    <ProfileCard
+                                        {...psychologist}
+                                        key={index}
+                                    />
+                                ))}
                             </div>
                         </section>
                     )}
@@ -490,7 +470,6 @@ const Page: React.FC = () => {
                 finnishedOptions &&
                 !isLoading && (
                     <div className="flex flex-col items-center justify-center gap-2 p-2">
-                        {" "}
                         <Image
                             src={"/logic/notfound.svg"}
                             alt="Search failed"
@@ -498,8 +477,7 @@ const Page: React.FC = () => {
                             height={500}
                         />
                         <p className="text-center text-3xl text-[#205041]">
-                            Oops! We couldn&apos;t find a match for you at the
-                            moment!
+                            {t("noMatchFound")}
                         </p>
                     </div>
                 )

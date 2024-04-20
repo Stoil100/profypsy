@@ -10,7 +10,7 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormMessage
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { db } from "@/firebase/config";
@@ -28,17 +28,14 @@ import {
     orderBy,
     query,
     setDoc,
-    writeBatch
+    writeBatch,
 } from "firebase/firestore";
 import { Send } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAuth } from "./Providers";
 
-const formSchema = z.object({
-    message: z.string().min(1, "Please enter a valid message"),
-});
 type ChatProps = {
     senderUid: string;
     receiverUid: string;
@@ -54,8 +51,11 @@ export default function Chat({
     receiverUid,
     receiverUsername,
 }: ChatProps) {
-    const { user } = useAuth();
+    const t = useTranslations("Profile.chat");
     const [messages, setMessages] = useState<Message[]>([]);
+    const formSchema = z.object({
+        message: z.string().min(1, t("error")),
+    });
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -160,7 +160,7 @@ export default function Chat({
                 className="space-y-3 p-2"
             >
                 <h2 className="text-2xl">
-                    Private chat with {receiverUsername}
+                    {t("privateChat")} {receiverUsername}
                 </h2>
                 <div className="flex max-h-[50vh] flex-col gap-2 overflow-y-auto rounded-xl border bg-white p-2">
                     {messages!.map((message, index) => (
@@ -168,9 +168,9 @@ export default function Chat({
                             key={index}
                             className={cn(
                                 "min-w-[50px] max-w-[90%] break-all rounded-2xl px-2 text-xl",
-                                    message.senderUid === senderUid
-                                      ? "self-end bg-[#40916C] text-right text-white"
-                                      : "self-start border-2 border-[#40916C] text-left text-[#40916C]",
+                                message.senderUid === senderUid
+                                    ? "self-end bg-[#40916C] text-right text-white"
+                                    : "self-start border-2 border-[#40916C] text-left text-[#40916C]",
                             )}
                         >
                             {message.content}

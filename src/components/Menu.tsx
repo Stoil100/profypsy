@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/sheet";
 import { MenuIcon } from "lucide-react";
 import { Guidance } from "./Guidance";
+import { useTranslations } from "next-intl";
 
 export default function Menu() {
+    const t = useTranslations("Navigation");
     return (
         <div className="flex flex-1 items-center justify-end gap-4 text-inherit">
             <Sheet>
@@ -23,13 +25,13 @@ export default function Menu() {
                 >
                     <SheetHeader>
                         <SheetTitle className="text-center font-playfairDSC text-3xl text-white underline decoration-2 sm:text-4xl">
-                            Menu
+                            {t("menu")}
                         </SheetTitle>
                     </SheetHeader>
                     <Guidance variant="navigation" />
                     <SheetFooter>
                         <p className="text-sm italic text-white">
-                            Profypsy &copy; {new Date().getFullYear()}
+                            {t("companyName")} &copy; {new Date().getFullYear()}
                         </p>
                     </SheetFooter>
                 </SheetContent>

@@ -22,7 +22,7 @@ export default function LocaleLayout({
     return (
         <html lang={locale}>
             <body className="font-openSans">
-                <NextIntlClientProvider messages={messages}>
+                <NextIntlClientProvider messages={messages} locale={locale}>
                     <AuthContextProvider>
                         <Navigation />
                         <main className="pt-[calc(40px+1rem)]">{children}</main>

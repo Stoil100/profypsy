@@ -1,13 +1,9 @@
 "use client";
-import GradientButton from "@/components/MainButton";
+import MainButton from "@/components/MainButton";
 import { ArticleT } from "@/components/schemas/article";
 import { db } from "@/firebase/config";
-import {
-    collection,
-    onSnapshot,
-    orderBy,
-    query,
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 function useArticles(articleId: string) {
@@ -47,6 +43,7 @@ function useArticles(articleId: string) {
 }
 
 export default function Article({ params }: { params: { id: string } }) {
+    const t = useTranslations("Article.id");
     const { articles, currentArticle, loading, error } = useArticles(params.id);
     return (
         <main className="flex h-fit w-full bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] pb-4 pt-20">
@@ -54,7 +51,7 @@ export default function Article({ params }: { params: { id: string } }) {
                 <h2 className="text-center text-4xl font-bold">
                     {currentArticle?.title}
                 </h2>
-                <img src={currentArticle?.image} />
+                <img src={currentArticle?.image} alt={currentArticle?.title} />
                 <div className="space-y-4 px-2">
                     {currentArticle?.descriptions!.map((desc) => (
                         <div key={desc.descTitle}>
@@ -65,28 +62,27 @@ export default function Article({ params }: { params: { id: string } }) {
                 </div>
             </div>
             <div className="hidden w-1/4 flex-col items-center gap-10 border-l-2 border-black pt-20 md:flex">
-                <div className=" flex w-1/2 flex-col items-center gap-3">
+                <div className="flex w-1/2 flex-col items-center gap-3">
                     <h3 className="text-center text-xl">
-                        Get the latest articles straight to your email box
+                        {t("latestArticlesEmail")}
                     </h3>
-                    <GradientButton>Subscribe to our newsletter</GradientButton>
+                    <MainButton>{t("subscribeNewsletter")}</MainButton>
                 </div>
                 <div className="sticky top-20 flex w-2/3 flex-col items-center justify-center gap-2">
-                    <h2 className="self-start text-3xl">Newest Posts:</h2>
+                    <h2 className="self-start text-3xl">{t("newestPosts")}</h2>
                     <hr className="w-full border border-black" />
                     <div className="space-y-4 pt-4">
-                        {articles!.slice(0, 6).map((article) => (
+                        {articles.slice(0, 6).map((article) => (
                             <div
                                 className="flex cursor-pointer flex-col items-start justify-center gap-4 transition-transform hover:scale-105"
                                 key={article.id}
                             >
                                 <img
                                     src={article.image}
+                                    alt={article.title}
                                     className="h-auto w-full rounded-xl"
                                 />
-                                <h4 className="text-xl md:max-lg:text-center">
-                                    {article.title}
-                                </h4>
+                                <h4 className="text-xl">{article.title}</h4>
                             </div>
                         ))}
                     </div>

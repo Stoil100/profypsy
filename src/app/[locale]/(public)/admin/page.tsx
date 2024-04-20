@@ -161,7 +161,6 @@ const ArticleInfo: React.FC<ArticleT> = (article) => {
         </div>
     );
 };
-
 function useFirestoreCollection<T>(
     collectionName: string,
     condition: [string, WhereFilterOp, any],
@@ -188,7 +187,6 @@ function useFirestoreCollection<T>(
 
     return data;
 }
-
 export default function AdminPage() {
     const { user } = useAuth();
     const router = useRouter();

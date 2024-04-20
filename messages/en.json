@@ -50,5 +50,345 @@
             "estimatedEarningsLabel": "Estimated annual earnings",
             "joinImageAlt": "join as a psychologist"
         }
+    },
+    "Auth": {
+        "auth": {
+            "headerRegister": "Register your account",
+            "headerLogin": "Login to your account",
+            "usingSocialNetworks": "Using social networks",
+            "orWith": "Or with",
+            "emailPlaceholder": "Enter your Email here...",
+            "passwordPlaceholder": "Enter your password here...",
+            "confirmPasswordPlaceholder": "Confirm your password here...",
+            "alreadyHaveAccount": "Already have an account?",
+            "doNotHaveAccount": "Don't have an account?",
+            "loginHere": "Login here",
+            "registerHere": "Register here",
+            "submit": "Submit",
+            "emailValidation": "Please enter a valid email address.",
+            "passwordUppercaseError": "One uppercase character",
+            "passwordLowercaseError": "One lowercase character",
+            "passwordNumberError": "One number",
+            "passwordSpecialCharacterError": "One special character",
+            "passwordMinLengthError": "Must be at least 8 characters in length",
+            "passwordsMismatchError": "The passwords did not match",
+            "toggleVisibility": "Toggle visibility",
+            "errorMessage": "Error"
+        },
+        "appliance": {
+            "formSchemaErrors": {
+                "invalidPhoneNumber": "Invalid phone number",
+                "selectAge": "Please select your age.",
+                "shortDescription": "You must add a description about yourself of 10 or more characters",
+                "longDescription": "Your description should not exceed 500 characters",
+                "shortQuote": "You should add a personal quote of 5 or more characters",
+                "longQuote": "Your quote should not exceed 100 characters",
+                "validCV": "Please upload a valid CV",
+                "validLetter": "Please upload a valid motivational letter",
+                "validDiploma": "Please upload a valid diploma",
+                "selectAtLeastOneDate": "You have to select at least one day.",
+                "selectPricePerHour": "Please select a price per hour.",
+                "validEducation": "Enter valid education/school/university/college information",
+                "validExperience": "Enter valid experience/work/job environment information",
+                "validName": "Enter a valid name",
+                "validCity": "Enter a valid city",
+                "cityCharacterLimit": "Please do not exceed the 60 character limit",
+                "selectAtLeastOneSpecialization": "You have to select at least one specialization.",
+                "selectAtLeastOneLanguage": "You have to select at least one language."
+            },
+            "languages": {
+                "bulgarian": "Bulgarian",
+                "english": "English"
+            },
+            "specializations": {
+                "you": "For you",
+                "couples": "For couples",
+                "families": "For families"
+            },
+            "dates": {
+                "monday": "Monday",
+                "tuesday": "Tuesday",
+                "wednesday": "Wednesday",
+                "thursday": "Thursday",
+                "friday": "Friday",
+                "saturday": "Saturday",
+                "sunday": "Sunday"
+            },
+            "upload": {
+                "thanksForApplyingTitle": "Thanks for applying to Profypsy",
+                "thanksForApplyingDescription": "We will reach out to you soon via {email}",
+                "errorUploadingDocumentTitle": "Error uploading document"
+            },
+            "form": {
+                "tabs": {
+                    "info": "Personal info",
+                    "education": "Education",
+                    "experience": "Experience"
+                },
+                "button": {
+                    "next": "Next",
+                    "previous": "Previous",
+                    "submit": "Submit"
+                },
+                "userName": {
+                    "label": "User Name:",
+                    "placeholder": "Enter your name..."
+                },
+                "telephone": {
+                    "label": "Telephone:",
+                    "placeholder": "+359"
+                },
+                "age": {
+                    "label": "Age:",
+                    "placeholder": "Select your age"
+                },
+                "location": {
+                    "label": "City:",
+                    "placeholder": "Enter the city you are working from..."
+                },
+                "about": {
+                    "label": "About you:",
+                    "placeholder": "Write a short and eye-catching biography to draw more clients in..."
+                },
+                "quote": {
+                    "label": "Quote:",
+                    "placeholder": "Add your personal quote to inspire your future clients..."
+                },
+                "languages": "Selected Languages:",
+                "dragDrop": {
+                    "text": "Drag and drop,",
+                    "description": "or choose a file"
+                },
+                "cv": "Please upload your CV here:",
+                "diploma": "Please upload your diploma here:",
+                "letter": "Please upload your motivational letter here:",
+                "educations": {
+                    "label": "Information about the school/university/college:",
+                    "placeholder": "Enter school/university/college description here..."
+                },
+                "experiences": {
+                    "label": "Information about the work/job:",
+                    "placeholder": "Enter work description here..."
+                },
+                "specializations": {
+                    "label": "Selected Specializations:",
+                    "placeholder": "Select specializations:"
+                },
+                "cost": {
+                    "dates": "Select dates:",
+                    "price": "Select price/h:"
+                }
+            }
+        }
+    },
+    "Profile": {
+        "profile": "Profile",
+        "yourAccount": "Your account",
+        "editProfile": "Edit Profile",
+        "psychologistAccount": "Psychologist account",
+        "account": "Account",
+        "appointments": "Appointments",
+        "sessions": "Sessions",
+        "articles": "Articles",
+        "email": "Email",
+        "age": "Age",
+        "location": "Location",
+        "phone": "Phone",
+        "languages": "Languages",
+        "about": "About",
+        "quote": "Quote",
+        "education": "Education",
+        "experience": "Experience",
+        "specializations": "Specializations",
+        "psychologistInfo": "Psychologist info:",
+        "appointmentInfo": "Appointment info:",
+        "info": "Info:",
+        "sessionType": "Session type:",
+        "chatNow": "Chat now",
+        "noAppointments": "You don't have any appointments at the moment.",
+        "bookOneHere": "You can book one here.",
+        "clientInfo": "Client info:",
+        "noUpcomingSessions": "You don't have any upcoming sessions.",
+        "deleteArticle": "Delete article",
+        "uploadArticle": "Upload an article",
+        "noArticlesCreated": "You haven't created any articles yet!",
+        "chat": {
+            "privateChat": "Private chat with ",
+            "message": "message...",
+            "error": "Please enter a valid message"
+        }
+    },
+    "Article": {
+        "id": {
+            "latestArticlesEmail": "Get the latest articles straight to your email box",
+            "subscribeNewsletter": "Subscribe to our newsletter",
+            "newestPosts": "Newest Posts:"
+        },
+        "pageTitle": "Profypsy's Articles",
+        "popularArticlesHeader": "Our most popular articles:",
+        "readMore": "Read more",
+        "mostRecent": "Most recent",
+        "form": {
+            "createNewArticle": "Create new article:",
+            "title": "Title*:",
+            "titlePlaceholder": "Enter article's title here...",
+            "titleDescription": "Title description:",
+            "titleDescPlaceholder": "Enter article's title description here...",
+            "image": "Image:",
+            "imagePlaceholder": "Place your image here...",
+            "descriptionTitle": "Description title:",
+            "descriptionTitlePlaceholder": "Enter news description title here...",
+            "description": "Description:",
+            "descriptionPlaceholder": "Enter news description here...",
+            "addMoreDescriptions": "Add more descriptions",
+            "tableTitle": "Table title:",
+            "tableTitlePlaceholder": "Enter article's table title here...",
+            "tableItem": "Table Item",
+            "tableItemPlaceholder": "Enter article's table item here...",
+            "addMoreTableItems": "Add more table items",
+            "addMoreTables": "Add more tables",
+            "footer": "Footer:",
+            "footerPlaceholder": "Enter article's footer here...",
+            "preview": "Preview"
+        }
+    },
+    "Navigation": {
+        "findTherapist": "Find a therapist",
+        "myProfile": "My profile",
+        "blog": "Blog",
+        "admin": "Admin",
+        "logOut": "Log out",
+        "logIn": "Log in",
+        "ourMission": "Our mission",
+        "privacyPolicy": "Privacy policy",
+        "termsOfUse": "Terms of use",
+        "subscribeToNewsletter": "Subscribe to newsletter",
+        "joinAsPsychologist": "Join as a psychologist",
+        "languageSelection": "English",
+        "about": "About",
+        "usefulLinks": "Useful Links",
+        "services": "Services",
+        "companyName": "Profypsy",
+        "you": "For you",
+        "couples": "For couples",
+        "families": "For families",
+        "menu": "Menu"
+    },
+    "Search": {
+        "findRightForYou": "Let's find what’s right for you",
+        "tellUsWhatIsOnYourMind": "Tell us what is on your mind",
+        "findPsychologist": "Find a psychologist that suits you",
+        "bookYourSession": "Book your session",
+        "getStarted": "Get Started",
+        "whoIsTheSupportFor": "Who is the support for you?",
+        "forYou": "For you",
+        "forCouples": "For couples",
+        "forFamilies": "For families",
+        "next": "Next",
+        "languagePreference": "What language would you prefer?",
+        "bulgarian": "Bulgarian",
+        "english": "English",
+        "howMuchDoesItConcernYou": "How much does it concern you?",
+        "dragFromLeftToRight": "Drag from left to right",
+        "aLittle": "A little",
+        "moderate": "Moderate",
+        "quiteMuch": "Quite much",
+        "finishUp": "Finish up",
+        "topPsychologists": "Our top 3 psychologists",
+        "pickedForYou": "Picked specifically for you",
+        "noPsychologistsAvailable": "There are no available psychologists at the moment :(",
+        "recommendedByUs": "Recommended by us",
+        "showAllPsychologists": "Show all psychologists",
+        "selectionOfChoices": "Selection of choices solely for you",
+        "noMatchFound": "Oops! We couldn't find a match for you at the moment!",
+        "loadingSelection": "Selection is loading",
+        "tailoredSearch": "We are looking for people tailored to your needs",
+        "bookNow": "Book Now",
+        "id": {
+            "you": "For you",
+            "couples": "For couples",
+            "families": "For families",
+            "bookYourAppointment": "Book Your Appointment",
+            "selectTimeSlot": "Select a time slot:",
+            "next": "Next",
+            "additionalInformation": "Additional information about your appointment",
+            "firstName": "First Name:",
+            "enterYourName": "Enter your name...",
+            "telephone": "Telephone:",
+            "enterYourPhone": "+359",
+            "age": "Age",
+            "selectYourAge": "Select your age",
+            "email": "Email:",
+            "enterYourEmail": "Enter your email",
+            "sessionFor": "Select who is the session for",
+            "info": "Info:",
+            "additionalInfoPlaceholder": "Share additional information about your case",
+            "previous": "Previous",
+            "submit": "Submit",
+            "days": {
+                "sunday": "Sunday",
+                "monday": "Monday",
+                "tuesday": "Tuesday",
+                "wednesday": "Wednesday",
+                "thursday": "Thursday",
+                "friday": "Friday",
+                "saturday": "Saturday"
+            },
+            "formErrors": {
+                "validName": "Enter a valid name",
+                "infoRequired": "Enter some information about your case",
+                "infoLimit": "Limit is 500 characters",
+                "selectOption": "Please select an option.",
+                "invalidPhone": "Invalid phone number",
+                "validEmail": "Please enter a valid email.",
+                "selectAge": "Please select a valid age"
+            },
+            "minutes": "60 min",
+            "price": "Price",
+            "duration": "Duration",
+            "languages": "Languages",
+            "generalInfo": "General Info",
+            "aboutMe": "About Me",
+            "myPersonalQuote": "My Personal Quote",
+            "myExperience": "My Experience",
+            "workExperience": "Work Experience",
+            "education": "Education",
+            "selectedAppointment": "You have selected:",
+            "bookNow": "Book Now",
+            "professionalStandards": "Professional Standards",
+            "specializations": "Specializations",
+            "selectDate": "Select date:"
+        }
+    },
+    "Mission": {
+        "missionAndVision": {
+            "title": "Our Mission and Vision",
+            "ourMission": {
+                "title": "Our Mission:",
+                "description": "Our mission is to provide an accessible, convenient, and effective platform for psychotherapy, which helps people improve their mental well-being and live more fully and happily. We created this platform with the belief that every individual deserves support and care for their mental health, regardless of financial or geographical constraints."
+            },
+            "meaningCreators": {
+                "title": "Meaning for the Creators:",
+                "description": "For us, the creators of this platform, the meaning lies in the opportunity to make a positive change in people's lives by providing them with an easy and accessible way to receive quality psychotherapeutic assistance. Our goal is to eliminate barriers to access to mental health and to create a society where everyone can take care of themselves and develop their unlimited potential."
+            },
+            "meaningUsers": {
+                "title": "Meaning for the Users:",
+                "description": "For our client users, the meaning lies in the opportunity to receive personalized and quality psychotherapy that meets their needs and goals. We believe that everyone deserves to feel supported and understood, and that psychotherapy can be a powerful tool for personal development and overcoming life challenges."
+            },
+            "meaningPsychologists": {
+                "title": "Meaning for the Psychologists:",
+                "description": "For our psychologist users, the meaning lies in the opportunity to expand their practice and reach more people in need of their assistance. The platform provides them with the opportunity to work at a convenient time and place, allowing them to focus on what they do best - helping others feel better."
+            },
+            "visionAndValues": {
+                "title": "Vision and Values:",
+                "description": "Our vision is to build a world and future where everyone has access to psychotherapeutic assistance that supports them in their development and growth. We value transparency, trust, and respect for each of our users and strive for continuous improvement and innovation in the field of mental health."
+            }
+        }
+    },
+    "Common": {
+        "languages": {
+            "bg": "BG",
+            "en": "EN"
+        }
     }
 }

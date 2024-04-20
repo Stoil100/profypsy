@@ -13,27 +13,26 @@ import { Input } from "@/components/ui/input";
 import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-    Timestamp,
-    doc,
-    setDoc
-} from "firebase/firestore";
+import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { ChangeEvent, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 import GradientButton from "../MainButton";
 import { useAuth } from "../Providers";
+import { useTranslations } from "next-intl";
 
 const articlesFormSchema = z.object({
     title: z.string(),
     titleDesc: z.string().optional(),
     image: z.string().optional(),
-    descriptions: z.array(
-        z.object({
-            descTitle: z.string().optional(),
-            description: z.string().optional(),
-        }),
-    ).optional(),
+    descriptions: z
+        .array(
+            z.object({
+                descTitle: z.string().optional(),
+                description: z.string().optional(),
+            }),
+        )
+        .optional(),
     tables: z
         .array(
             z.object({
@@ -57,12 +56,12 @@ interface ArticleT extends ArticleFormValues {
 }
 export type { ArticleT };
 export default function ArticlesSchema() {
+    const t = useTranslations("Article.form");
     const [bValue, setBValue] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [submitImage, setSubmitImage] = useState("");
     const [submitValues, setSubmitValues] = useState<ArticleT>();
     const { user } = useAuth();
-
 
     const articlesForm = useForm<z.infer<typeof articlesFormSchema>>({
         resolver: zodResolver(articlesFormSchema),
@@ -143,18 +142,18 @@ export default function ArticlesSchema() {
             <Form {...articlesForm}>
                 <form
                     onSubmitCapture={articlesForm.handleSubmit(onSubmit)}
-                    className="flex h-full w-full flex-col justify-between space-y-2 p-6 text-left "
+                    className="flex h-full w-full flex-col justify-between space-y-2 p-6 text-left"
                 >
-                    <h3 className="text-4xl">Create new article:</h3>
+                    <h3 className="text-4xl">{t("createNewArticle")}</h3>
                     <FormField
                         control={articlesForm.control}
                         name="title"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title*:</FormLabel>
+                                <FormLabel>{t("title")}</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Enter articles title here..."
+                                        placeholder={t("titlePlaceholder")}
                                         {...field}
                                     />
                                 </FormControl>
@@ -167,10 +166,10 @@ export default function ArticlesSchema() {
                         name="titleDesc"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Title description:</FormLabel>
+                                <FormLabel>{t("titleDescription")}</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Enter articles title description here..."
+                                        placeholder={t("titleDescPlaceholder")}
                                         {...field}
                                     />
                                 </FormControl>
@@ -183,11 +182,11 @@ export default function ArticlesSchema() {
                         name="image"
                         render={() => (
                             <FormItem>
-                                <FormLabel>Image:</FormLabel>
+                                <FormLabel>{t("image")}</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="file"
-                                        placeholder="Place your image here..."
+                                        placeholder={t("imagePlaceholder")}
                                         onChangeCapture={async (event) => {
                                             setLoading(true);
                                             const res = await getImageData(
@@ -198,7 +197,6 @@ export default function ArticlesSchema() {
                                         }}
                                     />
                                 </FormControl>
-
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -212,15 +210,16 @@ export default function ArticlesSchema() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>
-                                            Description title:
+                                            {t("descriptionTitle")}
                                         </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Enter news description here..."
+                                                placeholder={t(
+                                                    "descriptionTitlePlaceholder",
+                                                )}
                                                 {...field}
                                             />
                                         </FormControl>
-
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -231,14 +230,17 @@ export default function ArticlesSchema() {
                                 name={`descriptions.${index}.description`}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Description:</FormLabel>
+                                        <FormLabel>
+                                            {t("description")}
+                                        </FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Enter news description here..."
+                                                placeholder={t(
+                                                    "descriptionPlaceholder",
+                                                )}
                                                 {...field}
                                             />
                                         </FormControl>
-
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -251,7 +253,7 @@ export default function ArticlesSchema() {
                         }
                         className="w-fit border-2 border-[#25BA9E]"
                     >
-                        Add more descriptions
+                        {t("addMoreDescriptions")}
                     </GradientButton>
 
                     {tableFields.map((_, index) => (
@@ -262,14 +264,15 @@ export default function ArticlesSchema() {
                                 name={`tables.${index}.tableTitle`}
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Table title:</FormLabel>
+                                        <FormLabel>{t("tableTitle")}</FormLabel>
                                         <FormControl>
                                             <Input
-                                                placeholder="Enter articles table title here..."
+                                                placeholder={t(
+                                                    "tableTitlePlaceholder",
+                                                )}
                                                 {...field}
                                             />
                                         </FormControl>
-
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -286,19 +289,20 @@ export default function ArticlesSchema() {
                                                     key={`tables.${index}.tableItems.${tableItemIndex}`}
                                                 >
                                                     <FormLabel>
-                                                        Table Item{" "}
+                                                        {t("tableItem")}{" "}
                                                         {tableItemIndex + 1}:
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
-                                                            placeholder="Enter articles table item here..."
+                                                            placeholder={t(
+                                                                "tableItemPlaceholder",
+                                                            )}
                                                             onInput={(
                                                                 event,
                                                             ) => {
                                                                 field.value![
                                                                     tableItemIndex
-                                                                ] =
-                                                                    //@ts-ignore
+                                                                ] = //@ts-ignore
                                                                     event.target.value;
                                                             }}
                                                         />
@@ -316,7 +320,7 @@ export default function ArticlesSchema() {
                                                 setBValue(!bValue);
                                             }}
                                         >
-                                            Add more table items
+                                            {t("addMoreTableItems")}
                                         </GradientButton>
                                     </>
                                 )}
@@ -333,17 +337,17 @@ export default function ArticlesSchema() {
                         }
                         className="w-fit border-2 border-[#25BA9E]"
                     >
-                        Add more tables
+                        {t("addMoreTables")}
                     </GradientButton>
                     <FormField
                         control={articlesForm.control}
                         name="footer"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Footer:</FormLabel>
+                                <FormLabel>{t("footer")}</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Enter articles footer here..."
+                                        placeholder={t("footerPlaceholder")}
                                         {...field}
                                     />
                                 </FormControl>
@@ -356,7 +360,7 @@ export default function ArticlesSchema() {
                         type="submit"
                         className="border-2 bg-[#25BA9E]"
                     >
-                        Preview
+                        {t("preview")}
                     </Button>
                 </form>
             </Form>
