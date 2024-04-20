@@ -1,5 +1,4 @@
-import { AppointmentT } from "@/app/[locale]/(logic)/search/[id]/page";
-
+import { AppointmentT } from "./appointment";
 type UserType ={
     email: string | null;
     uid: string | null;
