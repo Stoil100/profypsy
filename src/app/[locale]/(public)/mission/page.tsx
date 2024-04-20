@@ -1,8 +1,8 @@
-"use";
+"use client";
 
 import { useTranslations } from "next-intl";
 
-export default function page() {
+export default function Mission() {
     const t = useTranslations("Mission");
     return (
         <div className="mx-auto mt-10 max-w-4xl p-5">
