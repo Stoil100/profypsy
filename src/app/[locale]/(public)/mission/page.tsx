@@ -1,3 +1,5 @@
+"use";
+
 import { useTranslations } from "next-intl";
 
 export default function page() {
