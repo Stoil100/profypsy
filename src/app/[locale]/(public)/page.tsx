@@ -1,5 +1,8 @@
 "use client";
-import { default as GradientButton, default as MainButton } from "@/components/MainButton";
+import {
+    default as GradientButton,
+    default as MainButton,
+} from "@/components/MainButton";
 import {
     Accordion,
     AccordionContent,
@@ -131,29 +134,29 @@ function MissionSection() {
     const missionItems = [
         {
             title: t("mission.missionTitle"),
-            description: t("mission.missionDescription") 
+            description: t("mission.missionDescription"),
         },
         {
             title: t("mission.creatorsTitle"),
-            description: t("mission.creatorsDescription") 
+            description: t("mission.creatorsDescription"),
         },
         {
             title: t("mission.usersTitle"),
-            description: t("mission.usersDescription") 
+            description: t("mission.usersDescription"),
         },
         {
             title: t("mission.psychologistsTitle"),
-            description: t("mission.psychologistsDescription") 
+            description: t("mission.psychologistsDescription"),
         },
         {
             title: t("mission.visionTitle"),
-            description: t("mission.visionDescription") 
+            description: t("mission.visionDescription"),
         },
     ];
     return (
         <section className="flex h-fit w-full flex-col items-center justify-center gap-4 px-4 py-10 md:gap-10">
             <h2 className="text bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text font-playfairDSC text-4xl text-transparent md:text-5xl">
-                {t('mission.sectionTitle')}
+                {t("mission.sectionTitle")}
             </h2>
             <Carousel
                 className="w-full"
@@ -165,12 +168,15 @@ function MissionSection() {
                 ]}
                 opts={{
                     loop: true,
-                    align:"start"
+                    align: "start",
                 }}
             >
                 <CarouselContent className="lg:-ml-1">
                     {missionItems.map((item, index) => (
-                        <CarouselItem key={index} className="pl-4 sm:basis-1/2 lg:basis-1/3 ">
+                        <CarouselItem
+                            key={index}
+                            className="pl-4 sm:basis-1/2 lg:basis-1/3 "
+                        >
                             <div className="flex h-full w-full flex-col rounded-2xl border-4 border-[#25BA9E] bg-white p-4">
                                 <div className="flex w-full justify-between gap-2">
                                     <h2 className="mb-3 text-3xl font-bold text-[#205041]">
@@ -191,7 +197,6 @@ function MissionSection() {
         </section>
     );
 }
-
 function TherapistsSection() {
     return (
         <section className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 md:gap-10 md:px-[100px] lg:px-[150px] xl:px-[200px]">
@@ -331,7 +336,7 @@ function ApproachSection() {
     return (
         <section className="w-full space-y-5 px-2 py-5 md:px-[100px] lg:px-[150px] xl:px-[200px]">
             <h3 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent">
-                {t('approach.approachTitle')}
+                {t("approach.approachTitle")}
             </h3>
             <div className="flex w-full items-center justify-around">
                 <div className="w-full space-y-5 md:w-1/3">
@@ -348,7 +353,7 @@ function ApproachSection() {
                             1
                         </p>
                         <p className="text-xl text-[#205041]">
-                            {t('approach.stepOneTitle')}
+                            {t("approach.stepOneTitle")}
                         </p>
                     </div>
                     <div
@@ -364,7 +369,7 @@ function ApproachSection() {
                             2
                         </p>
                         <p className="text-lg text-[#205041] md:text-xl">
-                            {t('approach.stepTwoTitle')}
+                            {t("approach.stepTwoTitle")}
                         </p>
                     </div>
                     <div
@@ -380,20 +385,20 @@ function ApproachSection() {
                             3
                         </p>
                         <p className="text-xl text-[#205041]">
-                            {t('approach.stepThreeTitle')}
+                            {t("approach.stepThreeTitle")}
                         </p>
                     </div>
                 </div>
                 <img
                     src="/homepage/approach.png"
-                    alt={t('approach.approachImageAlt')}
+                    alt={t("approach.approachImageAlt")}
                     className="hidden max-h-[400px] md:block"
                 />
             </div>
             <div className="flex w-full justify-center px-4">
                 <Link href={"/login"}>
                     <GradientButton className="text-2xl">
-                        {t('button.startNow')}
+                        {t("button.startNow")}
                     </GradientButton>
                 </Link>
             </div>
@@ -406,38 +411,38 @@ function FaQSection() {
     return (
         <section className="mb-5 flex w-full flex-col items-center justify-center gap-4 px-4 md:px-[100px] lg:px-[150px] xl:px-[200px]">
             <h3 className="text-center font-playfairDSC text-4xl text-[#205041]">
-                {t('faq.faqTitle')}
+                {t("faq.faqTitle")}
             </h3>
             <div className="w-full rounded-2xl bg-white p-2 font-openSans text-xl">
                 <Accordion type="single" collapsible>
                     <AccordionItem value="item-1">
                         <AccordionTrigger className="text-left">
-                            {t('faq.faqQuestion1')}
+                            {t("faq.faqQuestion1")}
                         </AccordionTrigger>
                         <AccordionContent>
-                            {t('faq.faqAnswer1')}
+                            {t("faq.faqAnswer1")}
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2">
                         <AccordionTrigger className="text-left">
-                            {t('faq.faqQuestion2')}
+                            {t("faq.faqQuestion2")}
                         </AccordionTrigger>
                         <AccordionContent>
-                            {t('faq.faqAnswer2')}
+                            {t("faq.faqAnswer2")}
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
                         <AccordionTrigger className="text-left">
-                            {t('faq.faqQuestion3')}
+                            {t("faq.faqQuestion3")}
                         </AccordionTrigger>
                         <AccordionContent>
-                            {t('faq.faqAnswer3')}
+                            {t("faq.faqAnswer3")}
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
                 <Link href={"/login"}>
                     <GradientButton className="text-2xl">
-                        {t('button.beginNow')}
+                        {t("button.beginNow")}
                     </GradientButton>
                 </Link>
             </div>
@@ -452,19 +457,17 @@ function JoinSection() {
         <section className="flex w-full items-center justify-between px-4 py-5 md:px-[100px] lg:px-[150px] xl:px-[200px]">
             <img
                 src="/homepage/join.png"
-                alt={t('join.joinImageAlt')}
+                alt={t("join.joinImageAlt")}
                 className="hidden md:block md:max-h-[300px] lg:max-h-[400px] xl:max-h-[500px]"
             />
             <div className="flex flex-col items-center gap-4 text-center md:items-end md:text-right">
                 <h2 className="font-playfairDSC text-3xl font-thin text-[#205041] md:text-4xl">
-                    {t('join.joinTitle')}
+                    {t("join.joinTitle")}
                 </h2>
-                <h4 className="text-2xl">
-                    {t('join.joinSubtitle')}
-                </h4>
+                <h4 className="text-2xl">{t("join.joinSubtitle")}</h4>
                 <div className="w-full rounded-2xl bg-[#188665BF] p-4 text-center font-openSans md:w-2/3">
                     <h3 className="text-2xl text-[#FCFBF4]">
-                        {t('join.earningsIntro')}
+                        {t("join.earningsIntro")}
                     </h3>
                     <div className="flex w-full items-center justify-between text-[#F1ECCC] ">
                         <div className="flex w-1/2 flex-col items-center">
@@ -489,20 +492,20 @@ function JoinSection() {
                                     )}
                                 </SelectContent>
                             </Select>
-                            <p>{t('join.weeklyHoursLabel')}</p>
+                            <p>{t("join.weeklyHoursLabel")}</p>
                         </div>
                         <p className="text-3xl">=</p>
                         <div className="w-1/2">
                             <h5 className="font-playfairDSC text-3xl">
                                 ${calcPrice}
                             </h5>
-                            <p>{t('join.estimatedEarningsLabel')}</p>
+                            <p>{t("join.estimatedEarningsLabel")}</p>
                         </div>
                     </div>
                 </div>
                 <Link href={"/login"}>
                     <GradientButton className="text-3xl">
-                        {t('button.applyNow')}
+                        {t("button.applyNow")}
                     </GradientButton>
                 </Link>
             </div>

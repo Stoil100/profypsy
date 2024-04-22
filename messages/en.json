@@ -344,7 +344,8 @@
                 "selectAge": "Please select a valid age"
             },
             "minutes": "60 min",
-            "price": "Price",
+            "pricePerHour": "Price per hour",
+            "myArticles":"My Articles",
             "duration": "Duration",
             "languages": "Languages",
             "generalInfo": "General Info",

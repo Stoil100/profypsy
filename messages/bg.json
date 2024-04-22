@@ -344,7 +344,8 @@
                 "selectAge": "Моля, изберете валидна възраст"
             },
             "minutes": "60 мин",
-            "price": "Цена",
+            "pricePerHour": "Цена на час",
+            "myArticles":"Моите Статии",
             "duration": "Продължителност",
             "languages": "Езици",
             "generalInfo": "Обща информация",
