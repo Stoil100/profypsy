@@ -713,14 +713,15 @@ export default function Page({ params }: { params: { id: string } }) {
         <>
             <div className="relative flex h-full min-h-[calc(100vh-(1rem+40px))] w-full gap-4 bg-[#525174] md:p-4 lg:p-8 text-[#F1ECCC]">
                 <div className="w-full space-y-4 md:rounded-xl bg-black/20 p-4 font-playfairDSC md:w-2/3">
-                <hr className="w-full rounded-full border-2 border-[#525174]" />
+                <hr className="w-full rounded-full border-2 justify-center border-[#525174]" />
                     <div className="flex flex-wrap gap-4">
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-wrap gap-4 justify-center">
+                        <div className="flex flex-col gap-2 sm:items-start items-center">
                             <img
                                 src={profile?.image!}
                                 className="size-40 rounded-full border-4 border-[#25BA9E] p-1"
                             />
-                            <div className="flex flex-col justify-center gap-2">
+                            <div className="flex flex-col items-center  sm:items-start justify-center gap-2">
                                 {profile?.languages?.map((language, index) => (
                                     <Badge
                                         className="w-fit border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
@@ -743,7 +744,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                 ))}
                             </div>
                         </div>
-                        <div className="flex flex-1 flex-col justify-between gap-4">
+                        <div className="flex flex-1 flex-col sm:items-start items-center justify-between gap-4">
                             <div>
                                 <h2 className="text-4xl ">
                                     {profile?.userName}
@@ -801,6 +802,7 @@ export default function Page({ params }: { params: { id: string } }) {
                             >
                                 {t("bookNow")}
                             </MainButton>
+                        </div>
                         </div>
                         <div className="min-w-lg mx-4 flex h-fit min-h-48 flex-1 flex-col items-center justify-center gap-2 self-center rounded-xl border-4 border-[#40916C] bg-[#FCFBF4] p-2 text-center text-[#40916C]">
                             <p className="text-2xl">{t("pricePerHour")}:</p>
@@ -860,8 +862,8 @@ export default function Page({ params }: { params: { id: string } }) {
                             <h2 className="text-3xl text-[#FCFBF4]">{t("myArticles")}:</h2>
                             <div className="flex gap-4 text-[#25BA9E] flex-wrap justify-center">
                                 {articles.map((article, index) =>(
-                                    <Link key={index} href={`/articles/${article.id}`} className="bg-black/50 rounded-xl p-2 transition-transform hover:scale-105">
-                                        <img src={article.image} className="max-w-xs rounded-lg"/>
+                                    <Link key={index} href={`/articles/${article.id}`} className="bg-black/50 max-w-xs rounded-xl p-2 transition-transform hover:scale-105">
+                                        <img src={article.image} className=" h-auto w-auto rounded-lg"/>
                                         <h5 className="text-xl">{article.title}</h5>
                                     </Link>
                                 ))}
