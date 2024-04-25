@@ -159,7 +159,7 @@ function MissionSection() {
                 {t("mission.sectionTitle")}
             </h2>
             <Carousel
-                className="w-full"
+                className="w-full drop-shadow-2xl"
                 plugins={[
                     AutoScroll({
                         playOnInit: true,
@@ -175,9 +175,9 @@ function MissionSection() {
                     {missionItems.map((item, index) => (
                         <CarouselItem
                             key={index}
-                            className="pl-4 sm:basis-1/2 lg:basis-1/3 "
+                            className="pl-4 sm:basis-1/2 lg:basis-1/3"
                         >
-                            <div className="flex h-full w-full flex-col rounded-2xl border-4 border-[#25BA9E] bg-white p-4">
+                            <div className="flex h-full w-full flex-col rounded-2xl border-4 border-[#25BA9E] bg-white p-4 ">
                                 <div className="flex w-full justify-between gap-2">
                                     <h2 className="mb-3 text-3xl font-bold text-[#205041]">
                                         {item.title}

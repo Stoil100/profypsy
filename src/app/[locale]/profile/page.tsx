@@ -225,14 +225,14 @@ export default function Page() {
     return (
         <main
             className={cn(
-                "flex h-fit min-h-screen items-center justify-center bg-gradient-to-b py-4",
+                "flex h-fit min-h-screen items-start justify-center bg-gradient-to-b py-4",
                 user.role === "psychologist"
                     ? "from-[#40916C] to-[#52B788]"
                     : "from-[#F7F4E0] to-[#F1ECCC]",
             )}
         >
             {user.uid && profile! && (
-                <div className="flex w-full max-w-2xl flex-col items-center justify-center gap-4 rounded-xl bg-white p-4">
+                <div className="flex w-full max-w-5xl flex-col items-center justify-center gap-4 drop-shadow-2xl rounded-xl bg-white p-2 md:p-4 border-[#525174] border-8">
                     <h2 className="font-playfairDSC text-4xl font-bold ">
                         {t("profile")}
                     </h2>
@@ -290,6 +290,7 @@ export default function Page() {
                             )}
                         </div>
                     </div>
+                    <hr className="w-2/3 rounded-full border-2 border-[#40916C]" />
                     <Tabs defaultValue="settings" className="w-full">
                         <TabsList className="w-full">
                             <TabsTrigger value="settings">
@@ -423,6 +424,7 @@ export default function Page() {
                                                 )}
                                             </div>
                                         </div>
+                                        <hr className="w-full rounded-full border-2 border-[#25BA9E] md:col-span-2" />
                                         <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                             <p>{t("about")}:</p>
                                             <div className="flex w-full flex-wrap items-center justify-center gap-2 break-all rounded-2xl border-2 border-dashed border-black p-2">
@@ -437,6 +439,7 @@ export default function Page() {
                                                 </p>
                                             </div>
                                         </div>
+                                        <hr className="w-full rounded-full border-2 border-[#25BA9E] md:col-span-2" />
                                         {profile!.educations && (
                                             <div className="col-span-1 rounded-xl bg-gray-100 p-2 md:col-span-2">
                                                 <p>{t("education")}:</p>
@@ -501,12 +504,13 @@ export default function Page() {
                                     </>
                                 )}
                             </div>
+                            <hr className="w-full rounded-full border-2 border-[#40916C] col-span-2" />
                         </TabsContent>
                         <TabsContent value="appointments">
                             <Accordion
                                 type="single"
                                 collapsible
-                                className="rounded-2xl bg-[#FCFBF4] p-4"
+                                className="rounded-2xl bg-[#FCFBF4] border-2 border-[#40916C] p-4"
                             >
                                 {user!.appointments &&
                                 user!.appointments.length > 0 ? (
@@ -515,6 +519,7 @@ export default function Page() {
                                             <AccordionItem
                                                 value={`item-${index}`}
                                                 key={index}
+                                                className="border-[#40916C] border-b-2"
                                             >
                                                 <AccordionTrigger
                                                     className="relative"
@@ -686,7 +691,7 @@ export default function Page() {
                                     <Accordion
                                         type="single"
                                         collapsible
-                                        className="rounded-2xl bg-[#FCFBF4] p-4"
+                                        className="rounded-2xl bg-[#FCFBF4] p-4 border-2 border-[#40916C]"
                                     >
                                         {profile!.appointments.length > 0 ? (
                                             profile!.appointments.map(
@@ -694,6 +699,7 @@ export default function Page() {
                                                     <AccordionItem
                                                         value={`item-${index}`}
                                                         key={index}
+                                                        className="border-[#40916C] border-b-2"
                                                     >
                                                         <AccordionTrigger
                                                             className="relative"
