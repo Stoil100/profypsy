@@ -73,7 +73,7 @@ const Loader = () => {
             <p className="text-xl text-[#128665]">{t("tailoredSearch")}</p>
         </div>
     );
-}
+};
 type BookingCarouselProps = {
     profile: PsychologistT | null;
     user: {
@@ -102,12 +102,11 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     selectedAppointmentTime,
 }) => {
     const t = useTranslations("Search.id");
-    const [currentWeek, setCurrentWeek] = useState(0);
+    const [currentWeek, setCurrentWeek] = useState(1);
     const [availableSlots, setAvailableSlots] = useState<{
         [key: string]: boolean;
     }>({});
     const daysAvailable: string[] = profile?.cost?.dates ?? [];
-
     const fetchAvailability = async (dates: Date[]) => {
         const profileDocRef = doc(db, "psychologists", profile!.uid);
         try {
@@ -176,7 +175,8 @@ const BookingDates: React.FC<BookingDatesProps> = ({
 
     function getDatesForWeek(week: number): Date[] {
         const now = new Date();
-        now.setDate(now.getDate() + 7 * week - now.getDay());
+        // Start calculating from next week
+        now.setDate(now.getDate() + 7 * Math.max(week, 1) - now.getDay());
         let dates: Date[] = [];
 
         daysAvailable.forEach((day) => {
@@ -185,7 +185,8 @@ const BookingDates: React.FC<BookingDatesProps> = ({
                 date.getDate() +
                     ((7 + dayNamesToNumbers(day) - date.getDay()) % 7),
             );
-            dates.push(date);
+            // Ensure the date is at least 7 days from today
+            if (date > new Date()) dates.push(date);
         });
 
         return dates.sort((a, b) => a.getTime() - b.getTime());
@@ -323,6 +324,7 @@ const BookingCarousel: React.FC<BookingCarouselProps> = ({
             selectedDate: selectedAppointmentTime!,
             clientUid: user!.uid!,
             psychologistUid: profile?.uid!,
+            new: true,
         };
         const tempUserValues: AppointmentT = {
             userName: profile?.userName!,
@@ -334,6 +336,7 @@ const BookingCarousel: React.FC<BookingCarouselProps> = ({
             selectedDate: selectedAppointmentTime!,
             clientUid: user?.uid!,
             psychologistUid: profile!.uid!,
+            new: true,
         };
         const psychologistProfileDocRef = doc(
             db,
@@ -696,7 +699,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     querySnapshot.forEach((doc) => {
                         tempValues.push(doc.data() as ArticleT);
                     });
-                    console.log(tempValues)
+                    console.log(tempValues);
                     setArticles(tempValues);
                 },
                 (error) => {
@@ -711,98 +714,101 @@ export default function Page({ params }: { params: { id: string } }) {
     }, [profile]);
     return (
         <>
-            <div className="relative flex h-full min-h-[calc(100vh-(1rem+40px))] w-full gap-4 bg-[#525174] md:p-4 lg:p-8 text-[#F1ECCC]">
-                <div className="w-full space-y-4 md:rounded-xl bg-black/20 p-4 font-playfairDSC md:w-2/3">
-                <hr className="w-full rounded-full border-2 justify-center border-[#525174]" />
+            <div className="relative flex h-full min-h-[calc(100vh-(1rem+40px))] w-full gap-4 bg-[#525174] text-[#F1ECCC] md:p-4 lg:p-8">
+                <div className="w-full space-y-4 bg-black/20 p-4 font-playfairDSC md:w-2/3 md:rounded-xl">
+                    <hr className="w-full justify-center rounded-full border-2 border-[#525174]" />
                     <div className="flex flex-wrap gap-4">
-                        <div className="flex flex-wrap gap-4 justify-center">
-                        <div className="flex flex-col gap-2 sm:items-start items-center">
-                            <img
-                                src={profile?.image!}
-                                className="size-40 rounded-full border-4 border-[#25BA9E] p-1"
-                            />
-                            <div className="flex flex-col items-center  sm:items-start justify-center gap-2">
-                                {profile?.languages?.map((language, index) => (
-                                    <Badge
-                                        className="w-fit border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
-                                        key={index}
-                                    >
-                                        <div className="flex h-full w-full items-center gap-2 bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
-                                            <img
-                                                src={
-                                                    language === "Bulgarian"
-                                                        ? "/logic/bg.png"
-                                                        : "/logic/en.png"
-                                                }
-                                                alt={language}
-                                            />
-                                            <p className="capitalize">
-                                                {language}
-                                            </p>
-                                        </div>
-                                    </Badge>
-                                ))}
-                            </div>
-                        </div>
-                        <div className="flex flex-1 flex-col sm:items-start items-center justify-between gap-4">
-                            <div>
-                                <h2 className="text-4xl ">
-                                    {profile?.userName}
-                                </h2>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-lg text-gray-400">
-                                        &quot;{profile?.quote!}&quot;
-                                    </p>
-                                    <div className="flex items-center gap-2">
-                                        <MapPinIcon />
-                                        <p className="text-xl">
-                                            {profile?.location!}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-2 text-[#FCFBF4]">
-                                    <div className="flex items-center gap-2">
-                                        <MailIcon />
-                                        <p className="text-sm">
-                                            {profile?.email!}
-                                        </p>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <PhoneIcon />
-                                        <p className="text-xl">
-                                            {profile?.phone!}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <h4 className="text-2xl">
-                                    {t("specializations")}:
-                                </h4>
-                                <div className="flex flex-wrap gap-2">
-                                    {profile?.specializations?.map(
-                                        (speciality, index) => (
+                        <div className="flex flex-wrap justify-center gap-4">
+                            <div className="flex flex-col items-center gap-2 sm:items-start">
+                                <img
+                                    src={profile?.image!}
+                                    className="size-40 rounded-full border-4 border-[#25BA9E] p-1"
+                                />
+                                <div className="flex flex-col items-center  justify-center gap-2 sm:items-start">
+                                    {profile?.languages?.map(
+                                        (language, index) => (
                                             <Badge
-                                                className="border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
+                                                className="w-fit border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
                                                 key={index}
                                             >
-                                                <p className="h-full w-full text-nowrap bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
-                                                    {speciality}
-                                                </p>
+                                                <div className="flex h-full w-full items-center gap-2 bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
+                                                    <img
+                                                        src={
+                                                            language ===
+                                                            "Bulgarian"
+                                                                ? "/logic/bg.png"
+                                                                : "/logic/en.png"
+                                                        }
+                                                        alt={language}
+                                                    />
+                                                    <p className="capitalize">
+                                                        {language}
+                                                    </p>
+                                                </div>
                                             </Badge>
                                         ),
                                     )}
                                 </div>
                             </div>
-                            <hr className="w-full rounded-full border-2 border-[#40916C]" />
-                            <MainButton
-                                className="w-full text-xl"
-                                onClick={() => setIsBookingDialogOpen(true)}
-                            >
-                                {t("bookNow")}
-                            </MainButton>
-                        </div>
+                            <div className="flex flex-1 flex-col items-center justify-between gap-4 sm:items-start">
+                                <div>
+                                    <h2 className="text-4xl ">
+                                        {profile?.userName}
+                                    </h2>
+                                    <div className="flex items-center gap-2">
+                                        <p className="text-lg text-gray-400">
+                                            &quot;{profile?.quote!}&quot;
+                                        </p>
+                                        <div className="flex items-center gap-2">
+                                            <MapPinIcon />
+                                            <p className="text-xl">
+                                                {profile?.location!}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col gap-2 text-[#FCFBF4]">
+                                        <div className="flex items-center gap-2">
+                                            <MailIcon />
+                                            <p className="text-sm">
+                                                {profile?.email!}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <PhoneIcon />
+                                            <p className="text-xl">
+                                                {profile?.phone!}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <h4 className="text-2xl">
+                                        {t("specializations")}:
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {profile?.specializations?.map(
+                                            (speciality, index) => (
+                                                <Badge
+                                                    className="border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
+                                                    key={index}
+                                                >
+                                                    <p className="h-full w-full text-nowrap bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
+                                                        {speciality}
+                                                    </p>
+                                                </Badge>
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                                <hr className="w-full rounded-full border-2 border-[#40916C]" />
+                                <MainButton
+                                    className="w-full text-xl"
+                                    onClick={() => setIsBookingDialogOpen(true)}
+                                >
+                                    {t("bookNow")}
+                                </MainButton>
+                            </div>
                         </div>
                         <div className="min-w-lg mx-4 flex h-fit min-h-48 flex-1 flex-col items-center justify-center gap-2 self-center rounded-xl border-4 border-[#40916C] bg-[#FCFBF4] p-2 text-center text-[#40916C]">
                             <p className="text-2xl">{t("pricePerHour")}:</p>
@@ -858,13 +864,24 @@ export default function Page({ params }: { params: { id: string } }) {
                     </div>
                     <hr className="w-full rounded-full border-2 border-[#525174]" />
                     {articles.length > 0 && (
-                        <div className="font-openSans space-y-2">
-                            <h2 className="text-3xl text-[#FCFBF4]">{t("myArticles")}:</h2>
-                            <div className="flex gap-4 text-[#25BA9E] flex-wrap justify-center">
-                                {articles.map((article, index) =>(
-                                    <Link key={index} href={`/articles/${article.id}`} className="bg-black/50 max-w-xs rounded-xl p-2 transition-transform hover:scale-105">
-                                        <img src={article.image} className=" h-auto w-auto rounded-lg"/>
-                                        <h5 className="text-xl">{article.title}</h5>
+                        <div className="space-y-2 font-openSans">
+                            <h2 className="text-3xl text-[#FCFBF4]">
+                                {t("myArticles")}:
+                            </h2>
+                            <div className="flex flex-wrap justify-center gap-4 text-[#25BA9E]">
+                                {articles.map((article, index) => (
+                                    <Link
+                                        key={index}
+                                        href={`/articles/${article.id}`}
+                                        className="max-w-xs rounded-xl bg-black/50 p-2 transition-transform hover:scale-105"
+                                    >
+                                        <img
+                                            src={article.image}
+                                            className=" h-auto w-auto rounded-lg"
+                                        />
+                                        <h5 className="text-xl">
+                                            {article.title}
+                                        </h5>
                                     </Link>
                                 ))}
                             </div>

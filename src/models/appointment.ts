@@ -8,5 +8,6 @@ type AppointmentT ={
     selectedDate: string;
     clientUid: string;
     psychologistUid: string;
+    new?:boolean;
 }
 export type {AppointmentT};

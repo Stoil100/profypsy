@@ -1,9 +1,3 @@
-// import { Button } from './ui/button';
-// import { Input } from './ui/input';
-// import { useEffect, useState } from 'react';
-// import { collection, addDoc, query, where, onSnapshot, orderBy, Timestamp } from 'firebase/firestore';
-// import { db } from '@/firebase/config';
-
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -45,6 +39,7 @@ interface Message {
     content: string;
     timestamp: Date;
     senderUid: string;
+    read: boolean;
 }
 export default function Chat({
     senderUid,
@@ -67,35 +62,46 @@ export default function Chat({
             ? `${senderUid}_${receiverUid}`
             : `${receiverUid}_${senderUid}`;
     }
-
     useEffect(() => {
-        // Listen for new messages when a user is selected
         const conversationId = getConversationId(senderUid, receiverUid);
-        const messagesRef = collection(
-            db,
-            "conversations",
-            conversationId,
-            "messages",
-        );
+        const messagesRef = collection(db, "conversations", conversationId, "messages");
         const q = query(messagesRef, orderBy("createdAt"), limit(50));
-
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const messages = querySnapshot.docs.map((doc) => {
-                const data = doc.data();
-                // Ensure the data matches the Message interface. Adjust as necessary for your data structure.
-                const message: Message = {
+    
+        const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+            const messages: Message[] = [];
+            const batch = writeBatch(db);
+    
+            querySnapshot.docs.forEach((docSnapshot) => {
+                const data = docSnapshot.data();
+                const message = {
                     content: data.content,
-                    timestamp: data.timestamp, // Convert Firestore Timestamp to Date
-                    senderUid: data.senderUid, //
+                    timestamp: data.timestamp,
+                    senderUid: data.senderUid,
+                    read: data.read,
                 };
-                return {
-                    ...message,
-                };
+    
+                messages.push(message);
+    
+                // Ensure only messages from the other user and not read yet are marked as read
+                if (!data.read && data.senderUid !== senderUid) {  // Adjust this check as needed
+                    const messageDocRef = doc(messagesRef, docSnapshot.id);
+                    batch.update(messageDocRef, { read: true });
+                }
             });
+    
             setMessages(messages);
+    
+            // Commit the batch update to mark all unread messages from the other user as read
+            try {
+                await batch.commit();
+            } catch (error) {
+                console.error("Failed to update message read status:", error);
+            }
         });
+    
         return () => unsubscribe();
     }, [db, senderUid, receiverUid]);
+    
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const conversationId: string = getConversationId(
@@ -113,6 +119,7 @@ export default function Chat({
             senderUid: senderUid,
             content: values.message,
             createdAt: Timestamp.now(),
+            read: false,
         };
 
         try {
@@ -121,19 +128,15 @@ export default function Chat({
             console.error(error);
         }
         const batch = writeBatch(db);
-
-        // Update the last message in the conversation
-        const conversationDocRef = doc(db, "conversations", conversationId); // Fixed line
+        const conversationDocRef = doc(db, "conversations", conversationId);
         const docSnap = await getDoc(conversationDocRef);
         if (!docSnap.exists()) {
-            // Document does not exist, create it first
             await setDoc(
                 conversationDocRef,
                 { lastMessage: newMessage },
                 { merge: true },
             );
         } else {
-            // Document exists, update it
             batch.update(conversationDocRef, { lastMessage: newMessage });
         }
 

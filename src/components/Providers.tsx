@@ -143,6 +143,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             image: user.image,
             userName: user.userName,
             phone: user.phone,
+            admin: user.admin,
         });
     };
 

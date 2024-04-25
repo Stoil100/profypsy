@@ -20,18 +20,23 @@ import { AppointmentT } from "@/models/appointment";
 import { PsychologistT } from "@/models/psychologist";
 import { Dialog } from "@radix-ui/react-dialog";
 import {
+    FirestoreError,
     collection,
     deleteDoc,
     doc,
     getDoc,
+    getDocs,
     onSnapshot,
     query,
+    updateDoc,
     where,
 } from "firebase/firestore";
 import {
     BellDot,
     Calendar,
+    CalendarPlusIcon,
     Mail,
+    MailWarningIcon,
     NewspaperIcon,
     Phone,
     Settings,
@@ -45,6 +50,56 @@ import { useEffect, useState } from "react";
 
 export type ProfileT = PsychologistT & AppointmentT;
 
+type MessageIndicatorProps = {
+    senderUid: string;
+    receiverUid: string;
+};
+
+const NewMessageIndicator: React.FC<MessageIndicatorProps> = ({
+    senderUid,
+    receiverUid,
+}) => {
+    const [newMessages, setNewMessages] = useState(false);
+    useEffect(() => {
+        function checkForUnreadMessages() {
+            const conversationId =
+                senderUid < receiverUid
+                    ? `${senderUid}_${receiverUid}`
+                    : `${receiverUid}_${senderUid}`;
+            const messagesRef = collection(
+                db,
+                "conversations",
+                conversationId,
+                "messages",
+            );
+            const q = query(
+                messagesRef,
+                where("senderUid", "==", receiverUid),
+                where("read", "==", false),
+            );
+
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                const hasUnread = querySnapshot.size > 0;
+                setNewMessages(hasUnread); // Update state based on presence of unread messages
+            });
+            return unsubscribe;
+        }
+        const unsubscribe = checkForUnreadMessages();
+        return () => unsubscribe();
+    }, [senderUid, receiverUid]);
+    return (
+        newMessages && (
+            <div className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-orange-400">
+                <MailWarningIcon className="size-3 text-white" />
+            </div>
+        )
+    );
+};
+const NewSessionIndicator: React.FC = () => (
+    <div className="absolute -left-1 -top-1 flex size-4 items-center justify-center rounded-full bg-yellow-400">
+        <CalendarPlusIcon className="size-3 text-white" />
+    </div>
+);
 export default function Page() {
     const t = useTranslations("Profile");
     const { user } = useAuth();
@@ -57,30 +112,54 @@ export default function Page() {
     });
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
+    // const [hasNewMessages, setHasNewMessages] = useState(false);
     useEffect(() => {
         if (!user?.uid) {
             router.push("/login");
         }
     }, [user, router]);
     useEffect(() => {
-        async function getUserData() {
-            const docRef = doc(db, "users", user.uid!);
-            const docSnap = await getDoc(docRef);
-            if (!docSnap.exists()) {
-                return {
-                    notFound: true, // Return a 404 page if the user does not exist
-                };
-            }
-            if (user.role === "psychologist") {
-                const docRef = doc(db, "psychologists", user.uid!);
-                const docSnapPsychologist = await getDoc(docRef);
-                setProfile(docSnapPsychologist.data() as ProfileT);
-            } else {
-                setProfile(docSnap.data() as ProfileT);
-            }
-        }
-        getUserData();
-    }, []);
+        if (!user.uid) return;
+
+        const unsubscribe = onSnapshot(
+            doc(db, "users", user.uid),
+            (docSnap) => {
+                if (!docSnap.exists()) {
+                    console.log("User not found");
+                    return;
+                }
+                if (user.role === "psychologist") {
+                    const psychologistRef = doc(
+                        db,
+                        "psychologists",
+                        user?.uid!,
+                    );
+                    return onSnapshot(
+                        psychologistRef,
+                        (docSnapPsychologist) => {
+                            if (docSnapPsychologist.exists()) {
+                                setProfile(
+                                    docSnapPsychologist.data() as ProfileT,
+                                );
+                            } else {
+                                console.log("Psychologist profile not found");
+                            }
+                        },
+                        (error: FirestoreError) => {
+                            console.error(error.message);
+                        },
+                    );
+                } else {
+                    setProfile(docSnap.data() as ProfileT);
+                }
+            },
+            (error: FirestoreError) => {
+                console.error(error.message);
+            },
+        );
+
+        return () => unsubscribe();
+    }, [user.uid, user.role]);
     useEffect(() => {
         function fetchItems() {
             const q = query(
@@ -105,7 +184,34 @@ export default function Page() {
         }
         fetchItems();
     }, []);
+    const markSession = async (
+        col: "users" | "psychologists",
+        uid: string,
+        index: number,
+    ) => {
+        const documentRef = doc(db, col, uid);
 
+        try {
+            const docSnap = await getDoc(documentRef);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const appointments = data.appointments as AppointmentT[];
+
+                // Update the 'new' property of the specific appointment
+                appointments[index].new = false;
+
+                // Update the entire array in Firestore
+                await updateDoc(documentRef, {
+                    appointments: appointments,
+                });
+                console.log("Array updated successfully!");
+            } else {
+                console.log("No such document!");
+            }
+        } catch (error) {
+            console.error("Error updating document: ", error);
+        }
+    };
     function toggleChat(
         senderUid: string,
         receiverUid: string,
@@ -130,7 +236,7 @@ export default function Page() {
                     <h2 className="font-playfairDSC text-4xl font-bold ">
                         {t("profile")}
                     </h2>
-                    <div className="flex items-center gap-2 flex-wrap justify-center">
+                    <div className="flex flex-wrap items-center justify-center gap-2">
                         {profile!.image ? (
                             <img
                                 src={profile!.image!}
@@ -188,23 +294,77 @@ export default function Page() {
                         <TabsList className="w-full">
                             <TabsTrigger value="settings">
                                 <Settings className="sm:mr-2" />
+
                                 <p className="hidden sm:block">
                                     {t("account")}
                                 </p>
                             </TabsTrigger>
-                            <TabsTrigger value="appointments">
+                            <TabsTrigger
+                                value="appointments"
+                                className="relative"
+                            >
                                 <Calendar className="sm:mr-2" />
                                 <p className="hidden sm:block">
                                     {t("appointments")}
                                 </p>
+                                {user!.appointments &&
+                                    user!.appointments.length > 0 &&
+                                    user.appointments.map(
+                                        (appointment, index) =>
+                                            appointment.new && (
+                                                <NewSessionIndicator
+                                                    key={index}
+                                                />
+                                            ),
+                                    )}
+                                {user!.appointments &&
+                                    user!.appointments.length > 0 &&
+                                    user.appointments.map(
+                                        (appointment, index) => (
+                                            <NewMessageIndicator
+                                                key={index}
+                                                senderUid={user.uid!}
+                                                receiverUid={
+                                                    appointment.psychologistUid
+                                                }
+                                            />
+                                        ),
+                                    )}
                             </TabsTrigger>
                             {user.role === "psychologist" && (
                                 <>
-                                    <TabsTrigger value="sessions">
+                                    <TabsTrigger
+                                        value="sessions"
+                                        className="relative"
+                                    >
                                         <BellDot className="sm:mr-2" />
                                         <p className="hidden sm:block">
                                             {t("sessions")}
                                         </p>
+
+                                        {profile!.appointments &&
+                                            profile!.appointments.length > 0 &&
+                                            profile.appointments.map(
+                                                (appointment, index) =>
+                                                    appointment.new && (
+                                                        <NewSessionIndicator
+                                                            key={index}
+                                                        />
+                                                    ),
+                                            )}
+                                        {profile!.appointments &&
+                                            profile!.appointments.length > 0 &&
+                                            profile.appointments.map(
+                                                (appointment, index) => (
+                                                    <NewMessageIndicator
+                                                        key={index}
+                                                        senderUid={user.uid!}
+                                                        receiverUid={
+                                                            appointment.clientUid
+                                                        }
+                                                    />
+                                                ),
+                                            )}
                                     </TabsTrigger>
                                     <TabsTrigger value="articles">
                                         <NewspaperIcon className="sm:mr-2" />
@@ -356,7 +516,25 @@ export default function Page() {
                                                 value={`item-${index}`}
                                                 key={index}
                                             >
-                                                <AccordionTrigger>
+                                                <AccordionTrigger
+                                                    className="relative"
+                                                    onClick={() => {
+                                                        markSession(
+                                                            "users",
+                                                            user?.uid!,
+                                                            index,
+                                                        );
+                                                    }}
+                                                >
+                                                    {appointment.new && (
+                                                        <NewSessionIndicator />
+                                                    )}
+                                                    <NewMessageIndicator
+                                                        senderUid={user.uid!}
+                                                        receiverUid={
+                                                            appointment.psychologistUid
+                                                        }
+                                                    />
                                                     {appointment.selectedDate}
                                                 </AccordionTrigger>
                                                 <AccordionContent className="p-4">
@@ -435,7 +613,7 @@ export default function Page() {
                                                             </div>
                                                         </div>
                                                         <MainButton
-                                                            className="w-full border-2 border-[#25BA9E] text-xl"
+                                                            className="w-full border-2 border-[#25BA9E] text-xl hover:scale-105"
                                                             onClick={() => {
                                                                 toggleChat(
                                                                     user.uid!,
@@ -444,6 +622,14 @@ export default function Page() {
                                                                 );
                                                             }}
                                                         >
+                                                            <NewMessageIndicator
+                                                                senderUid={
+                                                                    user.uid!
+                                                                }
+                                                                receiverUid={
+                                                                    appointment.psychologistUid
+                                                                }
+                                                            />
                                                             {t("chatNow")}
                                                         </MainButton>
                                                     </div>
@@ -509,10 +695,30 @@ export default function Page() {
                                                         value={`item-${index}`}
                                                         key={index}
                                                     >
-                                                        <AccordionTrigger>
+                                                        <AccordionTrigger
+                                                            className="relative"
+                                                            onClick={() => {
+                                                                markSession(
+                                                                    "psychologists",
+                                                                    profile.uid,
+                                                                    index,
+                                                                );
+                                                            }}
+                                                        >
+                                                            {appointment.new && (
+                                                                <NewSessionIndicator />
+                                                            )}
                                                             {
                                                                 appointment.selectedDate
                                                             }
+                                                            <NewMessageIndicator
+                                                                senderUid={
+                                                                    user.uid!
+                                                                }
+                                                                receiverUid={
+                                                                    appointment.clientUid
+                                                                }
+                                                            />
                                                         </AccordionTrigger>
                                                         <AccordionContent className="p-4">
                                                             <div className="space-y-4 break-all">
@@ -593,7 +799,7 @@ export default function Page() {
                                                                     </div>
                                                                 </div>
                                                                 <MainButton
-                                                                    className="w-full border-2 border-[#25BA9E] text-xl"
+                                                                    className="w-full border-2 border-[#25BA9E] text-xl hover:scale-105"
                                                                     onClick={() => {
                                                                         toggleChat(
                                                                             user.uid!,
@@ -602,6 +808,14 @@ export default function Page() {
                                                                         );
                                                                     }}
                                                                 >
+                                                                    <NewMessageIndicator
+                                                                        senderUid={
+                                                                            user.uid!
+                                                                        }
+                                                                        receiverUid={
+                                                                            appointment.clientUid
+                                                                        }
+                                                                    />
                                                                     {t(
                                                                         "chatNow",
                                                                     )}
