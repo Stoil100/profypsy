@@ -102,11 +102,13 @@ const BookingDates: React.FC<BookingDatesProps> = ({
     selectedAppointmentTime,
 }) => {
     const t = useTranslations("Search.id");
-    const [currentWeek, setCurrentWeek] = useState(1);
+    const [currentWeek, setCurrentWeek] = useState(2);
     const [availableSlots, setAvailableSlots] = useState<{
         [key: string]: boolean;
     }>({});
     const daysAvailable: string[] = profile?.cost?.dates ?? [];
+    console.log(daysAvailable);
+
     const fetchAvailability = async (dates: Date[]) => {
         const profileDocRef = doc(db, "psychologists", profile!.uid);
         try {
@@ -146,13 +148,13 @@ const BookingDates: React.FC<BookingDatesProps> = ({
 
     function dayNamesToNumbers(dayName: string): number {
         const days: string[] = [
-            t("days.sunday"),
-            t("days.monday"),
-            t("days.tuesday"),
-            t("days.wednesday"),
-            t("days.thursday"),
-            t("days.friday"),
-            t("days.saturday"),
+            "sunday",
+            "monday",
+            "tuesday",
+            "wednesday",
+            "thursday",
+            "friday",
+            "saturday",
         ];
         return days.indexOf(dayName.toLowerCase());
     }
@@ -173,7 +175,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
         return { [dateStr]: slots };
     }
 
-    function getDatesForWeek(week: number): Date[] {
+     function getDatesForWeek(week: number): Date[] {
         const now = new Date();
         // Start calculating from next week
         now.setDate(now.getDate() + 7 * Math.max(week, 1) - now.getDay());
@@ -262,7 +264,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
                     variant="outline"
                     className="size-10 rounded-full border-2 border-[#52B788] p-0 text-[#52B788]"
                     onClick={() =>
-                        setCurrentWeek((current) => Math.max(current - 1, 0))
+                        setCurrentWeek((current) => Math.max(current - 1, 2))
                     }
                 >
                     <ArrowLeft />
@@ -278,6 +280,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
         </div>
     );
 };
+
 const BookingCarousel: React.FC<BookingCarouselProps> = ({
     profile,
     user,
@@ -737,7 +740,10 @@ export default function Page({ params }: { params: { id: string } }) {
                                                             language ===
                                                             "Bulgarian"
                                                                 ? "/logic/bg.png"
-                                                                : "/logic/en.png"
+                                                                : language ===
+                                                                    "Български"
+                                                                  ? "/logic/bg.png"
+                                                                  : "/logic/en.png"
                                                         }
                                                         alt={language}
                                                     />
@@ -864,30 +870,32 @@ export default function Page({ params }: { params: { id: string } }) {
                     </div>
                     <hr className="w-full rounded-full border-2 border-[#525174]" />
                     {articles.length > 0 && (
-                        <div className="space-y-2 font-openSans">
-                            <h2 className="text-3xl text-[#FCFBF4]">
-                                {t("myArticles")}:
-                            </h2>
-                            <div className="flex flex-wrap justify-center gap-4 text-[#25BA9E]">
-                                {articles.map((article, index) => (
-                                    <Link
-                                        key={index}
-                                        href={`/articles/${article.id}`}
-                                        className="max-w-xs rounded-xl bg-black/50 p-2 transition-transform hover:scale-105"
-                                    >
-                                        <img
-                                            src={article.image}
-                                            className=" h-auto w-auto rounded-lg"
-                                        />
-                                        <h5 className="text-xl">
-                                            {article.title}
-                                        </h5>
-                                    </Link>
-                                ))}
+                        <>
+                            <div className="space-y-2 font-openSans">
+                                <h2 className="text-3xl text-[#FCFBF4]">
+                                    {t("myArticles")}:
+                                </h2>
+                                <div className="flex flex-wrap justify-center gap-4 text-[#25BA9E]">
+                                    {articles.map((article, index) => (
+                                        <Link
+                                            key={index}
+                                            href={`/articles/${article.id}`}
+                                            className="max-w-xs rounded-xl bg-black/50 p-2 transition-transform hover:scale-105"
+                                        >
+                                            <img
+                                                src={article.image}
+                                                className=" h-auto w-auto rounded-lg"
+                                            />
+                                            <h5 className="text-xl">
+                                                {article.title}
+                                            </h5>
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                            <hr className="w-full rounded-full border-2 border-[#525174]" />
+                        </>
                     )}
-                    <hr className="w-full rounded-full border-2 border-[#525174]" />
                 </div>
                 <div className="sticky top-[calc(1rem+60px)] hidden max-h-[calc(100vh-(1rem+100px))] w-1/3 items-center justify-center rounded-xl border-4 border-[#25BA9E] bg-[#FCFBF4] md:flex">
                     {user.uid && profile?.uid && (
