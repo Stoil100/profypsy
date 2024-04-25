@@ -232,8 +232,8 @@ export default function Page() {
             )}
         >
             {user.uid && profile! && (
-                <div className="flex w-full max-w-5xl flex-col items-center justify-center gap-4 drop-shadow-2xl rounded-xl bg-white p-2 md:p-4 border-[#525174] border-8">
-                    <h2 className="font-playfairDSC text-4xl font-bold ">
+                <div className="flex w-full max-w-5xl flex-col items-center justify-center gap-4 rounded-3xl border-8 border-[#525174] bg-white p-2 drop-shadow-2xl md:p-4">
+                    <h2 className="underline-offset-3 font-playfairDSC  text-3xl font-bold italic text-[#40916C] underline decoration-2 md:text-5xl ">
                         {t("profile")}
                     </h2>
                     <div className="flex flex-wrap items-center justify-center gap-2">
@@ -504,13 +504,13 @@ export default function Page() {
                                     </>
                                 )}
                             </div>
-                            <hr className="w-full rounded-full border-2 border-[#40916C] col-span-2" />
+                            <hr className="col-span-2 w-full rounded-full border-2 border-[#40916C]" />
                         </TabsContent>
                         <TabsContent value="appointments">
                             <Accordion
                                 type="single"
                                 collapsible
-                                className="rounded-2xl bg-[#FCFBF4] border-2 border-[#40916C] p-4"
+                                className="rounded-2xl border-2 border-[#40916C] bg-[#FCFBF4] p-4"
                             >
                                 {user!.appointments &&
                                 user!.appointments.length > 0 ? (
@@ -519,7 +519,7 @@ export default function Page() {
                                             <AccordionItem
                                                 value={`item-${index}`}
                                                 key={index}
-                                                className="border-[#40916C] border-b-2"
+                                                className="border-b-2 border-[#40916C]"
                                             >
                                                 <AccordionTrigger
                                                     className="relative"
@@ -691,7 +691,7 @@ export default function Page() {
                                     <Accordion
                                         type="single"
                                         collapsible
-                                        className="rounded-2xl bg-[#FCFBF4] p-4 border-2 border-[#40916C]"
+                                        className="rounded-2xl border-2 border-[#40916C] bg-[#FCFBF4] p-4"
                                     >
                                         {profile!.appointments.length > 0 ? (
                                             profile!.appointments.map(
@@ -699,7 +699,7 @@ export default function Page() {
                                                     <AccordionItem
                                                         value={`item-${index}`}
                                                         key={index}
-                                                        className="border-[#40916C] border-b-2"
+                                                        className="border-b-2 border-[#40916C]"
                                                     >
                                                         <AccordionTrigger
                                                             className="relative"

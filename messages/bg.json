@@ -28,7 +28,7 @@
         },
         "approach": {
             "approachTitle": "Как работи Profypsy",
-            "stepOneTitle": "Създайте безплатен акаунт",
+            "stepOneTitle": "Създайте безплатен профил",
             "stepTwoTitle": "Свържете се с терапевт",
             "stepThreeTitle": "Започнете вашата терапия",
             "approachImageAlt": "как работи profypsy"
@@ -53,15 +53,15 @@
     },
     "Auth": {
         "auth": {
-            "headerRegister": "Регистрирайте своя акаунт",
-            "headerLogin": "Влезте в своя акаунт",
+            "headerRegister": "Регистрирайте своя профил",
+            "headerLogin": "Влезте в своя профил",
             "usingSocialNetworks": "Чрез социални мрежи",
             "orWith": "Или с",
             "emailPlaceholder": "Въведете своя имейл тук...",
             "passwordPlaceholder": "Въведете своята парола тук...",
             "confirmPasswordPlaceholder": "Потвърдете своята парола тук...",
-            "alreadyHaveAccount": "Вече имате акаунт?",
-            "doNotHaveAccount": "Нямате акаунт?",
+            "alreadyHaveAccount": "Вече имате профил?",
+            "doNotHaveAccount": "Нямате профил?",
             "loginHere": "Вход тук",
             "registerHere": "Регистрация тук",
             "submit": "Изпрати",
@@ -183,10 +183,10 @@
     },
     "Profile": {
         "profile": "Профил",
-        "yourAccount": "Вашият акаунт",
+        "yourAccount": "Вашият профил",
         "editProfile": "Редактирай профил",
-        "psychologistAccount": "Акаунт на психолог",
-        "account": "Акаунт",
+        "psychologistAccount": "Профил на психолог",
+        "account": "Профил",
         "appointments": "Срещи",
         "sessions": "Сесии",
         "articles": "Статии",
