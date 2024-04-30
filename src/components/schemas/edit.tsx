@@ -19,7 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import { ProfileT } from "@/app/[locale]/profile/page";
+import { ProfileT } from "@/app/[locale]/(logic)/profile/page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";
