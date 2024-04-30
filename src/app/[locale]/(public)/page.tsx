@@ -179,14 +179,14 @@ function MissionSection() {
                         >
                             <div className="flex h-full w-full flex-col rounded-2xl border-4 border-[#25BA9E] bg-white p-4 ">
                                 <div className="flex w-full justify-between gap-2">
-                                    <h2 className="mb-3 text-3xl font-bold text-[#205041]">
+                                    <h2 className="mb-3 text-xl sm:text-3xl font-bold text-[#205041]">
                                         {item.title}
                                     </h2>
                                     <p className="flex size-10 items-center justify-center rounded-full border-2 border-[#25BA9E] text-xl text-[#25BA9E]">
                                         {index + 1}
                                     </p>
                                 </div>
-                                <p className="flex h-full items-center justify-center px-4 text-lg">
+                                <p className="h-full line-clamp-5 md:line-clamp-none items-center justify-center text-lg">
                                     {item.description}
                                 </p>
                             </div>
@@ -469,7 +469,7 @@ function JoinSection() {
                     <h3 className="text-2xl text-[#FCFBF4]">
                         {t("join.earningsIntro")}
                     </h3>
-                    <div className="flex w-full items-center justify-between text-[#F1ECCC] ">
+                    <div className="flex w-full sm:flex-row flex-col items-center justify-between text-[#F1ECCC] ">
                         <div className="flex w-1/2 flex-col items-center">
                             <Select
                                 onValueChange={(value) => {
@@ -504,9 +504,9 @@ function JoinSection() {
                     </div>
                 </div>
                 <Link href={"/login"}>
-                    <GradientButton className="text-3xl">
+                    <MainButton className="text-xl sm:text-3xl">
                         {t("button.applyNow")}
-                    </GradientButton>
+                    </MainButton>
                 </Link>
             </div>
         </section>

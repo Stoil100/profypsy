@@ -32,7 +32,7 @@ export default function Language() {
                         code === locale && "hidden",
                     )}
                 >
-                    <Languages />
+                    <Languages className="sm:block hidden"/>
                     <p>{t("languages." + code)}</p>
                 </div>
             ))}
