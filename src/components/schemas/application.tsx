@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { PsychologistT } from "@/models/psychologist";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { FirestoreError, doc, setDoc } from "firebase/firestore";
+import { FirestoreError, doc, setDoc, updateDoc } from "firebase/firestore";
 import {
     Briefcase,
     GraduationCap,
@@ -225,11 +225,8 @@ export default function ApplicationForm({ className }: Props) {
         if (user.uid) {
             try {
                 await setDoc(doc(db, "psychologists", user.uid!), values);
-                await setDoc(doc(db, "users", user.uid!), {
-                    email: user.email,
-                    uid: user.uid,
-                    role: "psychologist",
-                    appointments: user.appointments,
+                await updateDoc(doc(db, "users", user.uid), {
+                    role: "psychologist"
                 });
                 toast({
                     title: t("upload.thanksForApplyingTitle"),
