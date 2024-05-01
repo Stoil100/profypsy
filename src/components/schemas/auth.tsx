@@ -40,9 +40,7 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
                 )
                 .min(8, t("passwordMinLengthError")),
             ...(variant === "register" && {
-                confirmPassword: z
-                    .string()
-                    .min(8, t("passwordMinLengthError")),
+                confirmPassword: z.string().min(8, t("passwordMinLengthError")),
             }),
         })
         .superRefine(({ confirmPassword, password }, ctx) => {
@@ -165,9 +163,7 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
                     ? t("headerRegister")
                     : t("headerLogin")}
             </h3>
-            <p className="w-full text-center">
-                {t("usingSocialNetworks")}
-            </p>
+            <p className="w-full text-center">{t("usingSocialNetworks")}</p>
             <div className="flex gap-3">
                 <Button
                     className="size-[50px] rounded-full bg-[#25ba9e] p-3 transition-all duration-300 hover:scale-110 hover:bg-[#389181]"

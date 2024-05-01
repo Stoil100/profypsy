@@ -1,7 +1,7 @@
-type HeaderT={
-    title:string,
-    image:string,
-}
+type HeaderT = {
+    title: string;
+    image: string;
+};
 type HeadersT = HeaderT[];
 
-export type {HeaderT, HeadersT};
+export type { HeaderT, HeadersT };

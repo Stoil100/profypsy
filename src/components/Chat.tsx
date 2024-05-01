@@ -64,13 +64,18 @@ export default function Chat({
     }
     useEffect(() => {
         const conversationId = getConversationId(senderUid, receiverUid);
-        const messagesRef = collection(db, "conversations", conversationId, "messages");
+        const messagesRef = collection(
+            db,
+            "conversations",
+            conversationId,
+            "messages",
+        );
         const q = query(messagesRef, orderBy("createdAt"), limit(50));
-    
+
         const unsubscribe = onSnapshot(q, async (querySnapshot) => {
             const messages: Message[] = [];
             const batch = writeBatch(db);
-    
+
             querySnapshot.docs.forEach((docSnapshot) => {
                 const data = docSnapshot.data();
                 const message = {
@@ -79,18 +84,19 @@ export default function Chat({
                     senderUid: data.senderUid,
                     read: data.read,
                 };
-    
+
                 messages.push(message);
-    
+
                 // Ensure only messages from the other user and not read yet are marked as read
-                if (!data.read && data.senderUid !== senderUid) {  // Adjust this check as needed
+                if (!data.read && data.senderUid !== senderUid) {
+                    // Adjust this check as needed
                     const messageDocRef = doc(messagesRef, docSnapshot.id);
                     batch.update(messageDocRef, { read: true });
                 }
             });
-    
+
             setMessages(messages);
-    
+
             // Commit the batch update to mark all unread messages from the other user as read
             try {
                 await batch.commit();
@@ -98,10 +104,9 @@ export default function Chat({
                 console.error("Failed to update message read status:", error);
             }
         });
-    
+
         return () => unsubscribe();
     }, [db, senderUid, receiverUid]);
-    
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const conversationId: string = getConversationId(

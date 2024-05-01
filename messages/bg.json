@@ -76,7 +76,7 @@
             "errorMessage": "Грешка"
         },
         "application": {
-            "application":"Форма за кандидатсване",
+            "application": "Форма за кандидатсване",
             "formSchemaErrors": {
                 "invalidPhoneNumber": "Невалиден телефонен номер",
                 "selectAge": "Моля, изберете вашата възраст.",
@@ -346,7 +346,7 @@
             },
             "minutes": "60 мин",
             "pricePerHour": "Цена на час",
-            "myArticles":"Моите Статии",
+            "myArticles": "Моите Статии",
             "duration": "Продължителност",
             "languages": "Езици",
             "generalInfo": "Обща информация",

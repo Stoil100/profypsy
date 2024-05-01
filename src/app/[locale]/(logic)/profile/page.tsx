@@ -232,7 +232,7 @@ export default function Page() {
             )}
         >
             {user.uid && profile! && (
-                <div className="flex w-full max-w-5xl flex-col min-h-[calc(100vh-(1rem+60px))] items-center justify-center gap-4 rounded-3xl border-8 border-[#525174] bg-white p-2 drop-shadow-2xl md:p-4">
+                <div className="flex min-h-[calc(100vh-(1rem+60px))] w-full max-w-5xl flex-col items-center justify-center gap-4 rounded-3xl border-8 border-[#525174] bg-white p-2 drop-shadow-2xl md:p-4">
                     <h2 className="underline-offset-3 font-playfairDSC text-3xl font-bold italic text-[#40916C] underline decoration-2 md:text-5xl ">
                         {t("profile")}
                     </h2>

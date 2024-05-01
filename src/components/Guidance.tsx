@@ -6,7 +6,7 @@ import {
     Instagram,
     LogInIcon,
     LogOutIcon,
-    Twitter
+    Twitter,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -136,7 +136,7 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
                     {t("joinAsPsychologist")}
                 </MainButton>
             )}
-            <LanguageSwitcher/>
+            <LanguageSwitcher />
         </>
     );
 
@@ -145,7 +145,7 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
             className={clsx(
                 "flex min-h-[33vh] w-full flex-wrap text-xl font-thin text-white sm:py-10",
                 variant === "footer"
-                    ? "gap-14 bg-[#525174] p-4 justify-center"
+                    ? "justify-center gap-14 bg-[#525174] p-4"
                     : "justify-evenly gap-2 bg-transparent",
             )}
         >

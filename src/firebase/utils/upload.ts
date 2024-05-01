@@ -6,7 +6,6 @@ import {
 } from "firebase/storage";
 import { storage } from "../config";
 
-
 export const uploadImage = async (
     file: Blob | ArrayBuffer | File | undefined,
     fileName: string,

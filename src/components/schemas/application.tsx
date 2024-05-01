@@ -428,7 +428,7 @@ export default function ApplicationForm({ className }: Props) {
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className={cn(
-                        "z-10 w-full space-y-8 rounded-xl bg-white py-2 border-[#525174]",
+                        "z-10 w-full space-y-8 rounded-xl border-[#525174] bg-white py-2",
                         className,
                     )}
                 >

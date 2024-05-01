@@ -175,7 +175,7 @@ const BookingDates: React.FC<BookingDatesProps> = ({
         return { [dateStr]: slots };
     }
 
-     function getDatesForWeek(week: number): Date[] {
+    function getDatesForWeek(week: number): Date[] {
         const now = new Date();
         // Start calculating from next week
         now.setDate(now.getDate() + 7 * Math.max(week, 1) - now.getDay());

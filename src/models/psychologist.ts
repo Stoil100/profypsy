@@ -1,6 +1,6 @@
 import { AppointmentT } from "./appointment";
 
-type PsychologistT ={
+type PsychologistT = {
     phone: string;
     age: string;
     about: string;
@@ -17,11 +17,11 @@ type PsychologistT ={
     }[];
     userName: string;
     location: string;
-    image?:string | null;
-    cv:any;
-    letter:any;
-    specializations:string[];
-    languages:string[];
+    image?: string | null;
+    cv: any;
+    letter: any;
+    specializations: string[];
+    languages: string[];
     diploma: any;
     email: string;
     variant?: "Basic" | "Premium" | "Deluxe";
@@ -30,7 +30,7 @@ type PsychologistT ={
     trial: boolean;
     approved: boolean;
     uid: string;
-    appointments:AppointmentT[];
-}
+    appointments: AppointmentT[];
+};
 
-export type {PsychologistT};
+export type { PsychologistT };
