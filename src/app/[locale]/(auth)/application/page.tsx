@@ -1,7 +1,7 @@
 import ApplicationForm from "@/components/schemas/application";
 import { useTranslations } from "next-intl";
-
-export default function application() {
+    
+export default function Application() {
     const t = useTranslations("Auth.application");
     return (
         <main className="flex h-full min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#40916C] to-[#52B788] py-[10vh]">

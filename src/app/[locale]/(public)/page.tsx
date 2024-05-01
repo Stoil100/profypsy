@@ -1,8 +1,5 @@
 "use client";
-import {
-    default as GradientButton,
-    default as MainButton,
-} from "@/components/MainButton";
+import MainButton from "@/components/MainButton";
 import {
     Accordion,
     AccordionContent,
@@ -34,7 +31,14 @@ import {
 import { cn } from "@/lib/utils";
 import { HeaderT } from "@/models/header";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { BriefcaseIcon, Building2Icon, ChevronRight, InfoIcon, TelescopeIcon, UsersIcon, UsersRoundIcon } from "lucide-react";
+import {
+    BriefcaseIcon,
+    Building2Icon,
+    ChevronRight,
+    InfoIcon,
+    TelescopeIcon,
+    UsersRoundIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -134,27 +138,27 @@ function MissionSection() {
         {
             title: t("mission.missionTitle"),
             description: t("mission.missionDescription"),
-            icon: <InfoIcon/>
+            icon: <InfoIcon />,
         },
         {
             title: t("mission.creatorsTitle"),
             description: t("mission.creatorsDescription"),
-            icon: <Building2Icon/>
+            icon: <Building2Icon />,
         },
         {
             title: t("mission.usersTitle"),
             description: t("mission.usersDescription"),
-            icons: <UsersRoundIcon/>
+            icons: <UsersRoundIcon />,
         },
         {
             title: t("mission.psychologistsTitle"),
             description: t("mission.psychologistsDescription"),
-            icon:<BriefcaseIcon/>
+            icon: <BriefcaseIcon />,
         },
         {
             title: t("mission.visionTitle"),
             description: t("mission.visionDescription"),
-            icon: <TelescopeIcon/>
+            icon: <TelescopeIcon />,
         },
     ];
     return (
@@ -186,16 +190,16 @@ function MissionSection() {
                                     <h2 className=" text-xl font-bold text-[#205041] sm:text-3xl">
                                         {item.title}
                                     </h2>
-                                    <div className="flex h-10 min-w-10 items-center justify-center bg-white rounded-full border-2 border-[#25BA9E] text-xl text-[#25BA9E]">
+                                    <div className="flex h-10 min-w-10 items-center justify-center rounded-full border-2 border-[#25BA9E] bg-white text-xl text-[#25BA9E]">
                                         {item.icon}
                                     </div>
                                 </div>
-                                <div className="h-fit flex flex-col gap-2 px-2 py-1 rounded-xl bg-white border-[#205041]">
+                                <div className="flex h-fit flex-col gap-2 rounded-xl border-[#205041] bg-white px-2 py-1">
                                     <p className="line-clamp-5 h-full items-center justify-center text-lg text-[#205041]">
                                         {item.description}
                                     </p>
                                     <Link href={"/mission"}>
-                                        <MainButton className="w-fit hover:scale-105 border-[#25BA9E] border-2">
+                                        <MainButton className="w-fit border-2 border-[#25BA9E] hover:scale-105">
                                             {t("mission.readMore")}
                                         </MainButton>
                                     </Link>
@@ -218,9 +222,9 @@ function TherapistsSection() {
                     <span className="text-[#128665]">Based on Your Needs</span>
                 </p>
                 <Link href={"/login"}>
-                    <GradientButton className="text-xl">
+                    <MainButton className="text-xl">
                         Get Started
-                    </GradientButton>
+                    </MainButton>
                 </Link>
             </div>
             <Carousel
@@ -408,9 +412,9 @@ function ApproachSection() {
             </div>
             <div className="flex w-full justify-center px-4">
                 <Link href={"/login"}>
-                    <GradientButton className="text-2xl">
+                    <MainButton className="text-2xl">
                         {t("button.startNow")}
-                    </GradientButton>
+                    </MainButton>
                 </Link>
             </div>
             <BottomLine />
@@ -452,9 +456,9 @@ function FaQSection() {
                     </AccordionItem>
                 </Accordion>
                 <Link href={"/login"}>
-                    <GradientButton className="text-2xl">
+                    <MainButton className="text-2xl">
                         {t("button.beginNow")}
-                    </GradientButton>
+                    </MainButton>
                 </Link>
             </div>
             <BottomLine />
