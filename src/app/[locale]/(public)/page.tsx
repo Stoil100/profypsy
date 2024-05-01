@@ -199,7 +199,7 @@ function MissionSection() {
                                         {item.description}
                                     </p>
                                     <Link href={"/mission"}>
-                                        <MainButton className="w-fit border-2 border-[#25BA9E] hover:scale-105">
+                                        <MainButton className="w-fit border-2 border-[#25BA9E] hover:scale-105 text-lg">
                                             {t("mission.readMore")}
                                         </MainButton>
                                     </Link>
@@ -532,10 +532,11 @@ export default function Home() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#F7F4E0] from-85% to-[#E5CA8B]">
             <HeroSection />
-            <MissionSection />
+            
             {/* <TherapistsSection />
             <ReviewsSection /> */}
             <ApproachSection />
+            <MissionSection />
             <FaQSection />
             <JoinSection />
         </main>
