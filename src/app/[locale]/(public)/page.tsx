@@ -34,7 +34,7 @@ import {
 import { cn } from "@/lib/utils";
 import { HeaderT } from "@/models/header";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { ChevronRight } from "lucide-react";
+import { BriefcaseIcon, Building2Icon, ChevronRight, InfoIcon, TelescopeIcon, UsersIcon, UsersRoundIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,7 +77,6 @@ const carouselItems = [
         experience: "10+ year of practical experience",
     },
 ];
-
 const BottomLine = () => (
     <hr className="w-full rounded-full border-2 border-[#FCFBF4] drop-shadow-lg" />
 );
@@ -135,22 +134,27 @@ function MissionSection() {
         {
             title: t("mission.missionTitle"),
             description: t("mission.missionDescription"),
+            icon: <InfoIcon/>
         },
         {
             title: t("mission.creatorsTitle"),
             description: t("mission.creatorsDescription"),
+            icon: <Building2Icon/>
         },
         {
             title: t("mission.usersTitle"),
             description: t("mission.usersDescription"),
+            icons: <UsersRoundIcon/>
         },
         {
             title: t("mission.psychologistsTitle"),
             description: t("mission.psychologistsDescription"),
+            icon:<BriefcaseIcon/>
         },
         {
             title: t("mission.visionTitle"),
             description: t("mission.visionDescription"),
+            icon: <TelescopeIcon/>
         },
     ];
     return (
@@ -177,18 +181,25 @@ function MissionSection() {
                             key={index}
                             className="pl-4 sm:basis-1/2 lg:basis-1/3"
                         >
-                            <div className="flex h-full w-full flex-col rounded-2xl border-4 border-[#25BA9E] bg-white p-4 ">
+                            <div className="flex h-full w-full flex-col justify-between gap-4 rounded-2xl border-4 border-[#25BA9E] bg-[#F1ECCC] px-4 py-2 ">
                                 <div className="flex w-full justify-between gap-2">
-                                    <h2 className="mb-3 text-xl font-bold text-[#205041] sm:text-3xl">
+                                    <h2 className=" text-xl font-bold text-[#205041] sm:text-3xl">
                                         {item.title}
                                     </h2>
-                                    <p className="flex size-10 items-center justify-center rounded-full border-2 border-[#25BA9E] text-xl text-[#25BA9E]">
-                                        {index + 1}
-                                    </p>
+                                    <div className="flex h-10 min-w-10 items-center justify-center bg-white rounded-full border-2 border-[#25BA9E] text-xl text-[#25BA9E]">
+                                        {item.icon}
+                                    </div>
                                 </div>
-                                <p className="line-clamp-5 h-full items-center justify-center text-lg md:line-clamp-none">
-                                    {item.description}
-                                </p>
+                                <div className="h-fit flex flex-col gap-2 px-2 py-1 rounded-xl bg-white border-[#205041]">
+                                    <p className="line-clamp-5 h-full items-center justify-center text-lg text-[#205041]">
+                                        {item.description}
+                                    </p>
+                                    <Link href={"/mission"}>
+                                        <MainButton className="w-fit hover:scale-105 border-[#25BA9E] border-2">
+                                            {t("mission.readMore")}
+                                        </MainButton>
+                                    </Link>
+                                </div>
                             </div>
                         </CarouselItem>
                     ))}
