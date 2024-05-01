@@ -350,7 +350,7 @@ function ApproachSection() {
     const [activeElement, setActiveElement] = useState("first");
     return (
         <section className="w-full space-y-5 px-2 py-5 md:px-[100px] lg:px-[150px] xl:px-[200px]">
-            <h3 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent">
+            <h3 className="bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-center font-playfairDSC text-4xl capitalize text-transparent md:text-5xl">
                 {t("approach.approachTitle")}
             </h3>
             <div className="flex w-full items-center justify-around">
