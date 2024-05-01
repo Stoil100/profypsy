@@ -75,7 +75,8 @@
             "toggleVisibility": "Превключи видимостта",
             "errorMessage": "Грешка"
         },
-        "appliance": {
+        "application": {
+            "application":"Форма за кандидатсване",
             "formSchemaErrors": {
                 "invalidPhoneNumber": "Невалиден телефонен номер",
                 "selectAge": "Моля, изберете вашата възраст.",

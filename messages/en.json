@@ -75,7 +75,8 @@
             "toggleVisibility": "Toggle visibility",
             "errorMessage": "Error"
         },
-        "appliance": {
+        "application": {
+            "application": "Application Form",
             "formSchemaErrors": {
                 "invalidPhoneNumber": "Invalid phone number",
                 "selectAge": "Please select your age.",
@@ -345,7 +346,7 @@
             },
             "minutes": "60 min",
             "pricePerHour": "Price per hour",
-            "myArticles":"My Articles",
+            "myArticles": "My Articles",
             "duration": "Duration",
             "languages": "Languages",
             "generalInfo": "General Info",

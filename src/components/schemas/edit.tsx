@@ -54,7 +54,7 @@ type Props = {
     setIsEditing: Dispatch<SetStateAction<boolean>>;
 };
 export default function EditForm({ className, profile }: Props) {
-    const t = useTranslations("Auth.appliance");
+    const t = useTranslations("Auth.application");
     const languageOptions: LanguageT[] = [
         {
             icon: <img src="/logic/bg.png" />,

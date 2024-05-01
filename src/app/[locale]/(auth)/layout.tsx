@@ -3,5 +3,5 @@ export default function AuthLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return <section className="overflow-hidden">{children}</section>;
+    return <>{children}</>;
 }

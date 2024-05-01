@@ -53,8 +53,8 @@ type LanguageT = {
 type Props = {
     className: string;
 };
-export default function ApplianceForm({ className }: Props) {
-    const t = useTranslations("Auth.appliance");
+export default function ApplicationForm({ className }: Props) {
+    const t = useTranslations("Auth.application");
     const languageOptions: LanguageT[] = [
         {
             icon: <img src="/logic/bg.png" />,
@@ -428,7 +428,7 @@ export default function ApplianceForm({ className }: Props) {
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className={cn(
-                        "z-10 w-full space-y-8 rounded-xl bg-white py-2",
+                        "z-10 w-full space-y-8 rounded-xl bg-white py-2 border-[#525174]",
                         className,
                     )}
                 >

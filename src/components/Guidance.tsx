@@ -1,24 +1,20 @@
 "use client";
 
-import { UserType } from "@/models/user";
 import clsx from "clsx";
 import {
     Facebook,
     Instagram,
-    Languages,
     LogInIcon,
     LogOutIcon,
-    Twitter,
+    Twitter
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import GradientButton from "./MainButton";
-import { useAuth } from "./Providers";
-import { Button } from "./ui/button";
 import LanguageSwitcher from "./LanguageButton";
+import MainButton from "./MainButton";
+import { useAuth } from "./Providers";
 
 interface GuidanceProps {
     variant: "footer" | "navigation";
@@ -130,15 +126,15 @@ export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
             >
                 {t("termsOfUse")}
             </Link>
-            <GradientButton>{t("subscribeToNewsletter")}</GradientButton>
+            <MainButton>{t("subscribeToNewsletter")}</MainButton>
             {user.role !== "psychologist" && (
-                <GradientButton
+                <MainButton
                     onClick={() => {
-                        router.push("/appliance");
+                        router.push("/application");
                     }}
                 >
                     {t("joinAsPsychologist")}
-                </GradientButton>
+                </MainButton>
             )}
             <LanguageSwitcher/>
         </>
