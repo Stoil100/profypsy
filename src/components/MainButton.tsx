@@ -6,12 +6,15 @@ type Props = {
     children: React.ReactNode;
     className?: string;
     onClick?: () => void | (() => {}) | Function;
+    type?: "submit" | "reset" | "button";
 };
 
-export default function MainButton({ children, className, onClick }: Props) {
+
+
+export default function MainButton({ children, className, type = "button", onClick }: Props){
     return (
         <Button
-            type="button"
+            type={type}
             onClick={onClick}
             className={cn(
                 "text-light flex h-fit items-center rounded-full bg-white  text-[#25BA9E] drop-shadow-lg transition-transform duration-300 hover:scale-[1.1] hover:bg-white",
