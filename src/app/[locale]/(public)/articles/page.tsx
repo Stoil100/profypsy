@@ -1,6 +1,6 @@
 "use client";
 
-import { ArticleT } from "@/components/schemas/article";
+import { ArticleT } from "@/components/forms/article";
 import { Badge } from "@/components/ui/badge";
 import {
     Carousel,

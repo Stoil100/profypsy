@@ -19,22 +19,24 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-import { ProfileT } from "@/app/[locale]/(logic)/profile/page";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/firebase/config";
 import { uploadImage } from "@/firebase/utils/upload";
 import { cn } from "@/lib/utils";
+import { PsychologistT } from "@/models/psychologist";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
-import { FirestoreError, doc, updateDoc } from "firebase/firestore";
-import { Briefcase, GraduationCap, Info, UserRound } from "lucide-react";
+import { FirestoreError, doc, setDoc, updateDoc } from "firebase/firestore";
 import {
-    ChangeEvent,
-    Dispatch,
-    ReactNode,
-    SetStateAction,
-    useState,
-} from "react";
+    Briefcase,
+    GraduationCap,
+    Info,
+    Medal,
+    Tag,
+    UserRound,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import z from "zod";
 import { useAuth } from "../Providers";
@@ -42,6 +44,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Textarea } from "../ui/textarea";
 import { toast } from "../ui/use-toast";
 import { useTranslations } from "next-intl";
+import { ApplicationSchema } from "../schemas/application";
 
 type LanguageT = {
     icon: ReactNode;
@@ -49,11 +52,9 @@ type LanguageT = {
 };
 
 type Props = {
-    className?: string;
-    profile: ProfileT;
-    setIsEditing: Dispatch<SetStateAction<boolean>>;
+    className: string;
 };
-export default function EditForm({ className, profile }: Props) {
+export default function ApplicationForm({ className }: Props) {
     const t = useTranslations("Auth.application");
     const languageOptions: LanguageT[] = [
         {
@@ -85,142 +86,94 @@ export default function EditForm({ className, profile }: Props) {
         { id: "saturday", label: t("dates.saturday") },
         { id: "sunday", label: t("dates.sunday") },
     ];
-    const formSchema = z.object({
-        phone: z
-            .string()
-            .regex(
-                /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
-                t("formSchemaErrors.invalidPhoneNumber"),
-            ),
-        age: z.string().min(1, t("formSchemaErrors.selectAge")),
-        about: z
-            .string()
-            .min(10, t("formSchemaErrors.shortDescription"))
-            .max(500, t("formSchemaErrors.longDescription")),
-        quote: z
-            .string()
-            .min(5, t("formSchemaErrors.shortQuote"))
-            .max(100, t("formSchemaErrors.longQuote")),
-        image: z.any().optional(),
-        cv: z
-            .any()
-            .refine((file) => file?.length == 1, t("formSchemaErrors.validCV")),
-        letter: z
-            .any()
-            .refine(
-                (file) => file?.length == 1,
-                t("formSchemaErrors.validLetter"),
-            ),
-        diploma: z
-            .any()
-            .refine(
-                (file) => file?.length == 1,
-                t("formSchemaErrors.validDiploma"),
-            ),
-        cost: z.object({
-            dates: z
-                .array(z.string())
-                .refine((value) => value.some((item) => item), {
-                    message: t("formSchemaErrors.selectAtLeastOneDate"),
-                }),
-            price: z.string().min(1, t("formSchemaErrors.selectPricePerHour")),
-        }),
-        educations: z.array(
-            z.object({
-                education: z
-                    .string()
-                    .min(1, t("formSchemaErrors.validEducation")),
-            }),
-        ),
-        experiences: z.array(
-            z.object({
-                experience: z
-                    .string()
-                    .min(1, t("formSchemaErrors.validExperience")),
-            }),
-        ),
-        userName: z.string().min(3, t("formSchemaErrors.validName")),
-        location: z
-            .string()
-            .min(1, t("formSchemaErrors.validCity"))
-            .max(60, t("formSchemaErrors.cityCharacterLimit")),
-        specializations: z
-            .array(z.string())
-            .refine((value) => value.some((item) => item), {
-                message: t("formSchemaErrors.selectAtLeastOneSpecialization"),
-            }),
-        languages: z
-            .array(z.string())
-            .refine((value) => value.some((item) => item), {
-                message: t("formSchemaErrors.selectAtLeastOneLanguage"),
-            }),
-    });
-    interface SubmitValues extends z.infer<typeof formSchema> {
-        approved: boolean;
-    }
+    const formSchema = ApplicationSchema(t);
     const { user } = useAuth();
+    const router = useRouter();
+    useEffect(() => {
+        if (!user.uid) {
+            router.push("/login");
+        } else if (user.role == "psychologist") {
+            router.push(`/profile`);
+        }
+    }, []);
     const [tab, setTab] = useState("info");
-    const [submitImage, setSubmitImage] = useState(profile?.image);
-    const [submitCV, setSubmitCV] = useState(profile?.cv);
-    const [submitDiploma, setSubmitDiploma] = useState(profile?.diploma);
-    const [submitLetter, setSubmitLetter] = useState(profile?.letter);
+    const [submitImage, setSubmitImage] = useState(user.image);
+    const [submitCV, setSubmitCV] = useState("");
+    const [submitDiploma, setSubmitDiploma] = useState("");
+    const [submitLetter, setSubmitLetter] = useState("");
+    const [selectedSubscription, setSelectedSubscription] = useState<
+        "Basic" | "Premium" | "Deluxe"
+    >("Premium");
+    // const [isPaying, setIsPaying] = useState(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            userName: profile.userName,
-            phone: profile?.phone,
-            about: profile?.about,
-            quote: profile?.quote,
-            image: profile?.image,
+            userName: user.userName!,
+            phone: user.phone!,
+            about: "",
+            image: user.image!,
             cost: {
-                dates: profile?.cost.dates,
-                price: profile?.cost.price,
+                dates: ["saturday", "sunday"],
+                price: "",
             },
-            educations: profile?.educations,
-            experiences: profile?.experiences,
-            location: profile?.location,
-            specializations: profile?.specializations,
-            cv: profile?.cv,
-            diploma: profile?.diploma,
-            letter: profile?.letter,
-            languages: profile?.languages,
-            age: profile?.age,
+            educations: [{ education: "" }],
+            experiences: [{ experience: "" }],
+            location: "",
+            specializations: [],
+            cv: undefined,
+            diploma: undefined,
+            letter: undefined,
+            languages: [],
+            age: "18",
         },
     });
     const imageRef = form.register("image", { required: false });
-    const cvRef = form.register("cv", { required: false });
-    const letterRef = form.register("letter", { required: false });
-    const diplomaRef = form.register("diploma", { required: false });
+    const cvRef = form.register("cv", { required: true });
+    const letterRef = form.register("letter", { required: true });
+    const diplomaRef = form.register("diploma", { required: true });
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!user) return; // Additional user validation could be added here
 
-        const tempValues: SubmitValues = {
+        const tempValues: PsychologistT = {
             ...values,
             image: submitImage,
+            email: user.email!,
+            appointments: user.appointments!,
             cv: submitCV,
             diploma: submitDiploma,
             letter: submitLetter,
+            variant: selectedSubscription,
+            duration: "Monthly",
+            rating: -1,
+            trial: true,
             approved: false,
+            uid: user.uid!,
         };
         submitData(tempValues);
     };
-    const submitData = async (values: SubmitValues) => {
+    const submitData = async (values: PsychologistT) => {
         if (user.uid) {
             try {
-                await updateDoc(doc(db, "psychologists", user.uid!), {
-                    ...values,
+                await setDoc(doc(db, "psychologists", user.uid!), values);
+                await updateDoc(doc(db, "users", user.uid), {
+                    role: "psychologist"
                 });
                 toast({
-                    title: "Your changes have been submitted!",
-                    description: `While we are reviewing your changes, your profile will be unavailable to the public`,
+                    title: t("upload.thanksForApplyingTitle"),
+                    description: t("upload.thanksForApplyingDescription", {
+                        email: values.email,
+                    }),
                 });
+                router.push(`/profile`);
             } catch (error) {
                 const firestoreError = error as FirestoreError;
                 toast({
-                    title: "Error submiting your changes",
+                    title: t("upload.errorUploadingDocumentTitle"),
                     description: `${firestoreError.message}`,
                 });
+                router.push("/");
             }
         }
     };
@@ -246,14 +199,165 @@ export default function EditForm({ className, profile }: Props) {
         control: form.control,
         name: "experiences",
     });
+    type SubsriptionOptionVariant = {
+        variant: "Basic" | "Premium" | "Deluxe";
+        type: "Monthly" | "Yearly";
+    };
+    const SubscriptionOption: React.FC<SubsriptionOptionVariant> = ({
+        variant,
+        type,
+    }) => {
+        const mainColor =
+            variant === "Basic"
+                ? "#FC8A6A"
+                : variant === "Premium"
+                  ? "#25BA9E"
+                  : "#9747FF";
 
+        return (
+            <div
+                className={cn(
+                    "w-[250px] space-y-2 rounded-3xl px-6 py-3 shadow-xl",
+                    `hover:border-2 border-[${mainColor}]`,
+                    selectedSubscription === variant &&
+                        `border-2 border-[${mainColor}]`,
+                )}
+            >
+                <div className="flex items-center gap-2">
+                    <div
+                        className={cn(
+                            "h-fit w-fit rounded-full border-2 p-2",
+                            `border-[${mainColor}] text-[${mainColor}]`,
+                        )}
+                    >
+                        {variant === "Basic" ? (
+                            <Tag />
+                        ) : variant === "Premium" ? (
+                            <Briefcase />
+                        ) : (
+                            <Medal />
+                        )}
+                    </div>
+                    <h2 className="text-xl font-bold">{variant}</h2>
+                </div>
+                <div className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="term-1"
+                            checked
+                            disabled
+                            className="border-[#25BA9E] !bg-white !text-[#25BA9E] !opacity-100"
+                        />
+                        <label
+                            htmlFor="term-1"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Accept terms and conditions
+                        </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="term-2"
+                            checked
+                            disabled
+                            className="border-[#25BA9E] !bg-white !text-[#25BA9E] !opacity-100"
+                        />
+                        <label
+                            htmlFor="term-2"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Accept terms and conditions
+                        </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="term-1"
+                            checked={
+                                variant === "Premium" || variant === "Deluxe"
+                            }
+                            disabled
+                            className={cn(
+                                "!bg-white !opacity-100",
+                                variant === "Premium" || variant === "Deluxe"
+                                    ? "border-[#25BA9E] !text-[#25BA9E]"
+                                    : "border-[#FF5B2E]",
+                            )}
+                        />
+                        <label
+                            htmlFor="term-1"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Accept terms and conditions
+                        </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox
+                            id="term-1"
+                            checked={variant === "Deluxe"}
+                            disabled
+                            className={cn(
+                                "!bg-white !opacity-100",
+                                variant === "Deluxe"
+                                    ? "border-[#25BA9E] !text-[#25BA9E]"
+                                    : "border-[#FF5B2E]",
+                            )}
+                        />
+                        <label
+                            htmlFor="term-1"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                            Accept terms and conditions
+                        </label>
+                    </div>
+                </div>
+                <div className="flex flex-col items-center px-6">
+                    <h2 className={cn("text-3xl", `text-[${mainColor}]`)}>
+                        {type === "Monthly" ? "$42.50" : "$500"}
+                    </h2>
+                    <p className="text-sm text-gray-400">Yearly: Save 15%</p>
+                    {type === "Monthly" && (
+                        <p
+                            className={cn(
+                                "self-end text-sm",
+                                `text-[${mainColor}]`,
+                            )}
+                        >
+                            $50
+                        </p>
+                    )}
+                </div>
+                <div className="flex w-full justify-center">
+                    <Button
+                        variant={
+                            selectedSubscription === variant
+                                ? "default"
+                                : "outline"
+                        }
+                        onClick={() => {
+                            setSelectedSubscription(variant);
+                        }}
+                        className={cn(
+                            "rounded-xl border-2 transition-transform hover:scale-110",
+                            `border-[${mainColor}] text-[${mainColor}] hover:text-[${mainColor}]`,
+                            selectedSubscription === variant &&
+                                `bg-[${mainColor}] text-white hover:bg-[${mainColor}]`,
+                        )}
+                    >
+                        {selectedSubscription === variant
+                            ? "Selected"
+                            : "Choose"}
+                    </Button>
+                </div>
+            </div>
+        );
+    };
     return (
         <>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className={cn(
-                        "z-10 w-full space-y-8 rounded-xl bg-white py-2",
+                        "z-10 w-full space-y-8 rounded-xl border-[#525174] bg-white py-2",
                         className,
                     )}
                 >

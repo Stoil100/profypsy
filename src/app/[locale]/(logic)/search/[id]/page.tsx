@@ -60,7 +60,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ArticleT } from "@/components/schemas/article";
+import { ArticleT } from "@/components/forms/article";
 import Link from "next/link";
 const Loader = () => {
     const t = useTranslations("Search");

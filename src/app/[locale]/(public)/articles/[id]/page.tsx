@@ -1,6 +1,6 @@
 "use client";
 import MainButton from "@/components/MainButton";
-import { ArticleT } from "@/components/schemas/article";
+import { ArticleT } from "@/components/forms/article";
 import { db } from "@/firebase/config";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useTranslations } from "next-intl";

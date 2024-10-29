@@ -2,8 +2,8 @@
 import ChatInterface from "@/components/Chat";
 import MainButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
-import ArticlesSchema, { ArticleT } from "@/components/schemas/article";
-import EditForm from "@/components/schemas/edit";
+import ArticlesSchema, { ArticleT } from "@/components/forms/article";
+import EditForm from "@/components/forms/edit";
 import {
     Accordion,
     AccordionContent,

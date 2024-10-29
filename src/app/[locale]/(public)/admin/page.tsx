@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/Providers";
-import ArticlesSchema, { ArticleT } from "@/components/schemas/article";
+import ArticlesSchema, { ArticleT } from "@/components/forms/article";
 import { Button } from "@/components/ui/button";
 import { db } from "@/firebase/config";
 import { PsychologistT } from "@/models/psychologist";

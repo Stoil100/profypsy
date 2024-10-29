@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useAuth } from "../Providers";
 import { useTranslations } from "next-intl";
+import { AuthSchema } from "../schemas/auth";
 
 type FormVariant = {
     variant: "register" | "login";
@@ -26,32 +27,7 @@ type FormVariant = {
 
 const AuthForm = ({ variant = "login" }: FormVariant) => {
     const t = useTranslations("Auth.auth");
-    const formSchema = z
-        .object({
-            email: z.string().email({ message: t("emailValidation") }),
-            password: z
-                .string()
-                .regex(/.*[A-Z].*/, t("passwordUppercaseError"))
-                .regex(/.*[a-z].*/, t("passwordLowercaseError"))
-                .regex(/.*\d.*/, t("passwordNumberError"))
-                .regex(
-                    /.*[`~<>?,./!@#$%^&*()\-_+=\"'|{}[\];:\\].*/,
-                    t("passwordSpecialCharacterError"),
-                )
-                .min(8, t("passwordMinLengthError")),
-            ...(variant === "register" && {
-                confirmPassword: z.string().min(8, t("passwordMinLengthError")),
-            }),
-        })
-        .superRefine(({ confirmPassword, password }, ctx) => {
-            if (confirmPassword !== password && variant === "register") {
-                ctx.addIssue({
-                    code: "custom",
-                    message: t("passwordsMismatchError"),
-                });
-            }
-        });
-
+    const formSchema = AuthSchema(variant, t);
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);

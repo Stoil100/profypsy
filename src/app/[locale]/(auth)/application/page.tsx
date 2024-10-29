@@ -1,4 +1,4 @@
-import ApplicationForm from "@/components/schemas/application";
+import ApplicationForm from "@/components/forms/application";
 import { useTranslations } from "next-intl";
     
 export default function Application() {
