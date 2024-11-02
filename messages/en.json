@@ -274,7 +274,16 @@
         "you": "For you",
         "couples": "For couples",
         "families": "For families",
-        "menu": "Menu"
+        "menu": "Menu",
+        "newsletter":{
+            "title":"Subscribe to our newsletter",
+            "description":"The latest news, articles, and resources, sent to your inbox weekly.",
+            "form":{
+            "emailPlaceholder": "Enter your Email here...",
+            "emailValidation": "Please enter a valid email address.",
+            "submit":"Subscribe"
+            }
+        }
     },
     "Search": {
         "findRightForYou": "Let's find what’s right for you",

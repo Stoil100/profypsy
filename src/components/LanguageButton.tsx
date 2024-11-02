@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 // import { languages } from "@/i18n";
 import { usePathname, useRouter } from "./navigationSetup";
 // import { Icons } from "@/components/shared/icons";
-import { useLocale, useTranslations } from "next-intl";
-import { Languages } from "lucide-react";
 import clsx from "clsx";
+import { Languages } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 export default function Language() {
     const t = useTranslations("Common");
     const languages = ["en", "bg"];
@@ -21,7 +21,7 @@ export default function Language() {
     return (
         <Button
             variant="outline"
-            className="w-fit border-2 bg-transparent px-0 py-0"
+            className="w-fit border-2 bg-transparent px-0 py-0 font-openSans"
         >
             {languages.map((code) => (
                 <div

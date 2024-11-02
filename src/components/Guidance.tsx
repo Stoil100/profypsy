@@ -1,5 +1,6 @@
 "use client";
 
+import { UserType } from "@/models/user";
 import clsx from "clsx";
 import {
     Facebook,
@@ -9,172 +10,145 @@ import {
     Twitter,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import LanguageSwitcher from "./LanguageButton";
 import MainButton from "./MainButton";
 import { useAuth } from "./Providers";
+import NewsletterForm from "./forms/newsletter";
 
 interface GuidanceProps {
     variant: "footer" | "navigation";
 }
+
+type LinksProps = {
+    t?: (key: string) => string;
+    router?: AppRouterInstance;
+    user?: UserType;
+    logOut?: () => Promise<void>;
+};
+
+const SocialMediaLinks = ({ t }: LinksProps) => (
+    <div className="flex w-full flex-col items-center justify-center gap-2 self-center font-openSans sm:items-start">
+        <Link
+            href={"/"}
+            className="font-playfairDSC text-5xl uppercase sm:text-6xl"
+        >
+            {t!("companyName")}
+        </Link>
+        <div className="flex items-center gap-5 text-[#F1ECCC]">
+            <Link href="https://instagram.com" aria-label="Instagram">
+                <Instagram className="size-6 md:size-10" absoluteStrokeWidth />
+            </Link>
+            <Link href="https://facebook.com" aria-label="Facebook">
+                <Facebook className="size-8 md:size-10" absoluteStrokeWidth />
+            </Link>
+            <Link href="https://twitter.com" aria-label="Twitter">
+                <Twitter className="size-6 md:size-10" absoluteStrokeWidth />
+            </Link>
+        </div>
+    </div>
+);
+
+const UsefulLinks = ({ t, user, logOut }: LinksProps) => (
+    <div className="md:text-md flex flex-col gap-3 text-sm sm:text-base md:max-lg:flex-row md:max-lg:items-center md:max-lg:gap-8">
+        <h4 className="text-lg underline sm:text-xl md:text-2xl">
+            {t!("usefulLinks")}
+        </h4>
+        <Link href="/search" className="transition-transform hover:scale-110">
+            {t!("findTherapist")}
+        </Link>
+        <Link href="/profile" className="transition-transform hover:scale-110">
+            {t!("myProfile")}
+        </Link>
+        <Link href="/articles" className="transition-transform hover:scale-110">
+            {t!("blog")}
+        </Link>
+        {user!.admin && (
+            <Link
+                href="/admin"
+                className="transition-transform hover:scale-110"
+            >
+                {t!("admin")}
+            </Link>
+        )}
+        {user!.uid ? (
+            <div
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-full border px-2 py-1 transition-transform hover:scale-110"
+                onClick={logOut}
+            >
+                <LogOutIcon /> {t!("logOut")}
+            </div>
+        ) : (
+            <Link
+                href={"/login"}
+                className="flex cursor-pointer items-center justify-center gap-2 rounded-full border px-2 py-1 transition-transform hover:scale-110"
+            >
+                <LogInIcon /> {t!("logIn")}
+            </Link>
+        )}
+    </div>
+);
+
+const AboutLinks = ({ t, router, user }: LinksProps) => (
+    <div className="md:text-md flex flex-col items-start gap-3 text-sm sm:text-base ">
+        <h4 className="text-xl underline md:text-2xl">{t!("about")}</h4>
+        <Link href="/mission" className="transition-transform hover:scale-110">
+            {t!("ourMission")}
+        </Link>
+        <Link href="/policy" className="transition-transform hover:scale-110">
+            {t!("privacyPolicy")}
+        </Link>
+        <Link href="/terms" className="transition-transform hover:scale-110">
+            {t!("termsOfUse")}
+        </Link>
+        {user!.role !== "psychologist" && (
+            <MainButton
+                onClick={() => {
+                    router!.push("/application");
+                }}
+            >
+                {t!("joinAsPsychologist")}
+            </MainButton>
+        )}
+        <LanguageSwitcher />
+    </div>
+);
+
+const Newsletter = ({ t }: LinksProps) => {
+    return (
+        <div className="md:text-md  space-y-2 text-base">
+            <h6 className="text-xl underline md:text-2xl">
+                {t!("newsletter.title")}
+            </h6>
+            <p>{t!("newsletter.description")}</p>
+            <NewsletterForm />
+        </div>
+    );
+};
+
 export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
     const t = useTranslations("Navigation");
     const { user, logOut } = useAuth();
     const router = useRouter();
-    const SocialMediaLinks = () => (
-        <div className="flex w-full items-center justify-between gap-5 text-[#F1ECCC]">
-            <Link href="https://instagram.com" aria-label="Instagram">
-                <Instagram className="size-8 md:size-12" absoluteStrokeWidth />
-            </Link>
-            <Link href="https://facebook.com" aria-label="Facebook">
-                <Facebook className="size-8 md:size-12" absoluteStrokeWidth />
-            </Link>
-            <Link href="https://twitter.com" aria-label="Twitter">
-                <Twitter className="size-8 md:size-12" absoluteStrokeWidth />
-            </Link>
-        </div>
-    );
-
-    const ServicesLinks = () => (
-        <>
-            <Link
-                href="/search"
-                className="text-inherit transition-transform hover:scale-110"
-            >
-                {t("you")}
-            </Link>
-            <Link
-                href="/search"
-                className="transition-transform hover:scale-110"
-            >
-                {t("couples")}
-            </Link>
-            <Link
-                href="/search"
-                className="transition-transform hover:scale-110"
-            >
-                {t("families")}
-            </Link>
-        </>
-    );
-
-    const UsefulLinks = () => (
-        <>
-            <Link
-                href="/search"
-                className="transition-transform hover:scale-110"
-            >
-                {t("findTherapist")}
-            </Link>
-            <Link
-                href="/profile"
-                className="transition-transform hover:scale-110"
-            >
-                {t("myProfile")}
-            </Link>
-            <Link
-                href="/articles"
-                className="transition-transform hover:scale-110"
-            >
-                {t("blog")}
-            </Link>
-            {user.admin && (
-                <Link
-                    href="/admin"
-                    className="transition-transform hover:scale-110"
-                >
-                    {t("admin")}
-                </Link>
-            )}
-            {user.uid ? (
-                <div
-                    className="flex cursor-pointer items-center justify-center gap-2 rounded-full border px-2 py-1 transition-transform hover:scale-110"
-                    onClick={logOut}
-                >
-                    <LogOutIcon /> {t("logOut")}
-                </div>
-            ) : (
-                <Link
-                    href={"/login"}
-                    className="flex cursor-pointer items-center justify-center gap-2 rounded-full border px-2 py-1 transition-transform hover:scale-110"
-                >
-                    <LogInIcon /> {t("logIn")}
-                </Link>
-            )}
-        </>
-    );
-
-    const AboutLinks = () => (
-        <>
-            <Link
-                href="/mission"
-                className="transition-transform hover:scale-110"
-            >
-                {t("ourMission")}
-            </Link>
-            <Link
-                href="/policy"
-                className="transition-transform hover:scale-110"
-            >
-                {t("privacyPolicy")}
-            </Link>
-            <Link
-                href="/terms"
-                className="transition-transform hover:scale-110"
-            >
-                {t("termsOfUse")}
-            </Link>
-            <MainButton>{t("subscribeToNewsletter")}</MainButton>
-            {user.role !== "psychologist" && (
-                <MainButton
-                    onClick={() => {
-                        router.push("/application");
-                    }}
-                >
-                    {t("joinAsPsychologist")}
-                </MainButton>
-            )}
-            <LanguageSwitcher />
-        </>
-    );
 
     return (
         <div
             className={clsx(
                 "flex min-h-[33vh] w-full flex-wrap text-xl font-thin text-white sm:py-10",
                 variant === "footer"
-                    ? "justify-center gap-14 bg-[#525174] p-4"
+                    ? "justify-center gap-x-4 gap-y-8 bg-[#525174] p-4 sm:gap-14"
                     : "justify-evenly gap-2 bg-transparent",
             )}
         >
-            <div className="flex flex-col items-center gap-2 self-center font-openSans sm:items-start">
-                <SocialMediaLinks />
-                <Link
-                    href={"/"}
-                    className="font-playfairDSC text-xl uppercase md:text-4xl"
-                >
-                    {t("companyName")}
-                </Link>
+            <div className="space-y-8 self-center sm:space-y-6">
+                <SocialMediaLinks t={t} />
+                <Newsletter t={t} />
             </div>
-            <div className="md:text-md flex flex-col items-center gap-1 text-base ">
-                <h4 className="text-xl underline md:text-2xl">{t("about")}</h4>
-                <AboutLinks />
-            </div>
-
-            <div className="md:text-md flex flex-col items-center gap-1 text-base sm:items-start">
-                <h4 className="text-xl underline md:text-2xl">
-                    {t("usefulLinks")}
-                </h4>
-                <UsefulLinks />
-            </div>
-            <div className="md:text-md hidden flex-col gap-1 text-base sm:flex ">
-                <h4 className="text-xl underline md:text-2xl">
-                    {t("services")}
-                </h4>
-                <ServicesLinks />
-            </div>
+            <AboutLinks t={t} user={user} router={router} />
+            <UsefulLinks t={t} user={user} router={router} logOut={logOut} />
         </div>
     );
 };
