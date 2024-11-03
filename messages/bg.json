@@ -255,6 +255,8 @@
         }
     },
     "Navigation": {
+        "search":"Търсене",
+        "profile":"Профил",
         "findTherapist": "Намери терапевт",
         "myProfile": "Моят профил",
         "blog": "Блог",

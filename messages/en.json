@@ -255,6 +255,8 @@
         }
     },
     "Navigation": {
+        "search":"Search",
+        "profile": "Profile",
         "findTherapist": "Find a therapist",
         "myProfile": "My profile",
         "blog": "Blog",
