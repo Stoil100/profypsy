@@ -158,7 +158,7 @@ export default function ApplicationForm({ className }: Props) {
             try {
                 await setDoc(doc(db, "psychologists", user.uid!), values);
                 await updateDoc(doc(db, "users", user.uid), {
-                    role: "psychologist"
+                    role: "psychologist",
                 });
                 toast({
                     title: t("upload.thanksForApplyingTitle"),

@@ -1,6 +1,6 @@
 import { z } from "zod";
-export const AuthSchema = (variant:string,t: (arg: string) => string) =>
-z
+export const AuthSchema = (variant: string, t: (arg: string) => string) =>
+    z
         .object({
             email: z.string().email({ message: t("emailValidation") }),
             password: z
