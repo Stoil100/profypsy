@@ -46,12 +46,12 @@ export default function Article({ params }: { params: { id: string } }) {
     const t = useTranslations("Article.id");
     const { articles, currentArticle, loading, error } = useArticles(params.id);
     return (
-        <main className="flex h-fit w-full bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] pb-4 pt-20">
-            <div className="w-full space-y-4 p-3 text-[#205041] md:w-3/4 md:p-8">
+        <main className="flex h-fit w-full pb-4 pt-20">
+            <div className="w-full gap-4 p-3 text-[#205041] md:w-3/4 md:p-8 flex flex-col">
                 <h2 className="text-center text-4xl font-bold">
                     {currentArticle?.title}
                 </h2>
-                <img src={currentArticle?.image} alt={currentArticle?.title} />
+                <img src={currentArticle?.image} alt={currentArticle?.title} className="self-center"/>
                 <div className="space-y-4 px-2">
                     {currentArticle?.descriptions!.map((desc) => (
                         <div key={desc.descTitle}>

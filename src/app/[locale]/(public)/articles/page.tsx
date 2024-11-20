@@ -21,35 +21,66 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import umbrellaImage from "@/../public/articles/umbrella.png";
+import Image from "next/image";
 
 const ArticleCard: React.FC<ArticleT> = (article) => {
+    const getRandomGridSize = () => {
+        const cols = Math.floor(Math.random() * 2) + 1;
+        const rows = Math.floor(Math.random() * 2) + 1;
+        return `col-span-${cols} row-span-${rows}`;
+    };
+
     const router = useRouter();
     const t = useTranslations("Article");
+
     return (
-        <div
-            className="max-w-xs space-y-3 rounded-xl transition-transform hover:scale-105"
+        <Link
+            href={`articles/${article.id}`}
+            className={`relative rounded-md ${getRandomGridSize()} group h-full w-full overflow-hidden`}
             onClick={() => {
                 router.push(`articles/${article.id}`);
             }}
         >
-            <div className="relative flex h-fit items-end">
-                <img
-                    src={article.image}
-                    alt={article.title}
-                    className="top-0 h-auto w-full rounded-xl"
-                />
-                <Badge className="absolute z-50">{t("mostRecent")}</Badge>
+            <img
+                src={article.image}
+                alt={article.title}
+                className="h-full w-full transform rounded-md object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+            />
+            <div className="absolute inset-0 flex h-full flex-col justify-between rounded-md bg-gradient-to-b from-white/20 to-black/80 p-2">
+                <Badge className="z-50 w-fit bg-[#25BA9E]">
+                    {t("mostRecent")}
+                </Badge>
+                <div className="text-white">
+                    <div className="flex items-center gap-2">
+                        <img
+                            src={article.creatorImage}
+                            className="aspect-square size-8 rounded-full object-cover"
+                        />
+                        <p>{article.creatorUserName}</p>
+                    </div>
+                    <h2 className="font-playfairDSC text-5xl font-bold">
+                        {article.title}
+                    </h2>
+                    <p className="line-clamp-4 text-xl">
+                        {article.descriptions![0].description}
+                    </p>
+                </div>
             </div>
-            <h2 className="text-xl font-bold">{article.title}</h2>
-            <p className="line-clamp-4">
-                {article.descriptions![0].description}
-            </p>
-            <Link
-                href={`articles/${article.id}`}
-                className="block w-fit rounded-full bg-[#25BA9E] p-1 px-2 text-white"
-            >
-                {t("readMore")}
-            </Link>
+        </Link>
+    );
+};
+
+type ArticleGridProps = {
+    articles: ArticleT[];
+};
+
+const ArticleGrid: React.FC<ArticleGridProps> = ({ articles }) => {
+    return (
+        <div className="grid-auto-flow-dense grid w-full grid-cols-2 md:grid-cols-4 gap-4">
+            {articles.map((article, index) => (
+                <ArticleCard key={index} {...article} />
+            ))}
         </div>
     );
 };
@@ -88,52 +119,24 @@ export default function Articles() {
         fetchItems();
     }, []);
     return (
-        <main className="flex min-h-screen w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#F7F4E0] to-[#F1ECCC] px-2 py-20">
-            <h1 className="border-b-2 border-[#25BA9E] pb-2 text-center font-playfairDSC text-5xl italic">
-                {t("pageTitle")}
-            </h1>
-            <div className="mb-10 flex max-w-3xl flex-col items-center rounded-2xl bg-white p-2 ">
-                <h4 className="w-fit border-b-2 px-2 pb-2 text-center text-3xl italic">
-                    {t("popularArticlesHeader")}
-                </h4>
-                <Carousel className="w-full">
-                    <CarouselContent>
-                        {articles?.map((article, index) => (
-                            <CarouselItem key={index}>
-                                <div
-                                    style={{
-                                        backgroundImage: `url(${article.image})`,
-                                    }}
-                                    className="flex min-h-[30vh] flex-wrap items-end gap-10 rounded-xl bg-cover "
-                                >
-                                    <div className="h-full w-full rounded-b-xl bg-black/70 p-2 text-white">
-                                        <h2 className="text-2xl italic">
-                                            &quot;{article.title}&quot;
-                                        </h2>
-                                        <Link
-                                            href={`articles/${article.id}`}
-                                            className="block w-fit rounded-full bg-[#25BA9E] p-1 px-2 text-white transition-transform hover:scale-105"
-                                        >
-                                            {t("readMore")}
-                                        </Link>
-                                    </div>
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    {articles && articles.length > 1 && (
-                        <>
-                            <CarouselPrevious className="hidden md:flex" />
-                            <CarouselNext className="hidden md:flex" />
-                        </>
-                    )}
-                </Carousel>
+        <main className="flex min-h-screen w-full flex-col items-center gap-4 px-4 py-3 lg:px-20">
+            <div className="mb-10 mt-4 flex h-fit w-full items-center justify-center bg-contain bg-center bg-no-repeat md:h-[calc(100vh-6rem)] md:bg-[url('/articles/hero.png')] md:py-10">
+                <div className="flex max-w-2xl flex-col items-center space-y-4 rounded-lg text-center backdrop-blur-md md:p-4 md:text-white">
+                    <h1 className="rounded font-playfairDSC text-5xl italic">
+                        {t("pageTitle")}
+                    </h1>
+                    <p className="hidden font-nunito text-xl md:block">
+                        {t("description")}
+                    </p>
+                    <Link
+                        href="#articles"
+                        className=" hidden w-fit rounded-md  bg-[#25BA9E] p-1 px-2 text-white transition-transform hover:scale-105 md:block"
+                    >
+                        {t("readMore")}
+                    </Link>
+                </div>
             </div>
-            <div className="flex w-full max-w-6xl flex-wrap items-center justify-around gap-2">
-                {articles?.map((article, index) => (
-                    <ArticleCard {...article} key={index} />
-                ))}
-            </div>
+            <ArticleGrid articles={articles} />
         </main>
     );
 }

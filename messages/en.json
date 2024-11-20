@@ -224,6 +224,7 @@
         }
     },
     "Article": {
+        "description": "Unlock the mysteries of the mind with our collection of psychology articles. From mental health to the latest research, gain insights that deepen your understanding of human behavior and well-being.",
         "id": {
             "latestArticlesEmail": "Get the latest articles straight to your email box",
             "subscribeNewsletter": "Subscribe to our newsletter",
