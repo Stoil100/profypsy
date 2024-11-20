@@ -226,7 +226,7 @@ export default function AdminPage() {
     ]);
 
     return (
-        <main className="min-h-screen w-full space-y-4 bg-[#F1ECCC] pt-10">
+        <main className="min-h-screen w-full space-y-4 pt-10">
             {user.admin && (
                 <>
                     <div className="h-fit p-3">
