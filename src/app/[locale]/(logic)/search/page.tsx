@@ -17,11 +17,11 @@ import { useAuth } from "@/components/Providers";
 import { PsychologistT } from "@/models/psychologist";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ChevronRight, Pin, SearchCheck, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState, useTransition } from "react";
-import { useTranslations } from "next-intl";
+import React, { useEffect, useState } from "react";
 interface OptionProps {
     name: string;
     iconSrc: string;
@@ -110,7 +110,7 @@ const ProfileCard = ({
 }: PsychologistT) => {
     const t = useTranslations("Search");
     return (
-        <div className="relative flex w-fit max-w-[300px] flex-col items-center justify-between gap-4 rounded-3xl bg-[#FCFBF4] p-6">
+        <div className="relative flex w-fit max-w-[300px] flex-col items-center justify-between gap-4 rounded-3xl bg-[#FCFBF4] p-6 drop-shadow-xl">
             <Badge
                 className={`absolute -left-3 -top-3 text-white ${
                     variant === "Deluxe"
@@ -213,19 +213,19 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         <div className="w-full max-w-[500px] space-y-4">
                             <OptionComponent
                                 name={t("forYou")}
-                                iconSrc="/homepage/person.png"
+                                iconSrc="/search/person.png"
                                 isSelected={selectedOptions === "you"}
                                 onSelect={() => setSelectedOptions("you")}
                             />
                             <OptionComponent
                                 name={t("forCouples")}
-                                iconSrc="/homepage/couples.png"
+                                iconSrc="/search/couples.png"
                                 isSelected={selectedOptions === "couples"}
                                 onSelect={() => setSelectedOptions("couples")}
                             />
                             <OptionComponent
                                 name={t("forFamilies")}
-                                iconSrc="/homepage/families.png"
+                                iconSrc="/search/families.png"
                                 isSelected={selectedOptions === "families"}
                                 onSelect={() => setSelectedOptions("families")}
                             />
@@ -261,30 +261,6 @@ const OptionsSection = ({ fetchItems }: OptionsSectionProps) => {
                         </MainButton>
                     </div>
                 </CarouselItem>
-                {/* <CarouselItem className="pb-2"> 
-                    <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-4">
-                        <h2 className="font-playfairDSC text-2xl md:text-4xl text-center capitalize text-[#205041]">
-                            Why are you looking for help today?
-                        </h2>
-                        <p className="bg-gradient-to-b from-[#6DD864] to-[#23A53D] bg-clip-text text-transparent">
-                            If needed choose multiple
-                        </p>
-                        <div className="w-full max-w-[500px] space-y-2 md:space-y-4">
-                            {[1, 2, 3, 4, 5, 6].map((_, index) => (
-                                <HelpSelector
-                                    key={index}
-                                    option={`Lorem ipsum dolor sit amet ${index}`}
-                                />
-                            ))}
-                        </div>
-                        <MainButton
-                            className="text-xl md:text-3xl"
-                             onClick={scrollNext}
-                        >
-                            Next
-                        </MainButton>
-                    </div>
-                </CarouselItem> */}
                 <CarouselItem className="pb-2">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-4">
                         <h2 className="text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
@@ -396,12 +372,12 @@ const Page: React.FC = () => {
     }
 
     return (
-        <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden bg-[#F7F4E0] font-openSans ">
+        <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans ">
             {!finnishedOptions && <OptionsSection fetchItems={fetchItems} />}
             {isLoading && <Loader />}
             {psychologists.length !== 0 ? (
                 <>
-                    <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 px-6 pb-2 md:gap-14">
+                    <section className="flex min-h-screen w-full flex-col items-center gap-7 px-6 pb-2 md:gap-14">
                         <div className="mt-20 flex flex-col items-center justify-center gap-4">
                             <h3 className="text-center font-playfairDSC text-3xl uppercase text-[#128665]">
                                 {t("topPsychologists")}

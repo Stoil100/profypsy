@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { ArticleT } from "@/components/forms/article";
+import StarRating from "@/components/Rating";
 import {
     Select,
     SelectContent,
@@ -50,18 +52,18 @@ import {
 import {
     ArrowLeft,
     ArrowRight,
+    LanguagesIcon,
     MailIcon,
     MapPinIcon,
     PhoneIcon,
     SearchCheck,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ArticleT } from "@/components/forms/article";
-import Link from "next/link";
 const Loader = () => {
     const t = useTranslations("Search");
     return (
@@ -365,8 +367,8 @@ const BookingCarousel: React.FC<BookingCarouselProps> = ({
     };
     return (
         <Carousel setApi={setApi} opts={{ watchDrag: false, duration: 0 }}>
-            <CarouselContent className="-ml-3 h-full">
-                <CarouselItem className=" flex flex-col justify-between space-y-3 rounded-xl bg-[#FCFBF4] p-2 ">
+            <CarouselContent className="ml-0 h-full">
+                <CarouselItem className="flex flex-col justify-between space-y-3 rounded-xl bg-[#FCFBF4] p-2 ">
                     {page === 0 && (
                         <>
                             <div className="w-full border-b-2 text-center">
@@ -717,24 +719,59 @@ export default function Page({ params }: { params: { id: string } }) {
     }, [profile]);
     return (
         <>
-            <div className="relative flex h-full min-h-[calc(100vh-(1rem+40px))] w-full gap-4 bg-[#525174] text-[#F1ECCC] md:p-4 lg:p-8">
-                <div className="w-full space-y-4 bg-black/20 p-4 font-playfairDSC md:w-2/3 md:rounded-xl">
-                    <hr className="w-full justify-center rounded-full border-2 border-[#525174]" />
-                    <div className="flex flex-wrap gap-4">
-                        <div className="flex flex-wrap justify-center gap-4">
-                            <div className="flex flex-col items-center gap-2 sm:items-start">
+            <section className="relative flex h-full min-h-[calc(100vh-(1rem+40px))] w-full gap-4 text-[#205041] md:p-4 lg:p-8">
+                <div className="w-full space-y-4 p-4 font-playfairDSC shadow-xl md:w-2/3">
+                    <div className="flex gap-4">
+                        <div className="flex flex-wrap justify-center gap-4 sm:justify-start">
+                            <div className="flex flex-col  items-center gap-2">
                                 <img
                                     src={profile?.image!}
-                                    className="size-40 rounded-full border-4 border-[#25BA9E] p-1"
+                                    className="size-48 rounded-full border-4 border-[#25BA9E] p-1"
                                 />
-                                <div className="flex flex-col items-center  justify-center gap-2 sm:items-start">
-                                    {profile?.languages?.map(
-                                        (language, index) => (
-                                            <Badge
-                                                className="w-fit border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
-                                                key={index}
-                                            >
-                                                <div className="flex h-full w-full items-center gap-2 bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
+                                <StarRating initialRating={4} />
+                                <MainButton
+                                    className="w-full border-2 border-[#25BA9E] text-xl hover:scale-105"
+                                    onClick={() => setIsBookingDialogOpen(true)}
+                                >
+                                    {t("bookNow")}
+                                </MainButton>
+                            </div>
+                            <div className="flex flex-1 flex-col items-center justify-between gap-2 sm:items-start">
+                                <h2 className="text-4xl ">
+                                    {profile?.userName}
+                                </h2>
+                                <div className="flex items-center gap-2">
+                                    <p className="text-lg text-gray-400">
+                                        &quot;{profile?.quote!}&quot;
+                                    </p>
+                                    <div className="flex items-center gap-2">
+                                        <MapPinIcon />
+                                        <p className="text-xl">
+                                            {profile?.location!}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-2 text-[#40916C]">
+                                    <div className="flex items-center gap-2">
+                                        <MailIcon />
+                                        <p className="text-sm">
+                                            {profile?.email!}
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <PhoneIcon />
+                                        <p className="text-xl">
+                                            {profile?.phone!}
+                                        </p>
+                                    </div>
+                                    <div className="flex gap-2 sm:items-start">
+                                        <LanguagesIcon />
+                                        {profile?.languages?.map(
+                                            (language, index) => (
+                                                <Badge
+                                                    className="w-fit border-2 border-[#40916C] bg-[#F1ECCC] p-[2px] text-xl"
+                                                    key={index}
+                                                >
                                                     <img
                                                         src={
                                                             language ===
@@ -746,45 +783,11 @@ export default function Page({ params }: { params: { id: string } }) {
                                                                   : "/logic/en.png"
                                                         }
                                                         alt={language}
+                                                        className="w-6"
                                                     />
-                                                    <p className="capitalize">
-                                                        {language}
-                                                    </p>
-                                                </div>
-                                            </Badge>
-                                        ),
-                                    )}
-                                </div>
-                            </div>
-                            <div className="flex flex-1 flex-col items-center justify-between gap-4 sm:items-start">
-                                <div>
-                                    <h2 className="text-4xl ">
-                                        {profile?.userName}
-                                    </h2>
-                                    <div className="flex items-center gap-2">
-                                        <p className="text-lg text-gray-400">
-                                            &quot;{profile?.quote!}&quot;
-                                        </p>
-                                        <div className="flex items-center gap-2">
-                                            <MapPinIcon />
-                                            <p className="text-xl">
-                                                {profile?.location!}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col gap-2 text-[#FCFBF4]">
-                                        <div className="flex items-center gap-2">
-                                            <MailIcon />
-                                            <p className="text-sm">
-                                                {profile?.email!}
-                                            </p>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <PhoneIcon />
-                                            <p className="text-xl">
-                                                {profile?.phone!}
-                                            </p>
-                                        </div>
+                                                </Badge>
+                                            ),
+                                        )}
                                     </div>
                                 </div>
 
@@ -808,24 +811,23 @@ export default function Page({ params }: { params: { id: string } }) {
                                     </div>
                                 </div>
                                 <hr className="w-full rounded-full border-2 border-[#40916C]" />
-                                <MainButton
-                                    className="w-full text-xl"
-                                    onClick={() => setIsBookingDialogOpen(true)}
-                                >
-                                    {t("bookNow")}
-                                </MainButton>
+                                <div className="flex h-fit items-center gap-2">
+                                    <p className="text-2xl">
+                                        {t("pricePerHour")}:
+                                    </p>
+                                    <p className="place-self-center text-4xl font-bold">
+                                        {profile?.cost?.price} Lv
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div className="min-w-lg mx-4 flex h-fit min-h-48 flex-1 flex-col items-center justify-center gap-2 self-center rounded-xl border-4 border-[#40916C] bg-[#FCFBF4] p-2 text-center text-[#40916C]">
-                            <p className="text-2xl">{t("pricePerHour")}:</p>
-                            <hr className="w-2/3 rounded-full border-2 border-[#40916C]" />
-                            <p className="place-self-center text-5xl font-bold italic">
-                                {profile?.cost?.price} Lv
-                            </p>
-                        </div>
+                        <img
+                            src="/search/hero.png"
+                            className="hidden w-full max-w-xs flex-1 object-scale-down  drop-shadow-[5px_10px_0_rgba(0,0,0,0.25)] xl:block"
+                        />
                     </div>
-                    <hr className="w-full rounded-full border-2 border-[#525174]" />
-                    <div className="h-max w-full space-y-4 rounded-lg px-2 font-openSans text-[#FCFBF4]">
+                    <hr className="w-full rounded-full border-2 border-[#F7F4E0]" />
+                    <div className="h-max w-full space-y-4 rounded-lg px-2 font-openSans">
                         <div className="space-y-2 ">
                             <h3 className="text-4xl">{t("aboutMe")}:</h3>
                             <p className="px-2 text-lg">{profile?.about!}</p>
@@ -860,27 +862,19 @@ export default function Page({ params }: { params: { id: string } }) {
                                     ))}
                                 </ul>
                             </div>
-                            <MainButton
-                                className="w-full text-xl hover:scale-105"
-                                onClick={() => setIsBookingDialogOpen(true)}
-                            >
-                                {t("bookNow")}
-                            </MainButton>
                         </div>
                     </div>
-                    <hr className="w-full rounded-full border-2 border-[#525174]" />
+                    <hr className="w-full rounded-full border-2 border-[#F7F4E0]" />
                     {articles.length > 0 && (
                         <>
                             <div className="space-y-2 font-openSans">
-                                <h2 className="text-3xl text-[#FCFBF4]">
-                                    {t("myArticles")}:
-                                </h2>
-                                <div className="flex flex-wrap justify-center gap-4 text-[#25BA9E]">
+                                <h2 className="text-3xl">{t("myArticles")}:</h2>
+                                <div className="flex flex-wrap  gap-4">
                                     {articles.map((article, index) => (
                                         <Link
                                             key={index}
                                             href={`/articles/${article.id}`}
-                                            className="max-w-xs rounded-xl bg-black/50 p-2 transition-transform hover:scale-105"
+                                            className="max-w-xs rounded-xl bg-gray-500/20 p-2 transition-transform hover:scale-105"
                                         >
                                             <img
                                                 src={article.image}
@@ -893,11 +887,10 @@ export default function Page({ params }: { params: { id: string } }) {
                                     ))}
                                 </div>
                             </div>
-                            <hr className="w-full rounded-full border-2 border-[#525174]" />
                         </>
                     )}
                 </div>
-                <div className="sticky top-[calc(1rem+60px)] hidden max-h-[calc(100vh-(1rem+100px))] w-1/3 items-center justify-center rounded-xl border-4 border-[#25BA9E] bg-[#FCFBF4] md:flex">
+                <div className="sticky top-[calc(1rem+72px)] hidden max-h-[calc(100vh-(1rem+100px))] w-1/3 items-center justify-center border-4 border-[#25BA9E] bg-[#FCFBF4] md:flex">
                     {user.uid && profile?.uid && (
                         <BookingCarousel
                             profile={profile}
@@ -909,7 +902,7 @@ export default function Page({ params }: { params: { id: string } }) {
                         />
                     )}
                 </div>
-            </div>
+            </section>
             <BookingDialog
                 isOpen={isBookingDialogOpen}
                 onClose={() => setIsBookingDialogOpen(false)}
