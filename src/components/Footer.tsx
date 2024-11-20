@@ -19,10 +19,6 @@ import MainButton from "./MainButton";
 import { useAuth } from "./Providers";
 import NewsletterForm from "./forms/newsletter";
 
-interface GuidanceProps {
-    variant: "footer" | "navigation";
-}
-
 type LinksProps = {
     t?: (key: string) => string;
     router?: AppRouterInstance;
@@ -129,20 +125,13 @@ const Newsletter = ({ t }: LinksProps) => {
     );
 };
 
-export const Guidance: React.FC<GuidanceProps> = ({ variant }) => {
+export const Footer: React.FC = () => {
     const t = useTranslations("Navigation");
     const { user, logOut } = useAuth();
     const router = useRouter();
 
     return (
-        <div
-            className={clsx(
-                "flex min-h-[33vh] w-full flex-wrap text-xl font-thin text-white sm:py-10",
-                variant === "footer"
-                    ? "justify-center gap-x-4 gap-y-8 bg-[#525174] p-4 sm:gap-14"
-                    : "justify-evenly gap-2 bg-transparent",
-            )}
-        >
+        <div className="flex min-h-[33vh] w-full flex-wrap justify-center gap-x-4 gap-y-8 bg-[#525174] p-4 text-xl font-thin text-white sm:gap-14 sm:py-10">
             <div className="space-y-8 self-center sm:space-y-6">
                 <SocialMediaLinks t={t} />
                 <Newsletter t={t} />
