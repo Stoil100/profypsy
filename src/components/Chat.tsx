@@ -175,7 +175,7 @@ export default function Chat({
                         <p
                             key={index}
                             className={cn(
-                                "min-w-[50px] max-w-[90%] break-all rounded-2xl px-2 text-xl",
+                                "flex min-w-[50px] max-w-[90%] justify-center break-all rounded-2xl px-2 text-xl",
                                 message.senderUid === senderUid
                                     ? "self-end bg-[#40916C] text-right text-white"
                                     : "self-start border-2 border-[#40916C] text-left text-[#40916C]",
