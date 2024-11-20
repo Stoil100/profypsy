@@ -14,7 +14,7 @@
             "family": "For families"
         },
         "mission": {
-            "readMore":"Read more",
+            "readMore": "Read more",
             "sectionTitle": "Our mission",
             "missionTitle": "Our Mission:",
             "missionDescription": "Our mission is to provide an accessible, convenient, and effective platform for psychotherapy, which helps people improve their mental well-being and live more fully and happily. We created this platform with the belief that every individual deserves support and care for their mental health, regardless of financial or geographical constraints.",
@@ -189,7 +189,9 @@
         "editProfile": "Edit Profile",
         "psychologistAccount": "Psychologist account",
         "account": "Account",
+        "overview": "Overview:",
         "appointments": "Appointments",
+        "bookings": "Bookings:",
         "sessions": "Sessions",
         "articles": "Articles",
         "email": "Email",
@@ -199,6 +201,7 @@
         "languages": "Languages",
         "about": "About",
         "quote": "Quote",
+        "background": "Background:",
         "education": "Education",
         "experience": "Experience",
         "specializations": "Specializations",
@@ -255,7 +258,7 @@
         }
     },
     "Navigation": {
-        "search":"Search",
+        "search": "Search",
         "profile": "Profile",
         "findTherapist": "Find a therapist",
         "myProfile": "My profile",
@@ -277,13 +280,13 @@
         "couples": "For couples",
         "families": "For families",
         "menu": "Menu",
-        "newsletter":{
-            "title":"Subscribe to our newsletter",
-            "description":"The latest news, articles, and resources, sent to your inbox weekly.",
-            "form":{
-            "emailPlaceholder": "Enter your Email here...",
-            "emailValidation": "Please enter a valid email address.",
-            "submit":"Subscribe"
+        "newsletter": {
+            "title": "Subscribe to our newsletter",
+            "description": "The latest news, articles, and resources, sent to your inbox weekly.",
+            "form": {
+                "emailPlaceholder": "Enter your Email here...",
+                "emailValidation": "Please enter a valid email address.",
+                "submit": "Subscribe"
             }
         }
     },
