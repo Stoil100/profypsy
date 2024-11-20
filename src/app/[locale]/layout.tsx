@@ -25,7 +25,9 @@ export default function LocaleLayout({
                 <NextIntlClientProvider messages={messages} locale={locale}>
                     <AuthContextProvider>
                         <Navigation />
-                        <main className="pt-[calc(40px+1rem)]">{children}</main>
+                        <main className="bg-[#fbf9f0] pt-[calc(40px+1rem)]">
+                            {children}
+                        </main>
                     </AuthContextProvider>
                 </NextIntlClientProvider>
                 <Toaster />

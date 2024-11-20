@@ -75,4 +75,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  html{
+    @apply scroll-smooth
+  }
+  .mask-grid {
+  mask-image: linear-gradient(black 0, black 100%);
+  -webkit-mask-image: linear-gradient(black 0, black 100%);
+}
 }

@@ -43,6 +43,7 @@ import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import heroAnimation from "@/../public/homepage/hero.gif";
 
 const carouselItems = [
     {
@@ -82,51 +83,30 @@ const carouselItems = [
     },
 ];
 const BottomLine = () => (
-    <hr className="w-full rounded-full border-2 border-[#FCFBF4] drop-shadow-lg" />
+    <hr className="w-full rounded-full border-2 border-[#FEFFEC] drop-shadow-lg" />
 );
 function HeroSection() {
     const t = useTranslations("HomePage");
-    function HeaderCard({ title, image }: HeaderT) {
-        return (
-            <Link
-                href={"/search"}
-                className="flex  cursor-pointer flex-col items-center justify-between gap-2 rounded-3xl bg-[#B2D3A8] p-3 transition-transform hover:scale-105"
-            >
-                <Image src={image} alt={title} width={250} height={250} />
-                <div className="flex w-full items-center justify-between">
-                    <h4 className="text-lg">{title}</h4>
-                    <ChevronRight />
-                </div>
-            </Link>
-        );
-    }
     return (
-        <section className="flex min-h-screen w-full flex-col items-center justify-center gap-7 bg-gradient-to-b from-[#40916C] to-[#52B788] pt-16 text-white md:pt-10">
-            <div className="flex w-2/3 flex-col items-center gap-7 text-center">
-                <h1 className="font-playfairDSC text-3xl font-thin capitalize md:text-5xl">
+        <section className="flex  w-full flex-col items-center justify-end gap-7 bg-gradient-to-b from-[#40916C] to-[#52B788] px-2 pt-10 text-white sm:min-h-screen md:flex-row md:px-0 md:pl-20 md:pt-0">
+            <div className="flex w-full flex-col items-center space-y-4 text-center md:w-2/5 md:items-start md:text-left">
+                <h1 className="font-playfairDSC text-3xl font-thin capitalize [text-shadow:_0_2px_0_rgb(0_0_0_/_40%)] md:text-5xl">
                     {t("title")}
                 </h1>
                 <h3 className="font-openSans text-xl md:text-2xl">
                     {t("titleDescription")}
                 </h3>
-                <Link href={"login"}>
+                <Link href={"login"} className="block">
                     <MainButton className="text-3xl">
                         {t("button.getStarted")}
                     </MainButton>
                 </Link>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-4 p-2 md:gap-10">
-                <HeaderCard
-                    title={t("services.you")}
-                    image="/homepage/person.png"
-                />
-                <HeaderCard
-                    title={t("services.couples")}
-                    image="/homepage/couples.png"
-                />
-                <HeaderCard
-                    title={t("services.family")}
-                    image="/homepage/families.png"
+            <div className="justify-right flex h-fit w-full items-center  bg-[url('/homepage/bubblesMobile.svg')] bg-contain bg-bottom bg-no-repeat p-5 md:min-h-screen md:w-3/5 md:bg-[url('/homepage/bubbles.svg')] md:bg-right-top md:pr-10">
+                <Image
+                    src={heroAnimation}
+                    alt="Hero Animation"
+                    className="w-full drop-shadow-xl"
                 />
             </div>
         </section>
@@ -138,27 +118,27 @@ function MissionSection() {
         {
             title: t("mission.missionTitle"),
             description: t("mission.missionDescription"),
-            icon: <InfoIcon />,
+            icon: <InfoIcon size={40} />,
         },
         {
             title: t("mission.creatorsTitle"),
             description: t("mission.creatorsDescription"),
-            icon: <Building2Icon />,
+            icon: <Building2Icon size={40} />,
         },
         {
             title: t("mission.usersTitle"),
             description: t("mission.usersDescription"),
-            icons: <UsersRoundIcon />,
+            icons: <UsersRoundIcon size={40} />,
         },
         {
             title: t("mission.psychologistsTitle"),
             description: t("mission.psychologistsDescription"),
-            icon: <BriefcaseIcon />,
+            icon: <BriefcaseIcon size={40} />,
         },
         {
             title: t("mission.visionTitle"),
             description: t("mission.visionDescription"),
-            icon: <TelescopeIcon />,
+            icon: <TelescopeIcon size={40} />,
         },
     ];
     return (
@@ -185,25 +165,27 @@ function MissionSection() {
                             key={index}
                             className="pl-4 sm:basis-1/2 lg:basis-1/3"
                         >
-                            <div className="flex h-full w-full flex-col justify-between gap-4 rounded-2xl border-4 border-[#25BA9E] bg-[#F1ECCC] px-4 py-2 ">
-                                <div className="flex w-full justify-between gap-2">
-                                    <h2 className=" text-xl font-bold text-[#205041] sm:text-3xl">
-                                        {item.title}
-                                    </h2>
-                                    <div className="flex h-10 min-w-10 items-center justify-center rounded-full border-2 border-[#25BA9E] bg-white text-xl text-[#25BA9E]">
-                                        {item.icon}
-                                    </div>
+                            <div className="flex h-full w-full flex-col justify-between gap-3  bg-[#FEFFEC]  p-4 md:p-8 ">
+                                <div className="flex aspect-square w-20 items-center justify-center rounded-full border-4 border-[#25BA9E] text-xl text-[#25BA9E]">
+                                    {item.icon}
                                 </div>
-                                <div className="flex h-fit flex-col gap-2 rounded-xl border-[#205041] bg-white px-2 py-1">
-                                    <p className="line-clamp-5 h-full items-center justify-center text-lg text-[#205041]">
+                                <h2 className=" text-xl font-bold text-[#205041] sm:text-3xl">
+                                    {item.title}
+                                </h2>
+                                <div className="flex h-fit flex-col  px-2 ">
+                                    <p className="line-clamp-5 h-full items-center justify-center text-[#205041]">
                                         {item.description}
                                     </p>
-                                    <Link href={"/mission"}>
-                                        <MainButton className="w-fit border-2 border-[#25BA9E] hover:scale-105 text-lg">
-                                            {t("mission.readMore")}
-                                        </MainButton>
-                                    </Link>
                                 </div>
+                                <Link
+                                    href={"/mission"}
+                                    className="group relative flex items-center font-bold text-[#25BA9E]"
+                                >
+                                    {t("mission.readMore")}
+                                    <span className="ml-1 inline-block text-xl transition-transform duration-300 ease-in-out group-hover:translate-x-1">
+                                        <ChevronRight />
+                                    </span>
+                                </Link>
                             </div>
                         </CarouselItem>
                     ))}
@@ -222,9 +204,7 @@ function TherapistsSection() {
                     <span className="text-[#128665]">Based on Your Needs</span>
                 </p>
                 <Link href={"/login"}>
-                    <MainButton className="text-xl">
-                        Get Started
-                    </MainButton>
+                    <MainButton className="text-xl">Get Started</MainButton>
                 </Link>
             </div>
             <Carousel
@@ -428,7 +408,7 @@ function FaQSection() {
             <h3 className="text-center font-playfairDSC text-4xl text-[#205041]">
                 {t("faq.faqTitle")}
             </h3>
-            <div className="w-full rounded-2xl bg-white p-2 font-openSans text-xl">
+            <div className="w-full rounded-2xl bg-[#FEFFEC] p-2 font-openSans text-xl">
                 <Accordion type="single" collapsible>
                     <AccordionItem value="item-1">
                         <AccordionTrigger className="text-left">
@@ -473,7 +453,7 @@ function JoinSection() {
             <img
                 src="/homepage/join.png"
                 alt={t("join.joinImageAlt")}
-                className="hidden md:block md:max-h-[300px] lg:max-h-[400px] xl:max-h-[500px]"
+                className="hidden drop-shadow-md md:block md:max-h-[300px] lg:max-h-[400px] xl:max-h-[500px]"
             />
             <div className="flex flex-col items-center gap-4 text-center md:items-end md:text-right">
                 <h2 className="font-playfairDSC text-3xl font-thin text-[#205041] md:text-4xl">
@@ -530,9 +510,8 @@ function JoinSection() {
 
 export default function Home() {
     return (
-        <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#F7F4E0] from-85% to-[#E5CA8B]">
+        <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-[#fbf9f0] from-70% to-[#adebb3]">
             <HeroSection />
-            
             {/* <TherapistsSection />
             <ReviewsSection /> */}
             <ApproachSection />
