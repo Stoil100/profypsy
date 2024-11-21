@@ -10,7 +10,6 @@ import {
     collection,
     deleteDoc,
     doc,
-    getDocs,
     onSnapshot,
     query,
     updateDoc,
@@ -190,35 +189,33 @@ function useFirestoreCollection<T>(
 export default function AdminPage() {
     const { user } = useAuth();
     const router = useRouter();
-    const [uploadedArticles, setUploadedArticles] = useState<ArticleT[]>();
-    useEffect(() => {
-        const fetchUploadedContent = async () => {
-            const querySnapshot = await getDocs(collection(db, "articles"));
-            const content: any = [];
-            querySnapshot.forEach((doc) => {
-                content.push({
-                    id: doc.id,
-                    title: doc.data().title!,
-                    image: doc.data().image!,
-                });
-            });
-            setUploadedArticles(content);
-        };
-        fetchUploadedContent();
-    }, []);
 
-    async function deleteArticle(id: number) {
-        await deleteDoc(doc(db, "articles", `${id}`));
+    // Use the custom hook for real-time updates
+    const uploadedArticles = useFirestoreCollection<ArticleT>("articles", [
+        "approved",
+        "!=",
+        null, // Adjust the condition if necessary
+    ]);
+
+    async function deleteArticle(id: string) {
+        try {
+            await deleteDoc(doc(db, "articles", id));
+        } catch (error) {
+            console.error("Error deleting article:", error);
+        }
     }
+
     useEffect(() => {
         if (!user?.admin) {
             router.push("/");
         }
     }, [user, router]);
+
     const profilesToApprove = useFirestoreCollection<PsychologistT>(
         "psychologists",
         ["approved", "==", false],
     );
+
     const articlesToApprove = useFirestoreCollection<ArticleT>("articles", [
         "approved",
         "==",
@@ -227,7 +224,7 @@ export default function AdminPage() {
 
     return (
         <main className="min-h-screen w-full space-y-4 pt-10">
-            {user.admin && (
+            {user?.admin && (
                 <>
                     <div className="h-fit p-3">
                         {profilesToApprove?.map((profile, index) => (
@@ -246,28 +243,35 @@ export default function AdminPage() {
                         </div>
                         <div className="h-fit w-full rounded border border-black">
                             <h2 className="text-4xl">Delete articles:</h2>
-                            {uploadedArticles?.map((article, index) => (
-                                <div
-                                    key={index}
-                                    className="flex flex-col items-center justify-center gap-1 p-3 sm:w-1/2 md:w-1/3"
-                                >
-                                    <div className=" flex flex-col items-center justify-center gap-2">
-                                        <h2 className="text-4xl ">
-                                            {article.title}
-                                        </h2>
-                                        <img src={article.image} />
-                                    </div>
-                                    <Button
-                                        type="button"
-                                        className="w-full"
-                                        onClick={() => {
-                                            deleteArticle(article.id!);
-                                        }}
+                            <div className="flex flex-wrap gap-4 ">
+                                {uploadedArticles?.map((article, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex flex-col items-center justify-center gap-1 rounded-lg bg-gray-400/20 p-3 sm:w-1/2 md:w-1/3"
                                     >
-                                        Delete
-                                    </Button>
-                                </div>
-                            ))}
+                                        <div className="flex flex-col items-center justify-center gap-2">
+                                            <h2 className="text-4xl">
+                                                {article.title}
+                                            </h2>
+                                            <img
+                                                src={article.image}
+                                                alt={article.title}
+                                            />
+                                        </div>
+                                        <Button
+                                            type="button"
+                                            className="w-full"
+                                            onClick={() =>
+                                                deleteArticle(
+                                                    article.id?.toString()!,
+                                                )
+                                            }
+                                        >
+                                            Delete
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </>
