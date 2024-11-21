@@ -89,14 +89,14 @@ const NewMessageIndicator: React.FC<MessageIndicatorProps> = ({
     }, [senderUid, receiverUid]);
     return (
         newMessages && (
-            <div className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-orange-400">
+            <div className="flex size-4 items-center justify-center rounded-full bg-orange-400">
                 <MailWarningIcon className="size-3 text-white" />
             </div>
         )
     );
 };
 const NewSessionIndicator: React.FC = () => (
-    <div className="absolute -left-1 -top-1 flex size-4 items-center justify-center rounded-full bg-yellow-400">
+    <div className="flex size-4 items-center justify-center rounded-full bg-yellow-400">
         <CalendarPlusIcon className="size-3 text-white" />
     </div>
 );
@@ -381,7 +381,7 @@ export default function Page() {
                             </div>
                             <div className="flex h-full w-full flex-1 flex-col justify-between gap-4 overflow-y-auto bg-[#FEFFEC] px-2 py-4  drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)]">
                                 <h3 className="font-playfairDSC text-3xl text-[#40916C] lg:text-5xl">
-                                    {t('background')}
+                                    {t("background")}
                                 </h3>
                                 {profile!.educations && (
                                     <div>
@@ -431,7 +431,7 @@ export default function Page() {
                         )}
                     >
                         <h3 className="font-playfairDSC text-5xl text-[#40916C]">
-                            {t('bookings')}
+                            {t("bookings")}
                         </h3>
                         <Accordion
                             type="single"
@@ -443,7 +443,40 @@ export default function Page() {
                                 className="border-b-2 border-b-[#25BA9E]"
                             >
                                 <AccordionTrigger>
-                                    {t("appointments")}
+                                    <div className="flex items-center gap-1">
+                                        <h4>{t("appointments")}</h4>
+                                        {user!.appointments &&
+                                            user!.appointments.length > 0 && (
+                                                <>
+                                                    {user.appointments.some(
+                                                        (appointment) =>
+                                                            appointment.new,
+                                                    ) && (
+                                                        <NewSessionIndicator />
+                                                    )}
+                                                    {(() => {
+                                                        const appointmentWithPsychologistUid =
+                                                            user.appointments.find(
+                                                                (appointment) =>
+                                                                    appointment.psychologistUid,
+                                                            );
+                                                        return (
+                                                            appointmentWithPsychologistUid?.psychologistUid && (
+                                                                <NewMessageIndicator
+                                                                    key="new-message-indicator"
+                                                                    senderUid={
+                                                                        user.uid!
+                                                                    }
+                                                                    receiverUid={
+                                                                        appointmentWithPsychologistUid.psychologistUid
+                                                                    }
+                                                                />
+                                                            )
+                                                        );
+                                                    })()}
+                                                </>
+                                            )}
+                                    </div>
                                 </AccordionTrigger>
                                 <AccordionContent>
                                     <Accordion
@@ -470,20 +503,24 @@ export default function Page() {
                                                                 );
                                                             }}
                                                         >
-                                                            {appointment.new && (
-                                                                <NewSessionIndicator />
-                                                            )}
-                                                            <NewMessageIndicator
-                                                                senderUid={
-                                                                    user.uid!
-                                                                }
-                                                                receiverUid={
-                                                                    appointment.psychologistUid
-                                                                }
-                                                            />
-                                                            {
-                                                                appointment.selectedDate
-                                                            }
+                                                            <div className="flex items-center gap-1">
+                                                                <p>
+                                                                    {
+                                                                        appointment.selectedDate
+                                                                    }
+                                                                </p>
+                                                                {appointment.new && (
+                                                                    <NewSessionIndicator />
+                                                                )}
+                                                                <NewMessageIndicator
+                                                                    senderUid={
+                                                                        user.uid!
+                                                                    }
+                                                                    receiverUid={
+                                                                        appointment.psychologistUid
+                                                                    }
+                                                                />
+                                                            </div>
                                                         </AccordionTrigger>
                                                         <AccordionContent className="p-4">
                                                             <div className="space-y-4 break-all">
@@ -645,7 +682,42 @@ export default function Page() {
                                         className="border-b-2 border-b-[#25BA9E]"
                                     >
                                         <AccordionTrigger>
-                                            {t('sessions')}
+                                            <div className="flex items-center gap-1">
+                                                <h4>{t("sessions")}</h4>
+                                                {profile!.appointments &&
+                                                    profile!.appointments
+                                                        .length > 0 && (
+                                                        <>
+                                                            {profile.appointments.some(
+                                                                (appointment) =>
+                                                                    appointment.new,
+                                                            ) && (
+                                                                <NewSessionIndicator />
+                                                            )}
+                                                            {(() => {
+                                                                const appointmentWithClientUid =
+                                                                    profile.appointments.find(
+                                                                        (
+                                                                            appointment,
+                                                                        ) =>
+                                                                            appointment.clientUid,
+                                                                    );
+                                                                return (
+                                                                    appointmentWithClientUid?.clientUid && (
+                                                                        <NewMessageIndicator
+                                                                            senderUid={
+                                                                                user.uid!
+                                                                            }
+                                                                            receiverUid={
+                                                                                appointmentWithClientUid.clientUid
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                );
+                                                            })()}
+                                                        </>
+                                                    )}
+                                            </div>
                                         </AccordionTrigger>
                                         <AccordionContent>
                                             <Accordion
@@ -675,20 +747,22 @@ export default function Page() {
                                                                         );
                                                                     }}
                                                                 >
-                                                                    {appointment.new && (
-                                                                        <NewSessionIndicator />
-                                                                    )}
-                                                                    {
-                                                                        appointment.selectedDate
-                                                                    }
-                                                                    <NewMessageIndicator
-                                                                        senderUid={
-                                                                            user.uid!
+                                                                    <div className="flex items-center gap-1">
+                                                                        {
+                                                                            appointment.selectedDate
                                                                         }
-                                                                        receiverUid={
-                                                                            appointment.clientUid
-                                                                        }
-                                                                    />
+                                                                        {appointment.new && (
+                                                                            <NewSessionIndicator />
+                                                                        )}
+                                                                        <NewMessageIndicator
+                                                                            senderUid={
+                                                                                user.uid!
+                                                                            }
+                                                                            receiverUid={
+                                                                                appointment.clientUid
+                                                                            }
+                                                                        />
+                                                                    </div>
                                                                 </AccordionTrigger>
                                                                 <AccordionContent className="p-4 ">
                                                                     <div className="space-y-4 break-all">
@@ -849,7 +923,7 @@ export default function Page() {
                                         className="border-b-2 border-b-[#25BA9E]"
                                     >
                                         <AccordionTrigger>
-                                            {t('articles')}
+                                            {t("articles")}
                                         </AccordionTrigger>
                                         <AccordionContent className="flex flex-col pr-1">
                                             {articles && articles.length > 0 ? (
