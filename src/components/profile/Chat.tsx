@@ -25,7 +25,6 @@ import {
     writeBatch,
 } from "firebase/firestore";
 import { Send } from "lucide-react";
-import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -34,6 +33,7 @@ type ChatProps = {
     senderUid: string;
     receiverUid: string;
     receiverUsername: string;
+    t: (args: string) => string;
 };
 interface Message {
     content: string;
@@ -45,8 +45,8 @@ export default function Chat({
     senderUid,
     receiverUid,
     receiverUsername,
+    t,
 }: ChatProps) {
-    const t = useTranslations("Profile.chat");
     const [messages, setMessages] = useState<Message[]>([]);
     const formSchema = z.object({
         message: z.string().min(1, t("error")),
