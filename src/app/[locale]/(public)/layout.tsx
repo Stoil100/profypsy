@@ -8,7 +8,7 @@ export default function PublicLayout({
     return (
         <section>
             {children}
-            <Footer/>
+            <Footer />
         </section>
     );
 }
