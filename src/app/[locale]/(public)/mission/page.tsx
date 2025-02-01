@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 
 export default function Mission() {
-    const t = useTranslations("Mission");
+    const t = useTranslations("Pages.Mission");
     return (
         <div className="mx-auto mt-10 max-w-4xl p-5">
             <h1 className="my-5 text-center text-4xl font-bold">
