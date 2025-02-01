@@ -5,15 +5,15 @@ type PsychologistT = {
     age: string;
     about: string;
     quote: string;
-    cost: {
-        dates: string[];
-        price: string;
-    };
+    dates: string[];
+    price: string;
     educations: {
-        education: string;
+        id: number;
+        value: string;
     }[];
     experiences: {
-        experience: string;
+        id: number;
+        value: string;
     }[];
     userName: string;
     location: string;
