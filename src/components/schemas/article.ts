@@ -23,31 +23,28 @@ import { z } from "zod";
 //         footer: z.string().optional(),
 //     });
 
-
-    
 export const ArticlesSchema = (t: (arg: string) => string) =>
     z.object({
-        heroImage: z
-            .string()
-            .url(t("errors.heroImage.url"))
-            .optional(),
-        title: z
-            .string()
-            .min(1, t("errors.title.required")),
+        heroImage: z.string().url(t("errors.heroImage.url")).optional(),
+        title: z.string().min(1, t("errors.title.required")),
         titleDescriptions: z
             .array(
                 z.object({
                     id: z.number(),
-                    value: z.string().min(1, t("errors.titleDescriptions.value.required")),
-                })
+                    value: z
+                        .string()
+                        .min(1, t("errors.titleDescriptions.value.required")),
+                }),
             )
             .optional(),
         descriptions: z
             .array(
                 z.object({
                     id: z.number(),
-                    value: z.string().min(1, t("errors.descriptions.value.required")),
-                })
+                    value: z
+                        .string()
+                        .min(1, t("errors.descriptions.value.required")),
+                }),
             )
             .optional(),
         lists: z
@@ -58,8 +55,13 @@ export const ArticlesSchema = (t: (arg: string) => string) =>
                         .array(
                             z.object({
                                 id: z.number(),
-                                value: z.string().min(1, t("errors.lists.items.value.required")),
-                            })
+                                value: z
+                                    .string()
+                                    .min(
+                                        1,
+                                        t("errors.lists.items.value.required"),
+                                    ),
+                            }),
                         )
                         .min(1, t("errors.lists.items.min")),
                 }),
@@ -73,7 +75,9 @@ export const ArticlesSchema = (t: (arg: string) => string) =>
                         .array(
                             z.object({
                                 id: z.number(),
-                                value: z.string().url(t("errors.docs.images.value.url")),
+                                value: z
+                                    .string()
+                                    .url(t("errors.docs.images.value.url")),
                             }),
                         )
                         .optional(),
@@ -82,7 +86,14 @@ export const ArticlesSchema = (t: (arg: string) => string) =>
                             z.union([
                                 z.object({
                                     id: z.number(),
-                                    value: z.string().min(1, t("errors.docs.texts.value.required")),
+                                    value: z
+                                        .string()
+                                        .min(
+                                            1,
+                                            t(
+                                                "errors.docs.texts.value.required",
+                                            ),
+                                        ),
                                 }),
                                 z.object({
                                     title: z.string().optional(),
@@ -90,12 +101,21 @@ export const ArticlesSchema = (t: (arg: string) => string) =>
                                         .array(
                                             z.object({
                                                 id: z.number(),
-                                                value: z.string().min(1, t("errors.docs.texts.listItems.value.required")),
+                                                value: z
+                                                    .string()
+                                                    .min(
+                                                        1,
+                                                        t(
+                                                            "errors.docs.texts.listItems.value.required",
+                                                        ),
+                                                    ),
                                             }),
                                         )
                                         .min(
                                             1,
-                                            t("errors.docs.texts.listItems.min"),
+                                            t(
+                                                "errors.docs.texts.listItems.min",
+                                            ),
                                         ),
                                 }),
                             ]),

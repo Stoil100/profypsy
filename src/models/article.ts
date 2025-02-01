@@ -26,8 +26,9 @@ type ArticleT = {
               }
         )[];
     }[];
-    footer?:string;
-    type: "standard" | "notable" | "important"; 
+    footer?: string;
+    type: "standard" | "notable" | "important";
 };
 
 export type { ArticleT };
+

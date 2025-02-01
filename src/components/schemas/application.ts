@@ -12,10 +12,7 @@ export const ApplicationSchema = (t: (arg: string) => string) =>
             .string()
             .min(10, t("shortDescription"))
             .max(500, t("longDescription")),
-        quote: z
-            .string()
-            .min(5, t("shortQuote"))
-            .max(100, t("longQuote")),
+        quote: z.string().min(5, t("shortQuote")).max(100, t("longQuote")),
         image: z.string().url().optional(),
         cv: z.string().url(t("validCV")),
         letter: z.string().url(t("validLetter")),
@@ -63,8 +60,6 @@ export const ApplicationSchema = (t: (arg: string) => string) =>
             .refine((value) => value.some((item) => item), {
                 message: t("selectAtLeastOneLanguage"),
             }),
-        variant: z.enum([
-           "Deluxe","Premium","Basic"
-        ]),
+        variant: z.enum(["Deluxe", "Premium", "Basic"]),
     });
-    export type ApplicationFormT = z.infer<ReturnType<typeof ApplicationSchema>>;
+export type ApplicationFormT = z.infer<ReturnType<typeof ApplicationSchema>>;

@@ -1,6 +1,11 @@
 "use client";
 
 import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
     Menubar,
     MenubarContent,
     MenubarItem,
@@ -8,6 +13,14 @@ import {
     MenubarSeparator,
     MenubarTrigger,
 } from "@/components/ui/menubar";
+import {
+    Sheet,
+    SheetContent,
+    SheetFooter,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
 import {
     ChevronsUpDownIcon,
     LogInIcon,
@@ -20,19 +33,6 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import LanguageButton from "./LanguageButton";
 import { useAuth } from "./Providers";
-import {
-    Sheet,
-    SheetContent,
-    SheetFooter,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 
 const MenuItemLink = ({
     href,

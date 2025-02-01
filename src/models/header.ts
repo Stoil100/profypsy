@@ -4,4 +4,4 @@ type HeaderT = {
 };
 type HeadersT = HeaderT[];
 
-export type { HeaderT, HeadersT };
+export type { HeadersT, HeaderT };

@@ -1,5 +1,4 @@
-import type { AppointmentT } from "@/models/appointment"
-import type { PsychologistT } from "@/models/psychologist"
+import type { AppointmentT } from "@/models/appointment";
+import type { PsychologistT } from "@/models/psychologist";
 
-export type ProfileT = PsychologistT & AppointmentT 
-
+export type ProfileT = PsychologistT & AppointmentT;

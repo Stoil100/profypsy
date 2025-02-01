@@ -1,7 +1,6 @@
 "use client";
 
 import { UserType } from "@/models/user";
-import clsx from "clsx";
 import {
     Facebook,
     Instagram,

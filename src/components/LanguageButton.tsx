@@ -1,9 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-// import { languages } from "@/i18n";
 import { usePathname, useRouter } from "./navigationSetup";
-// import { Icons } from "@/components/shared/icons";
 import clsx from "clsx";
 import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
