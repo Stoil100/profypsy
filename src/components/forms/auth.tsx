@@ -12,13 +12,13 @@ import { Input } from "@/components/ui/input";
 import { AuthT } from "@/models/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Facebook } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { useAuth } from "../Providers";
-import { useTranslations } from "next-intl";
 import { AuthSchema } from "../schemas/auth";
 
 type FormVariant = {
@@ -26,7 +26,7 @@ type FormVariant = {
 };
 
 const AuthForm = ({ variant = "login" }: FormVariant) => {
-    const t = useTranslations("Auth.auth");
+    const t = useTranslations("Pages.Auth");
     const formSchema = AuthSchema(variant, t);
     const [visible, setVisible] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -136,10 +136,12 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
         <div className="flex flex-col items-center justify-center gap-3 font-openSans">
             <h3 className="z-10 text-center font-playfairDSC text-4xl font-bold capitalize text-[#205041]">
                 {variant === "register"
-                    ? t("headerRegister")
-                    : t("headerLogin")}
+                    ? t("headers.register")
+                    : t("headers.login")}
             </h3>
-            <p className="w-full text-center">{t("usingSocialNetworks")}</p>
+            <p className="w-full text-center">
+                {t("socialLogin.usingSocialNetworks")}
+            </p>
             <div className="flex gap-3">
                 <Button
                     className="size-[50px] rounded-full bg-[#25ba9e] p-3 transition-all duration-300 hover:scale-110 hover:bg-[#389181]"
@@ -168,7 +170,7 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
             </div>
             <div className="flex w-full items-center">
                 <div className="w-full border-t-2 border-gray-300" />
-                <p className="w-full text-center">{t("orWith")}</p>
+                <p className="w-full text-center">{t("socialLogin.orWith")}</p>
                 <div className="h-1 w-full border-t-2 border-gray-300" />
             </div>
             <Form {...form}>
@@ -183,7 +185,7 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
                             <FormItem>
                                 <FormControl>
                                     <Input
-                                        placeholder={t("emailPlaceholder")}
+                                        placeholder={t("placeholders.email")}
                                         {...field}
                                     />
                                 </FormControl>
@@ -201,7 +203,7 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
                                         <Input
                                             type={visible ? "text" : "password"}
                                             placeholder={t(
-                                                "passwordPlaceholder",
+                                                "placeholders.password",
                                             )}
                                             {...field}
                                         />
@@ -233,7 +235,7 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
                                                         : "password"
                                                 }
                                                 placeholder={t(
-                                                    "confirmPasswordPlaceholder",
+                                                    "placeholders.confirmPassword",
                                                 )}
                                                 {...field}
                                                 value={field.value as string}
@@ -252,21 +254,21 @@ const AuthForm = ({ variant = "login" }: FormVariant) => {
                         type="submit"
                         disabled={isLoading}
                     >
-                        {t("submit")}
+                        {t("actions.submit")}
                     </Button>
                 </form>
             </Form>
             <p>
                 {variant === "register"
-                    ? `${t("alreadyHaveAccount")} `
-                    : `${t("doNotHaveAccount")} `}
+                    ? `${t("links.alreadyHaveAccount")} `
+                    : `${t("links.doNotHaveAccount")} `}
                 <Link
                     href={variant === "register" ? "/login" : "/register"}
                     className="text-[#25ba9e] underline"
                 >
                     {variant === "register"
-                        ? t("loginHere")
-                        : t("registerHere")}
+                        ? t("links.loginHere")
+                        : t("links.registerHere")}
                 </Link>
             </p>
         </div>
