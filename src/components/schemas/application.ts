@@ -5,68 +5,66 @@ export const ApplicationSchema = (t: (arg: string) => string) =>
             .string()
             .regex(
                 /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
-                t("formSchemaErrors.invalidPhoneNumber"),
+                t("invalidPhoneNumber"),
             ),
-        age: z.string().min(1, t("formSchemaErrors.selectAge")),
+        age: z.string().min(1, t("selectAge")),
         about: z
             .string()
-            .min(10, t("formSchemaErrors.shortDescription"))
-            .max(500, t("formSchemaErrors.longDescription")),
+            .min(10, t("shortDescription"))
+            .max(500, t("longDescription")),
         quote: z
             .string()
-            .min(5, t("formSchemaErrors.shortQuote"))
-            .max(100, t("formSchemaErrors.longQuote")),
-        image: z.any().optional(),
-        cv: z
-            .any()
-            .refine((file) => file?.length == 1, t("formSchemaErrors.validCV")),
-        letter: z
-            .any()
-            .refine(
-                (file) => file?.length == 1,
-                t("formSchemaErrors.validLetter"),
-            ),
-        diploma: z
-            .any()
-            .refine(
-                (file) => file?.length == 1,
-                t("formSchemaErrors.validDiploma"),
-            ),
-        cost: z.object({
-            dates: z
-                .array(z.string())
-                .refine((value) => value.some((item) => item), {
-                    message: t("formSchemaErrors.selectAtLeastOneDate"),
-                }),
-            price: z.string().min(1, t("formSchemaErrors.selectPricePerHour")),
-        }),
+            .min(5, t("shortQuote"))
+            .max(100, t("longQuote")),
+        image: z.string().url().optional(),
+        cv: z.string().url(t("validCV")),
+        letter: z.string().url(t("validLetter")),
+        diploma: z.string().url(t("validDiploma")),
+        dates: z
+            .array(
+                z.enum([
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday",
+                ]),
+            )
+            .refine((value) => value.some((item) => item), {
+                message: t("selectAtLeastOneDate"),
+            }),
+        price: z.string().min(1, t("selectPricePerHour")),
         educations: z.array(
             z.object({
-                education: z
-                    .string()
-                    .min(1, t("formSchemaErrors.validEducation")),
+                id: z.number(),
+                value: z.string().min(1, t("validEducation")),
             }),
         ),
         experiences: z.array(
             z.object({
-                experience: z
-                    .string()
-                    .min(1, t("formSchemaErrors.validExperience")),
+                id: z.number(),
+                value: z.string().min(1, t("validExperience")),
             }),
         ),
-        userName: z.string().min(3, t("formSchemaErrors.validName")),
+        userName: z.string().min(3, t("validName")),
         location: z
             .string()
-            .min(1, t("formSchemaErrors.validCity"))
-            .max(60, t("formSchemaErrors.cityCharacterLimit")),
+            .min(1, t("validCity"))
+            .max(60, t("cityCharacterLimit")),
         specializations: z
             .array(z.string())
             .refine((value) => value.some((item) => item), {
-                message: t("formSchemaErrors.selectAtLeastOneSpecialization"),
+                message: t("selectAtLeastOneSpecialization"),
             }),
         languages: z
             .array(z.string())
             .refine((value) => value.some((item) => item), {
-                message: t("formSchemaErrors.selectAtLeastOneLanguage"),
+                message: t("selectAtLeastOneLanguage"),
             }),
+        variant: z.enum([
+           "Deluxe","Premium","Basic"
+        ]),
     });
+    export type ApplicationFormT = z.infer<ReturnType<typeof ApplicationSchema>>;
