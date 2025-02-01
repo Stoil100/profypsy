@@ -1,15 +1,8 @@
 "use client";
 
-import { ArticleT } from "@/components/forms/article";
-import { Badge } from "@/components/ui/badge";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
 import { db } from "@/firebase/config";
+import { cn } from "@/lib/utils";
+import { ArticleT } from "@/models/article";
 import {
     collection,
     onSnapshot,
@@ -21,10 +14,12 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import umbrellaImage from "@/../public/articles/umbrella.png";
-import Image from "next/image";
 
-const ArticleCard: React.FC<ArticleT> = (article) => {
+type ArticleCardProps = {
+    article: ArticleT;
+    t: (args: string) => string;
+};
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, t }) => {
     const getRandomGridSize = () => {
         const cols = Math.floor(Math.random() * 2) + 1;
         const rows = Math.floor(Math.random() * 2) + 1;
@@ -32,40 +27,39 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
     };
 
     const router = useRouter();
-    const t = useTranslations("Article");
 
     return (
         <Link
             href={`articles/${article.id}`}
-            className={`relative rounded-md ${getRandomGridSize()} group h-full w-full overflow-hidden`}
-            onClick={() => {
-                router.push(`articles/${article.id}`);
-            }}
+            className={cn(
+                "group relative col-span-1 row-span-1 flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl text-white",
+                article.type === "important" && "sm:col-span-2 sm:row-span-2",
+                article.type === "notable" && "sm:col-span-2",
+            )}
         >
             <img
-                src={article.image}
+                src={article.heroImage}
                 alt={article.title}
-                className="h-full w-full transform rounded-md object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                className="h-full w-full transform object-cover transition-transform duration-500 ease-out group-hover:scale-110"
             />
-            <div className="absolute inset-0 flex h-full flex-col justify-between rounded-md bg-gradient-to-b from-white/20 to-black/80 p-2">
-                <Badge className="z-50 w-fit bg-[#25BA9E]">
-                    {t("mostRecent")}
-                </Badge>
-                <div className="text-white">
-                    <div className="flex items-center gap-2">
-                        <img
-                            src={article.creatorImage}
-                            className="aspect-square size-8 rounded-full object-cover"
-                        />
-                        <p>{article.creatorUserName}</p>
-                    </div>
-                    <h2 className="font-playfairDSC text-5xl font-bold">
-                        {article.title}
-                    </h2>
-                    <p className="line-clamp-4 text-xl">
-                        {article.descriptions![0].description}
+            <div className="absolute top-2 flex w-full justify-between px-2">
+                <h4 className="text-xl font-extralight">
+                    {article.creatorUserName}
+                </h4>
+            </div>
+            <div className="absolute bottom-2 left-2 space-y-4">
+                <h2
+                    className={cn(
+                        article.type === "important" ? "text-5xl" : "text-4xl",
+                    )}
+                >
+                    {article.title}
+                </h2>
+                {article.type === "important" && (
+                    <p className="text-lg font-extralight">
+                        {article.titleDescriptions![0].value}
                     </p>
-                </div>
+                )}
             </div>
         </Link>
     );
@@ -73,13 +67,14 @@ const ArticleCard: React.FC<ArticleT> = (article) => {
 
 type ArticleGridProps = {
     articles: ArticleT[];
+    t: (args: string) => string;
 };
 
-const ArticleGrid: React.FC<ArticleGridProps> = ({ articles }) => {
+const ArticleGrid: React.FC<ArticleGridProps> = ({ articles, t }) => {
     return (
-        <div className="grid-auto-flow-dense grid w-full grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid-auto-flow-dense grid w-full grid-cols-2 gap-4 md:grid-cols-4">
             {articles.map((article, index) => (
-                <ArticleCard key={index} {...article} />
+                <ArticleCard key={index} article={article} t={t} />
             ))}
         </div>
     );
@@ -88,7 +83,7 @@ const ArticleGrid: React.FC<ArticleGridProps> = ({ articles }) => {
 export default function Articles() {
     const [articles, setArticles] = useState<ArticleT[]>([]);
     const [isLoading, setIsLoading] = useState(false);
-    const t = useTranslations("Article");
+    const t = useTranslations("Pages.Article");
     useEffect(() => {
         function fetchItems() {
             setIsLoading(true);
@@ -136,7 +131,7 @@ export default function Articles() {
                     </Link>
                 </div>
             </div>
-            <ArticleGrid articles={articles} />
+            <ArticleGrid articles={articles} t={t} />
         </main>
     );
 }
