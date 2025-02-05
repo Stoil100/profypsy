@@ -2,16 +2,20 @@
 
 import MainButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
-import { OptionsSection } from "@/components/bookings/OptionSection";
 import { ProfileCard } from "@/components/bookings/ProfileCard";
+import { SearchFormCarousel } from "@/components/bookings/SearchFormCarousel";
+import { SearchSchema, SearchSchemaType } from "@/components/schemas/search";
+import { Form } from "@/components/ui/form";
 import { db } from "@/firebase/config";
 import type { PsychologistT } from "@/models/psychologist";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { SearchCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const Loader = ({ t }: { t: (args: string) => string }) => {
     return (
@@ -33,46 +37,85 @@ const BookingPage: React.FC = () => {
     const [psychologists, setPsychologists] = useState<PsychologistT[]>([]);
     const { user } = useAuth();
     const router = useRouter();
+    const formSchema = SearchSchema(t);
 
+    const form = useForm<SearchSchemaType>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            support: "you",
+            languages: [],
+            concern: "little",
+        },
+    });
     useEffect(() => {
         if (!user.uid) {
             router.push("/login");
         }
     }, [user, router]);
 
-    const fetchItems = () => {
+    const fetchItems = (searchValues: SearchSchemaType) => {
         setFinnishedOptions(true);
         setIsLoading(true);
-
-        const q = query(
+    
+        const supportQuery = query(
             collection(db, "psychologists"),
             where("approved", "==", true),
+            searchValues.support ? where("specializations", "array-contains", searchValues.support) : where("approved", "==", true) // No additional filter if no support selected
         );
-
-        return onSnapshot(
-            q,
-            (querySnapshot) => {
-                const tempValues: PsychologistT[] = [];
+    
+        let unsubscribe: (() => void) | null = null;
+    
+        try {
+            unsubscribe = onSnapshot(supportQuery, (querySnapshot) => {
+                let tempValues: PsychologistT[] = [];
+    
                 querySnapshot.forEach((doc) => {
                     tempValues.push(doc.data() as PsychologistT);
                 });
+    
+                // **Apply language filtering AFTER fetching**
+                if (searchValues.languages.length > 0) {
+                    tempValues = tempValues.filter((psychologist) =>
+                        psychologist.languages?.some((lang: string) =>
+                            searchValues.languages.includes(
+                                lang as "en" | "bg",
+                            ),
+                        ),
+                    );
+                }
+    
                 setPsychologists(tempValues);
                 setIsLoading(false);
-            },
-            (error) => {
-                console.error("Error fetching items: ", error);
-                setIsLoading(false);
-            },
-        );
+            });
+        } catch (error) {
+            console.error("Error fetching items: ", error);
+            setIsLoading(false);
+        }
+    
+        // Return function to unsubscribe from Firestore listeners
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
     };
+    
 
+    function onSubmit(data: SearchSchemaType) {
+        fetchItems(data);
+    }
     return (
         <main className="flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden font-openSans">
             {!finnishedOptions && (
-                <OptionsSection
-                    t={(key) => t(`options.${key}`)}
-                    fetchItems={fetchItems}
-                />
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="relative h-screen w-screen"
+                    >
+                        <SearchFormCarousel
+                            form={form}
+                            t={(key) => t(`options.${key}`)}
+                        />
+                    </form>
+                </Form>
             )}
             {isLoading && <Loader t={t} />}
             {psychologists.length !== 0 ? (

@@ -297,9 +297,9 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                         {t("languages.select")}
                                     </SelectLabel>
                                     <SelectItem
-                                        value="bulgarian"
+                                        value="bg"
                                         disabled={field.value.includes(
-                                            "bulgarian",
+                                            "bg",
                                         )}
                                     >
                                         <div className="flex items-center gap-2">
@@ -315,9 +315,9 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                         </div>
                                     </SelectItem>
                                     <SelectItem
-                                        value="english"
+                                        value="en"
                                         disabled={field.value.includes(
-                                            "english",
+                                            "en",
                                         )}
                                     >
                                         <div className="flex items-center gap-2">
@@ -342,7 +342,7 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                     className="flex items-center gap-2 rounded-full bg-[#25BA9E] px-3 py-1 text-white"
                                 >
                                     <Image
-                                        src={`/logic/${lang === "bulgarian" ? "bg" : "en"}.png`}
+                                        src={`/logic/${lang === "bg" ? "bg" : "en"}.png`}
                                         width={16}
                                         height={16}
                                         alt={`${lang} flag`}

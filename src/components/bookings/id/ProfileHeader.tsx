@@ -59,9 +59,7 @@ export function ProfileHeader({ profile, onBookNow, t }: ProfileHeaderProps) {
                             >
                                 <Image
                                     src={
-                                        language.toLowerCase() ===
-                                            "bulgarian" ||
-                                        language.toLowerCase() === "български"
+                                        language.toLowerCase() === "bg"
                                             ? "/logic/bg.png"
                                             : "/logic/en.png"
                                     }

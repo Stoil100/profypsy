@@ -60,9 +60,9 @@ export function ExperienceTab({ form, setTab, t }: ExperienceTabProps) {
     ] as const;
     type DateOption = (typeof dateOptions)[number]["id"];
     const specializationOptions = [
-        { specialization: t("specializations.you") },
-        { specialization: t("specializations.couples") },
-        { specialization: t("specializations.families") },
+        { label: t("specializations.you"),value:"you" },
+        { label: t("specializations.couples"),value:"couples" },
+        { label: t("specializations.families"),value:"family" },
     ];
 
     return (
@@ -147,12 +147,12 @@ export function ExperienceTab({ form, setTab, t }: ExperienceTabProps) {
                                         (option, index) => (
                                             <SelectItem
                                                 key={index}
-                                                value={option.specialization}
+                                                value={option.value}
                                                 disabled={field.value.includes(
-                                                    option.specialization,
+                                                    option.value,
                                                 )}
                                             >
-                                                {option.specialization}
+                                                {option.label}
                                             </SelectItem>
                                         ),
                                     )}
