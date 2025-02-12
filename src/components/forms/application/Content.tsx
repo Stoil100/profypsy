@@ -39,7 +39,7 @@ export default function ApplicationForm({
     const [selectedSubscription, setSelectedSubscription] =
         useState<PsychologistT["variant"]>("Premium");
 
-    const formSchema = ApplicationSchema((key) => t(`formSchemaErrors.${key}`));
+    const formSchema = ApplicationSchema((key) => t(`form.errors.${key}`));
     type FormValues = z.infer<typeof formSchema>;
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -129,7 +129,7 @@ export default function ApplicationForm({
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className={cn(
-                    "z-10 w-full space-y-8 bg-white px-2 py-2",
+                    "z-10 w-full space-y-8 bg-white md:px-2 py-2",
                     className,
                 )}
             >

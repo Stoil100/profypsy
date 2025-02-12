@@ -5,14 +5,14 @@ import { NewMessageIndicator } from "./Indicators";
 
 interface AppointmentDetailsProps {
     appointment: AppointmentT;
-    userRole: "psychologist" | "client";
+    bookingType: "session" | "appointment";
     onChatClick: () => void;
     t: (args: string) => string;
 }
 
 export default function AppointmentDetails({
     appointment,
-    userRole,
+    bookingType,
     onChatClick,
     t,
 }: AppointmentDetailsProps) {
@@ -22,9 +22,9 @@ export default function AppointmentDetails({
                 <h3 className="flex items-center space-x-2 text-lg font-semibold">
                     <User className="h-5 w-5" />
                     <span>
-                        {userRole === "psychologist"
-                            ? t("clientInfo")
-                            : t("psychologistInfo")}
+                        {bookingType === "session"
+                            ? t("client")
+                            : t("psychologist")}
                     </span>
                 </h3>
                 <div className="pl-8">
@@ -49,7 +49,7 @@ export default function AppointmentDetails({
             <div>
                 <h3 className="flex items-center space-x-2 text-lg font-semibold">
                     <Calendar className="h-5 w-5" />
-                    <span>{t("appointmentInfo")}</span>
+                    <span>{t("appointment")}</span>
                 </h3>
                 <div className="px-8">
                     <div>
@@ -67,17 +67,17 @@ export default function AppointmentDetails({
                 </div>
             </div>
             <MainButton
-                className="w-full border-2 border-[#25BA9E] text-xl hover:scale-105"
+                className="w-full gap-2 border-2 border-[#25BA9E] text-xl hover:scale-105"
                 onClick={onChatClick}
             >
                 <NewMessageIndicator
                     senderUid={
-                        userRole === "psychologist"
+                        bookingType === "appointment"
                             ? appointment.clientUid!
                             : appointment.psychologistUid!
                     }
                     receiverUid={
-                        userRole === "psychologist"
+                        bookingType === "session"
                             ? appointment.psychologistUid!
                             : appointment.clientUid!
                     }

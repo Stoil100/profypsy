@@ -1,10 +1,10 @@
-import { CarouselItem } from "@/components/ui/carousel";
-import { Slider } from "@/components/ui/slider";
 import MainButton from "@/components/MainButton";
-import type { UseFormReturn } from "react-hook-form";
+import { CarouselItem } from "@/components/ui/carousel";
 import { FormField, FormItem } from "@/components/ui/form";
-import { useState } from "react";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import type { UseFormReturn } from "react-hook-form";
 import { SearchSchemaType } from "../schemas/search";
 
 interface ConcernSelectorProps {
@@ -16,7 +16,7 @@ export function ConcernSelector({ form, t }: ConcernSelectorProps) {
     const [draggedValue, setDraggedValue] = useState(0);
 
     return (
-        <CarouselItem className="w-screen pb-2">
+        <CarouselItem className="w-full">
             <div className="flex h-full w-full flex-col items-center justify-center gap-4 px-4">
                 <h2 className="text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
                     {t("howMuchDoesItConcernYou")}

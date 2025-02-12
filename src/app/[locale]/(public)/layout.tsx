@@ -6,9 +6,9 @@ export default function PublicLayout({
     children: React.ReactNode;
 }) {
     return (
-        <section>
+        <>
             {children}
             <Footer />
-        </section>
+        </>
     );
 }

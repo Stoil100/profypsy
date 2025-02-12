@@ -4,16 +4,14 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { UserType } from "@/models/user";
 import Link from "next/link";
 import AppointmentDetails from "./AppointmentDetails";
 import { NewMessageIndicator, NewSessionIndicator } from "./Indicators";
 import { markSession } from "./utils";
 
 interface AppointmentsListProps {
-    profile: {
-        uid: string;
-        appointments?: any[];
-    };
+    user: UserType;
     setChatProps: (props: {
         senderUid: string;
         receiverUid: string;
@@ -23,7 +21,7 @@ interface AppointmentsListProps {
 }
 
 export default function AppointmentsList({
-    profile: user,
+    user: user,
     setChatProps,
     t,
 }: AppointmentsListProps) {
@@ -43,14 +41,14 @@ export default function AppointmentsList({
                         <AccordionTrigger
                             className="relative"
                             onClick={() => {
-                                markSession("users", user.uid, index);
+                                markSession("users", user.uid!, index);
                             }}
                         >
                             <div className="flex items-center gap-1">
                                 <p>{appointment.selectedDate}</p>
                                 {appointment.new && <NewSessionIndicator />}
                                 <NewMessageIndicator
-                                    senderUid={user.uid}
+                                    senderUid={user.uid!}
                                     receiverUid={appointment.psychologistUid}
                                 />
                             </div>
@@ -59,10 +57,10 @@ export default function AppointmentsList({
                             <AppointmentDetails
                                 t={(key) => t(`info.${key}`)}
                                 appointment={appointment}
-                                userRole="client"
+                                bookingType="appointment"
                                 onChatClick={() => {
                                     setChatProps({
-                                        senderUid: user.uid,
+                                        senderUid: user.uid!,
                                         receiverUid:
                                             appointment.psychologistUid,
                                         receiverUsername: appointment.userName,

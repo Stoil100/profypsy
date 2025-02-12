@@ -1,6 +1,6 @@
-/** @type {import('tailwindcss').Config} */ 
+/** @type {import('tailwindcss').Config} */
 
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
 const config = {
@@ -21,11 +21,20 @@ const config = {
             },
         },
         extend: {
-          fontFamily:{
-            	openSans:["Open Sans", ...fontFamily.sans],
-              playfairDSC:["Playfair Display SC", ...fontFamily.serif],
-              nunito:["Nunito", ...fontFamily.serif],
-          },
+            height: {
+                screen: "calc(100vh - var(--nav-height))",
+            },
+            minHeight: {
+                screen: "calc(100vh - var(--nav-height))",
+            },
+            maxHeight: {
+                screen: "calc(100vh - var(--nav-height))",
+            },
+            fontFamily: {
+                openSans: ["Open Sans", ...fontFamily.sans],
+                playfairDSC: ["Playfair Display SC", ...fontFamily.serif],
+                nunito: ["Nunito", ...fontFamily.serif],
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
@@ -88,4 +97,4 @@ const config = {
     ],
 } satisfies Config;
 
-export default config
+export default config;

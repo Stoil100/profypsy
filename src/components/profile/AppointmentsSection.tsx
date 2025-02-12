@@ -34,7 +34,7 @@ export default function AppointmentsSection({
     return (
         <div
             className={cn(
-                "row-start-3 flex max-h-[calc(100vh-(4rem+40px))] flex-1 flex-col justify-between gap-6 bg-[#FEFFEC] px-2 py-4 drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:col-span-5 md:row-start-2 md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)] xl:col-span-3 xl:col-start-6 xl:row-start-1",
+                "row-start-3 flex max-h-screen flex-1 flex-col justify-between gap-6 bg-[#FEFFEC] px-2 py-4 drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:col-span-5 md:row-start-2 md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)] xl:col-span-3 xl:col-start-6 xl:row-start-1",
                 user.role !== "psychologist" && "max-w-3xl",
             )}
         >
@@ -84,74 +84,73 @@ export default function AppointmentsSection({
                     </AccordionTrigger>
                     <AccordionContent>
                         <AppointmentsList
-                            profile={profile}
+                            user={user}
                             setChatProps={setChatProps}
                             t={(key) => t(`appointments.${key}`)}
                         />
                     </AccordionContent>
                 </AccordionItem>
                 {user.role === "psychologist" && (
-                    <>
-                        <AccordionItem
-                            value="sessions"
-                            className="border-b-2 border-b-[#25BA9E]"
-                        >
-                            <AccordionTrigger>
-                                <div className="flex items-center gap-1">
-                                    <h4>{t("sessions.title")}</h4>
-                                    {profile.appointments &&
-                                        profile.appointments.length > 0 && (
-                                            <>
-                                                {profile.appointments.some(
-                                                    (appointment) =>
-                                                        appointment.new,
-                                                ) && <NewSessionIndicator />}
-                                                {(() => {
-                                                    const appointmentWithClientUid =
-                                                        profile.appointments.find(
-                                                            (appointment) =>
-                                                                appointment.clientUid,
-                                                        );
-                                                    return (
-                                                        appointmentWithClientUid?.clientUid &&
-                                                        user.uid && (
-                                                            <NewMessageIndicator
-                                                                senderUid={
-                                                                    user.uid
-                                                                }
-                                                                receiverUid={
-                                                                    appointmentWithClientUid.clientUid
-                                                                }
-                                                            />
-                                                        )
+                    <AccordionItem
+                        value="sessions"
+                        className="border-b-2 border-b-[#25BA9E]"
+                    >
+                        <AccordionTrigger>
+                            <div className="flex items-center gap-1">
+                                <h4>{t("sessions.title")}</h4>
+                                {profile.appointments &&
+                                    profile.appointments.length > 0 && (
+                                        <>
+                                            {profile.appointments.some(
+                                                (appointment) =>
+                                                    appointment.new,
+                                            ) && <NewSessionIndicator />}
+                                            {(() => {
+                                                const appointmentWithClientUid =
+                                                    profile.appointments.find(
+                                                        (appointment) =>
+                                                            appointment.clientUid,
                                                     );
-                                                })()}
-                                            </>
-                                        )}
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <SessionsList
-                                    profile={profile}
-                                    setChatProps={setChatProps}
-                                    t={(key) => t(`sessions.${key}`)}
-                                />
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem
-                            value="articles"
-                            className="border-b-2 border-b-[#25BA9E]"
-                        >
-                            <AccordionTrigger>
-                                {t("articles.title")}
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <ArticlesList
-                                    t={(key) => t(`articles.${key}`)}
-                                />
-                            </AccordionContent>
-                        </AccordionItem>
-                    </>
+                                                return (
+                                                    appointmentWithClientUid?.clientUid &&
+                                                    user.uid && (
+                                                        <NewMessageIndicator
+                                                            senderUid={user.uid}
+                                                            receiverUid={
+                                                                appointmentWithClientUid.clientUid
+                                                            }
+                                                        />
+                                                    )
+                                                );
+                                            })()}
+                                        </>
+                                    )}
+                            </div>
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <SessionsList
+                                profile={profile}
+                                setChatProps={setChatProps}
+                                t={(key) => t(`sessions.${key}`)}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
+                )}
+                {(user.admin || user.role === "psychologist") && (
+                    <AccordionItem
+                        value="articles"
+                        className="border-b-2 border-b-[#25BA9E]"
+                    >
+                        <AccordionTrigger>
+                            {t("articles.title")}
+                        </AccordionTrigger>
+                        <AccordionContent>
+                            <ArticlesList
+                                t={(key) => t(`articles.${key}`)}
+                                uid={user.uid!}
+                            />
+                        </AccordionContent>
+                    </AccordionItem>
                 )}
             </Accordion>
             <hr className="col-span-2 w-full rounded-full border-2 border-[#40916C]" />

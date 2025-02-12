@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select";
 import { db } from "@/firebase/config";
 import { PsychologistT } from "@/models/psychologist";

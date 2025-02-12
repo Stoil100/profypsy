@@ -31,6 +31,8 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import type React from "react"; // Added import for React
+import { useEffect, useRef } from "react";
 import LanguageButton from "./LanguageButton";
 import { useAuth } from "./Providers";
 
@@ -41,7 +43,7 @@ const MenuItemLink = ({
     href: string;
     children: React.ReactNode;
 }) => (
-    <MenubarItem>
+    <MenubarItem asChild>
         <Link
             href={href}
             className="block w-full rounded py-1 hover:bg-gray-100"
@@ -64,6 +66,24 @@ export default function Navigation() {
     const { user, logOut } = useAuth();
     const t = useTranslations("Navigation");
     const companyName = t("companyName");
+    const headerRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const updateNavHeight = () => {
+            if (headerRef.current) {
+                const headerHeight = headerRef.current.offsetHeight;
+                document.documentElement.style.setProperty(
+                    "--nav-height",
+                    `${headerHeight}px`,
+                );
+            }
+        };
+
+        updateNavHeight();
+        window.addEventListener("resize", updateNavHeight);
+
+        return () => window.removeEventListener("resize", updateNavHeight);
+    }, []);
 
     const renderUserMenu = () => (
         <>
@@ -131,8 +151,11 @@ export default function Navigation() {
     );
 
     return (
-        <header>
-            <nav className="fixed top-0 z-[100] flex w-full items-center justify-between bg-[#40916C] p-3 font-playfairDSC text-white">
+        <header
+            ref={headerRef}
+            className="fixed top-0 z-[100] w-full bg-[#40916C] text-white"
+        >
+            <nav className="flex items-center justify-between p-3 font-playfairDSC">
                 {user.uid ? (
                     <>
                         <Link
@@ -157,73 +180,74 @@ export default function Navigation() {
                                         {t("menu")}
                                     </SheetTitle>
                                 </SheetHeader>
-                                <Link
-                                    href="/search"
-                                    className="w-fit border-b-2 font-playfairDSC text-xl"
-                                >
-                                    {t("search")}
-                                </Link>
-                                <Link
-                                    href="/articles"
-                                    className="w-fit border-b-2 font-playfairDSC text-xl"
-                                >
-                                    {t("blog")}
-                                </Link>
-                                <Collapsible>
-                                    <CollapsibleTrigger>
-                                        <div className="flex w-full items-center justify-center gap-1 font-playfairDSC text-xl">
+                                <div className="mt-4 flex flex-col gap-4">
+                                    <Link
+                                        href="/search"
+                                        className="w-fit border-b-2 font-playfairDSC text-xl"
+                                    >
+                                        {t("search")}
+                                    </Link>
+                                    <Link
+                                        href="/articles"
+                                        className="w-fit border-b-2 font-playfairDSC text-xl"
+                                    >
+                                        {t("blog")}
+                                    </Link>
+                                    <Collapsible>
+                                        <CollapsibleTrigger className="flex w-full items-center justify-between font-playfairDSC text-xl">
                                             <span>{t("about")}</span>
                                             <ChevronsUpDownIcon className="h-4 w-4" />
-                                        </div>
-                                    </CollapsibleTrigger>
-                                    <CollapsibleContent className="ml-2 mt-2 flex flex-col gap-y-2">
-                                        <Link
-                                            href="/mission"
-                                            className="w-fit border-b-2"
-                                        >
-                                            {t("ourMission")}
-                                        </Link>
-                                        <Link
-                                            href="/privacy-policy"
-                                            className="w-fit border-b-2"
-                                        >
-                                            {t("privacyPolicy")}
-                                        </Link>
-                                        <Link href="/terms-of-use">
-                                            {t("termsOfUse")}
-                                        </Link>
-                                    </CollapsibleContent>
-                                </Collapsible>
-                                <Collapsible>
-                                    <CollapsibleTrigger>
-                                        <div className="flex w-full items-center justify-center gap-1 font-playfairDSC text-xl">
-                                            <span>{t("profile")}</span>
-                                            <ChevronsUpDownIcon className="h-4 w-4" />
-                                        </div>
-                                    </CollapsibleTrigger>
-                                    <CollapsibleContent className="ml-2 mt-2 flex flex-col gap-y-2">
-                                        <Link
-                                            href="/profile"
-                                            className="w-fit border-b-2"
-                                        >
-                                            {t("myProfile")}
-                                        </Link>
-                                        {user.admin && (
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent className="ml-4 mt-2 flex flex-col gap-y-2">
                                             <Link
-                                                href="/admin"
+                                                href="/mission"
                                                 className="w-fit border-b-2"
                                             >
-                                                {t("admin")}
+                                                {t("ourMission")}
                                             </Link>
-                                        )}
-                                        <div
-                                            onClick={logOut}
-                                            className="flex cursor-pointer items-center gap-2 font-openSans"
-                                        >
-                                            {t("logOut")} <LogOutIcon />
-                                        </div>
-                                    </CollapsibleContent>
-                                </Collapsible>
+                                            <Link
+                                                href="/privacy-policy"
+                                                className="w-fit border-b-2"
+                                            >
+                                                {t("privacyPolicy")}
+                                            </Link>
+                                            <Link
+                                                href="/terms-of-use"
+                                                className="w-fit border-b-2"
+                                            >
+                                                {t("termsOfUse")}
+                                            </Link>
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                    <Collapsible>
+                                        <CollapsibleTrigger className="flex w-full items-center justify-between font-playfairDSC text-xl">
+                                            <span>{t("profile")}</span>
+                                            <ChevronsUpDownIcon className="h-4 w-4" />
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent className="ml-4 mt-2 flex flex-col gap-y-2">
+                                            <Link
+                                                href="/profile"
+                                                className="w-fit border-b-2"
+                                            >
+                                                {t("myProfile")}
+                                            </Link>
+                                            {user.admin && (
+                                                <Link
+                                                    href="/admin"
+                                                    className="w-fit border-b-2"
+                                                >
+                                                    {t("admin")}
+                                                </Link>
+                                            )}
+                                            <button
+                                                onClick={logOut}
+                                                className="flex cursor-pointer items-center gap-2 font-openSans"
+                                            >
+                                                {t("logOut")} <LogOutIcon />
+                                            </button>
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                </div>
                                 <SheetFooter>
                                     <p className="text-center text-sm italic text-white">
                                         {companyName} &copy;{" "}

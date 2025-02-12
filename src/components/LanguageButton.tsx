@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { usePathname, useRouter } from "./navigationSetup";
 import clsx from "clsx";
 import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useRouter } from "./navigationSetup";
 export default function Language() {
     const t = useTranslations("Common");
     const languages = ["en", "bg"];

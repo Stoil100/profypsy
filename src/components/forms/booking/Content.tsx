@@ -1,5 +1,6 @@
 import { BookingSchema } from "@/components/schemas/booking";
 import { Button } from "@/components/ui/button";
+import { CarouselApi } from "@/components/ui/carousel";
 import { Form } from "@/components/ui/form";
 import type { PsychologistT } from "@/models/psychologist";
 import type { UserType } from "@/models/user";
@@ -20,7 +21,7 @@ type BookingFormProps = {
     profile: PsychologistT | null;
     user: UserType;
     selectedAppointmentTime: string | null;
-    scrollSlide: (page: number) => void;
+    carouselApi: CarouselApi;
 };
 
 export default function BookingForm({
@@ -28,7 +29,7 @@ export default function BookingForm({
     profile,
     user,
     selectedAppointmentTime,
-    scrollSlide,
+    carouselApi,
 }: BookingFormProps) {
     const router = useRouter();
     const formSchema = BookingSchema((key) => t(`errors.${key}`));
@@ -98,14 +99,14 @@ export default function BookingForm({
                         type="button"
                         variant="outline"
                         className="border-2 border-[#52B788] text-xl text-[#52B788]"
-                        onClick={() => scrollSlide(0)}
+                        onClick={() => carouselApi?.scrollPrev()}
                     >
                         {t("previous")}
                     </Button>
                     <Button
                         type="submit"
                         variant="outline"
-                        className="w-full border-2 bg-[#52B788] text-xl text-white transition-all hover:scale-110 hover:bg-[#3e8b67] hover:text-white"
+                        className="w-full border-2 bg-[#52B788] text-xl text-white transition-all hover:bg-[#3e8b67] hover:text-white"
                     >
                         {t("submit")}
                     </Button>

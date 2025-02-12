@@ -18,7 +18,7 @@ export default function ProfilePage() {
     if (!user?.uid) return null;
 
     return (
-        <main className="flex h-max min-h-[calc(100vh-(1rem+40px))] items-center justify-center bg-[#adebb3] py-4 pt-8">
+        <main className="flex min-h-screen items-center justify-center bg-[#adebb3] max-md:py-8">
             <ProfileContent user={user} />
         </main>
     );

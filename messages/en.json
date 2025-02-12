@@ -73,7 +73,7 @@
                     "answer1": "Yes, online therapy can be effective, especially when utilized by individuals with appropriate training and experience in the field of psychotherapy. This provides access to therapy for people who might otherwise be unable to access it due to various reasons such as geographical location, financial constraints, or mobility issues. It is important to choose a qualified and licensed therapist and ensure appropriate communication and confidentiality.",
                     "question2": "What is the difference between therapy and psychiatry?",
                     "answer2": "Psychologists study human behavior and thoughts and are trained to conduct psychological assessments and provide counseling but cannot prescribe medication. Psychotherapists specialize in treating mental disorders and issues through various therapeutic methods. Psychiatrists are medical doctors specialized in diagnosing, treating, and managing mental disorders, and they are licensed to prescribe medication.",
-                    "qestion3": "How do I get matched with a professional?",
+                    "question3": "How do I get matched with a professional?",
                     "answer3": "Choosing the right therapist is crucial for the success of therapy. Identify your needs and goals, explore different therapy methods, look for licensed and qualified professionals, ask for recommendations, try the first session to assess compatibility, and establish trust with your therapist. By following these steps, it will be easier to choose the right therapist for you, who will help you achieve your goals and improve your mental well-being.",
                     "beginNow": "Begin Now"
                 },
@@ -129,36 +129,6 @@
         },
         "Application": {
             "title": "Application Form",
-            "formSchemaErrors": {
-                "phoneNumber": "Invalid phone number",
-                "age": "Please select your age.",
-                "description": {
-                    "short": "You must add a description about yourself of 10 or more characters",
-                    "long": "Your description should not exceed 500 characters"
-                },
-                "quote": {
-                    "short": "You should add a personal quote of 5 or more characters",
-                    "long": "Your quote should not exceed 100 characters"
-                },
-                "documents": {
-                    "cv": "Please upload a valid CV",
-                    "letter": "Please upload a valid motivational letter",
-                    "diploma": "Please upload a valid diploma"
-                },
-                "selection": {
-                    "atLeastOneDate": "You have to select at least one day.",
-                    "pricePerHour": "Please select a price per hour.",
-                    "atLeastOneSpecialization": "You have to select at least one specialization.",
-                    "atLeastOneLanguage": "You have to select at least one language."
-                },
-                "validity": {
-                    "education": "Enter valid education/school/university/college information",
-                    "experience": "Enter valid experience/work/job environment information",
-                    "name": "Enter a valid name",
-                    "city": "Enter a valid city",
-                    "cityCharacterLimit": "Please do not exceed the 60 character limit"
-                }
-            },
             "upload": {
                 "success": {
                     "title": "Thanks for applying to Profypsy",
@@ -205,8 +175,8 @@
                         "label": "Languages:",
                         "placeholder": "Selected Languages:",
                         "select": "Select Languages:",
-                        "bulgarian": "Bulgarian",
-                        "english": "English"
+                        "bg": "Bulgarian",
+                        "en": "English"
                     },
                     "documents": {
                         "cv": "Please upload your CV here:",
@@ -254,6 +224,36 @@
                         "previous": "Previous",
                         "submit": "Submit"
                     }
+                },
+                "errors": {
+                    "phoneNumber": "Invalid phone number",
+                    "age": "Please select your age.",
+                    "description": {
+                        "short": "You must add a description about yourself of 10 or more characters",
+                        "long": "Your description should not exceed 500 characters"
+                    },
+                    "quote": {
+                        "short": "You should add a personal quote of 5 or more characters",
+                        "long": "Your quote should not exceed 100 characters"
+                    },
+                    "documents": {
+                        "cv": "Please upload a valid CV",
+                        "letter": "Please upload a valid motivational letter",
+                        "diploma": "Please upload a valid diploma"
+                    },
+                    "selection": {
+                        "atLeastOneDate": "You have to select at least one day.",
+                        "pricePerHour": "Please select a price per hour.",
+                        "atLeastOneSpecialization": "You have to select at least one specialization.",
+                        "atLeastOneLanguage": "You have to select at least one language."
+                    },
+                    "validity": {
+                        "education": "Enter valid education/school/university/college information",
+                        "experience": "Enter valid experience/work/job environment information",
+                        "name": "Enter a valid name",
+                        "city": "Enter a valid city",
+                        "cityCharacterLimit": "Please do not exceed the 60 character limit"
+                    }
                 }
             }
         },
@@ -265,17 +265,17 @@
             "background": "Background:",
             "education": "Education",
             "experience": "Experience",
-            "age":"Age",
+            "age": "Age",
             "appointments": {
                 "title": "Appointments",
                 "noAppointments": "You don't have any appointments at the moment.",
                 "bookOneHere": "You can book one here.",
-                "info":{
-                    "title":"Info",
+                "info": {
+                    "title": "Info",
                     "psychologist": "Psychologist info:",
-                    "client": "Psychologist info:",
+                    "client": "Client info:",
                     "appointment": "Appointment info:",
-                    "age":"Age",
+                    "age": "Age",
                     "sessionType": "Session type:",
                     "chatNow": "Chat now"
                 }
@@ -288,7 +288,12 @@
             "bookings": "Bookings:",
             "sessions": {
                 "title": "Sessions",
-                "noUpcomingSessions": "You don't have any upcoming sessions."
+                "noUpcomingSessions": "You don't have any upcoming sessions.",
+                "client": "Client info:",
+                "appointment": "Appointment info:",
+                "age": "Age",
+                "sessionType": "Session type:",
+                "chatNow": "Chat now"
             },
             "articles": {
                 "title": "Articles",
@@ -379,7 +384,7 @@
                     }
                 },
                 "submit": "Submit",
-                "preview":"Preview article before upload:",
+                "preview": "Preview article before upload:",
                 "errors": {
                     "heroImage": {
                         "url": "Hero Image must be a valid URL"
@@ -430,7 +435,7 @@
             }
         },
         "Search": {
-            "options":{
+            "options": {
                 "findRightForYou": "Let's find what’s right for you",
                 "tellUsWhatIsOnYourMind": "Tell us what is on your mind",
                 "findPsychologist": "Find a psychologist that suits you",
@@ -459,69 +464,69 @@
             "noMatchFound": "Oops! We couldn't find a match for you at the moment!",
             "loadingSelection": "Selection is loading",
             "tailoredSearch": "We are looking for people tailored to your needs",
-            "card":{
-                "bestSuited":"Best suited",
+            "card": {
+                "bestSuited": "Best suited",
                 "recommendedByUs": "Recommended by us",
-                "freshlyFound":"Freshly found",
-                "strongMatch":"Strong match",
+                "freshlyFound": "Freshly found",
+                "strongMatch": "Strong match",
                 "bookNow": "Book Now"
             },
             "Id": {
                 "loadingSelection": "Selection is loading",
                 "tailoredSearch": "We are looking for people tailored to your needs",
-                "header":{
+                "header": {
                     "bookNow": "Book Now",
                     "specializations": "Specializations",
-                    "pricePerHour":"Price per hour:",
-                    "price":"Lv"
+                    "pricePerHour": "Price per hour:",
+                    "price": "Lv"
                 },
-                "details":{
+                "details": {
                     "aboutMe": "About Me:",
                     "education": "Education:",
                     "workExperience": "Work Experience:"
                 },
-                "articles":{
+                "articles": {
                     "myArticles": "My Articles:"
                 },
-                "booking":{
+                "booking": {
                     "bookYourAppointment": "Book Your Appointment",
                     "selectTimeSlot": "Select a time slot:",
                     "next": "Next",
                     "additionalInformation": "Additional information about your appointment",
-                    "dates":{
+                    "dates": {
                         "selectDate": "Select an hour:",
                         "selectedAppointment": "You have selected:"
                     },
-                    "form":{
-                        "scheduledAppointmend":"Scheduled appointment for: ",
-                        "name":{
-                            "label":"First Name:",
+                    "form": {
+                        "scheduledAppointmend": "Scheduled appointment for: ",
+                        "name": {
+                            "label": "First Name:",
                             "placeholder": "Enter your name..."
                         },
-                        "phone":{
+                        "phone": {
                             "label": "Telephone:",
                             "placeholder": "+359"
                         },
-                        "age":{
+                        "age": {
                             "label": "Age:",
                             "placeholder": "Select your age"
                         },
-                        "email":{
+                        "email": {
                             "label": "Email:",
                             "placeholder": "Enter your email"
                         },
-                        "session":{
-                            "label":"Select who is the session for",
+                        "session": {
+                            "label": "Select who is the session for",
                             "placeholder": "Selected sessions:",
-                            "options":{
+                            "options": {
                                 "you": "For you",
                                 "couples": "For couples",
                                 "families": "For families"
                             }
                         },
-                        "info":{
+                        "info": {
                             "label": "Info:",
-                            "placeholder":  "Share additional information about your case"
+                            "placeholder": "Share additional information about your case"
                         },
                         "previous": "Previous",
                         "submit": "Submit",
@@ -562,6 +567,22 @@
                     "title": "Vision and Values:",
                     "description": "Our vision is to build a world and future where everyone has access to psychotherapeutic assistance that supports them in their development and growth. We value transparency, trust, and respect for each of our users and strive for continuous improvement and innovation in the field of mental health."
                 }
+            }
+        },
+        "Admin": {
+            "profile": {
+                "approve": "Approve",
+                "age": "Age:",
+                "educations": "Educations:",
+                "experiences": "Experiences:"
+            },
+            "articles": {
+                "preview": "Preview article before upload:",
+                "approve": "Approve",
+                "upload": "Upload Article:",
+                "section": "Articles Section:",
+                "delete": "Delete articles:",
+                "button": " Delete"
             }
         }
     },

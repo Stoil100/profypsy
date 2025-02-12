@@ -16,8 +16,8 @@ export default function Register() {
     return (
         <>
             {!user.uid && (
-                <main className="flex h-max max-h-[calc(100vh-(1rem+40px))] min-h-[calc(100vh-(1rem+40px))] items-center bg-[#FCFBF4]">
-                    <div className="relative hidden h-max max-h-[calc(100vh-(1rem+40px))] min-h-[calc(100vh-(1rem+40px))] w-1/2 flex-col items-center justify-center gap-8 overflow-hidden md:flex ">
+                <main className="flex h-max max-h-screen min-h-screen items-center bg-[#FCFBF4]">
+                    <div className="relative hidden h-max max-h-screen min-h-screen w-1/2 flex-col items-center justify-center gap-8 overflow-hidden md:flex ">
                         <img
                             src="/auth/session.png"
                             className="z-10 ml-10 max-h-[550px] object-cover drop-shadow-lg"

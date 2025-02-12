@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 
 const Loader = ({ t }: { t: (args: string) => string }) => {
     return (
-        <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5">
+        <div className="fixed top-0 z-[9999] flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#FCFBF4]">
             <SearchCheck className="animate-bounce text-[#205041]" size={90} />
             <h2 className="font-playfairDSC text-5xl text-[#205041]">
                 {t("loadingSelection")}
@@ -56,23 +56,29 @@ const BookingPage: React.FC = () => {
     const fetchItems = (searchValues: SearchSchemaType) => {
         setFinnishedOptions(true);
         setIsLoading(true);
-    
+
         const supportQuery = query(
             collection(db, "psychologists"),
             where("approved", "==", true),
-            searchValues.support ? where("specializations", "array-contains", searchValues.support) : where("approved", "==", true) // No additional filter if no support selected
+            searchValues.support
+                ? where(
+                      "specializations",
+                      "array-contains",
+                      searchValues.support,
+                  )
+                : where("approved", "==", true), // No additional filter if no support selected
         );
-    
+
         let unsubscribe: (() => void) | null = null;
-    
+
         try {
             unsubscribe = onSnapshot(supportQuery, (querySnapshot) => {
                 let tempValues: PsychologistT[] = [];
-    
+
                 querySnapshot.forEach((doc) => {
                     tempValues.push(doc.data() as PsychologistT);
                 });
-    
+
                 // **Apply language filtering AFTER fetching**
                 if (searchValues.languages.length > 0) {
                     tempValues = tempValues.filter((psychologist) =>
@@ -83,7 +89,7 @@ const BookingPage: React.FC = () => {
                         ),
                     );
                 }
-    
+
                 setPsychologists(tempValues);
                 setIsLoading(false);
             });
@@ -91,13 +97,12 @@ const BookingPage: React.FC = () => {
             console.error("Error fetching items: ", error);
             setIsLoading(false);
         }
-    
+
         // Return function to unsubscribe from Firestore listeners
         return () => {
             if (unsubscribe) unsubscribe();
         };
     };
-    
 
     function onSubmit(data: SearchSchemaType) {
         fetchItems(data);

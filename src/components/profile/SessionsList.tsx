@@ -60,7 +60,7 @@ export default function SessionsList({
                             <AppointmentDetails
                                 t={t}
                                 appointment={appointment}
-                                userRole="psychologist"
+                                bookingType="session"
                                 onChatClick={() => {
                                     setChatProps({
                                         senderUid: profile.uid,

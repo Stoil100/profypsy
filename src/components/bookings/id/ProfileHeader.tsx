@@ -14,7 +14,7 @@ interface ProfileHeaderProps {
 export function ProfileHeader({ profile, onBookNow, t }: ProfileHeaderProps) {
     return (
         <div className="flex flex-wrap gap-4 md:flex-nowrap">
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center justify-center gap-2 max-sm:w-full">
                 <img
                     src={profile.image || "/placeholder.svg"}
                     alt={profile.userName}
@@ -31,7 +31,9 @@ export function ProfileHeader({ profile, onBookNow, t }: ProfileHeaderProps) {
                 </MainButton>
             </div>
             <div className="flex flex-1 flex-col items-center justify-between gap-2 sm:items-start">
-                <h2 className="text-4xl">{profile.userName}</h2>
+                <h2 className="text-4xl max-md:text-center">
+                    {profile.userName}
+                </h2>
                 <div className="flex items-center gap-2">
                     <p className="text-lg text-gray-400">
                         &quot;{profile.quote}&quot;

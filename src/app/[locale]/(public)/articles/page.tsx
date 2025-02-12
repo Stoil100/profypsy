@@ -115,7 +115,7 @@ export default function Articles() {
     }, []);
     return (
         <main className="flex min-h-screen w-full flex-col items-center gap-4 px-4 py-3 lg:px-20">
-            <div className="mb-10 mt-4 flex h-fit w-full items-center justify-center bg-contain bg-center bg-no-repeat md:h-[calc(100vh-6rem)] md:bg-[url('/articles/hero.png')] md:py-10">
+            <div className="mb-10 mt-4 flex h-fit w-full items-center justify-center bg-contain bg-center bg-no-repeat md:h-screen md:bg-[url('/articles/hero.png')] md:py-10">
                 <div className="flex max-w-2xl flex-col items-center space-y-4 rounded-lg text-center backdrop-blur-md md:p-4 md:text-white">
                     <h1 className="rounded font-playfairDSC text-5xl italic">
                         {t("pageTitle")}

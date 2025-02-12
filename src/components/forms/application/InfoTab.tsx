@@ -310,7 +310,7 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                                 alt="Bulgarian flag"
                                             />
                                             <span>
-                                                {t("languages.bulgarian")}
+                                                {t("languages.bg")}
                                             </span>
                                         </div>
                                     </SelectItem>
@@ -328,7 +328,7 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                                 alt="English flag"
                                             />
                                             <span>
-                                                {t("languages.english")}
+                                                {t("languages.en")}
                                             </span>
                                         </div>
                                     </SelectItem>

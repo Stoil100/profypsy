@@ -1,23 +1,23 @@
-
+import {
+    Carousel,
+    CarouselApi,
+    CarouselContent,
+    CarouselItem,
+} from "@/components/ui/carousel";
 import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { SearchSchemaType } from "../schemas/search";
-import { SupportSelector } from "./SupportSelector";
-import { LanguageSelector } from "./LanguageSelector";
-import { ConcernSelector } from "./ConcernSelector";
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import MainButton from "../MainButton";
+import { SearchSchemaType } from "../schemas/search";
+import { ConcernSelector } from "./ConcernSelector";
+import { LanguageSelector } from "./LanguageSelector";
+import { SupportSelector } from "./SupportSelector";
 
 interface SearchFormProps {
-    form: UseFormReturn<SearchSchemaType>
+    form: UseFormReturn<SearchSchemaType>;
     t: (args: string) => string;
 }
 
-export const SearchFormCarousel: React.FC<SearchFormProps> = ({
-    form,
-    t,
-}) => {
-
+export const SearchFormCarousel: React.FC<SearchFormProps> = ({ form, t }) => {
     const [api, setApi] = useState<CarouselApi>();
     const scrollNext = () => api?.scrollNext();
 
@@ -25,15 +25,15 @@ export const SearchFormCarousel: React.FC<SearchFormProps> = ({
         <Carousel
             setApi={setApi}
             opts={{ watchDrag: false }}
-            className="absolute top-10"
+            className="absolute"
         >
-            <CarouselContent className=" w-screen">
-                <CarouselItem className="pb-2 w-screen">
+            <CarouselContent className="-ml-2 h-screen w-screen">
+                <CarouselItem className="h-full w-full">
                     <div className="flex h-full w-full flex-col items-center justify-center gap-5 text-[#205041]">
                         <h2 className="px-2 text-center font-playfairDSC text-2xl capitalize text-[#205041] md:text-4xl">
                             {t("findRightForYou")}
                         </h2>
-                        <ul className="text-md list-decimal pl-10 font-semibold text-[#205041] md:text-xl">
+                        <ul className="text-md list-decimal pl-6 font-semibold text-[#205041] md:text-xl">
                             <li>{t("tellUsWhatIsOnYourMind")}</li>
                             <li>{t("findPsychologist")}</li>
                             <li>{t("bookYourSession")}</li>
@@ -54,7 +54,6 @@ export const SearchFormCarousel: React.FC<SearchFormProps> = ({
                 <SupportSelector form={form} t={t} scrollNext={scrollNext} />
                 <LanguageSelector form={form} t={t} scrollNext={scrollNext} />
                 <ConcernSelector form={form} t={t} />
-     
             </CarouselContent>
         </Carousel>
     );

@@ -1,14 +1,16 @@
 import { db } from "@/firebase/config";
+import { AppointmentT } from "@/models/appointment";
 import { ArticleT } from "@/models/article";
 import { ProfileT } from "@/models/profile";
 import {
     collection,
     deleteDoc,
     doc,
+    getDoc,
     onSnapshot,
     query,
     updateDoc,
-    where,
+    where
 } from "firebase/firestore";
 
 export function fetchProfile(
@@ -53,17 +55,24 @@ export function fetchProfile(
     return unsubscribe;
 }
 
-export function fetchArticles(setArticles: (articles: ArticleT[]) => void) {
-    const articlesRef = collection(db, "articles");
-    const q = query(articlesRef, where("published", "==", true));
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const articles: ArticleT[] = [];
-        querySnapshot.forEach((doc) => {
-            articles.push({ id: doc.id, ...doc.data() } as ArticleT);
-        });
-        setArticles(articles);
-    });
+export function fetchArticles(
+    setArticles: (articles: ArticleT[]) => void,
+    uid: string,
+) {
+    const q = query(collection(db, "articles"), where("creator", "==", uid));
+    const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+            const tempValues: ArticleT[] = [];
+            querySnapshot.forEach((doc) => {
+                tempValues.push(doc.data() as ArticleT);
+            });
+            setArticles(tempValues);
+        },
+        (error) => {
+            console.error("Error fetching items: ", error);
+        },
+    );
 
     return unsubscribe;
 }
@@ -82,13 +91,26 @@ export async function markSession(
     uid: string,
     index: number,
 ) {
-    const userRef = doc(db, collectionName, uid);
+    const documentRef = doc(db, collectionName, uid);
+
     try {
-        await updateDoc(userRef, {
-            [`appointments.${index}.new`]: false,
-        });
-        console.log("Session marked as read");
+        const docSnap = await getDoc(documentRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            const appointments = data.appointments as AppointmentT[];
+
+            // Update the 'new' property of the specific appointment
+            appointments[index].new = false;
+
+            // Update the entire array in Firestore
+            await updateDoc(documentRef, {
+                appointments: appointments,
+            });
+            console.log("Array updated successfully!");
+        } else {
+            console.log("No such document!");
+        }
     } catch (error) {
-        console.error("Error marking session as read:", error);
+        console.error("Error updating document: ", error);
     }
 }

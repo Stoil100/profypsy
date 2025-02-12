@@ -1,16 +1,15 @@
-import type React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 
-import { CarouselItem } from "@/components/ui/carousel";
 import MainButton from "@/components/MainButton";
-import type { UseFormReturn } from "react-hook-form";
+import { CarouselItem } from "@/components/ui/carousel";
 import {
     FormControl,
     FormField,
     FormItem,
     FormLabel,
 } from "@/components/ui/form";
+import type { UseFormReturn } from "react-hook-form";
 import { SearchSchemaType } from "../schemas/search";
 
 interface LanguageSelectorProps {
@@ -37,7 +36,7 @@ export function LanguageSelector({
         },
     ] as const;
     return (
-        <CarouselItem className="w-screen pb-2">
+        <CarouselItem className="w-full">
             <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1">
                 <h2 className="text-center font-playfairDSC text-3xl capitalize text-[#205041] md:text-4xl">
                     {t("languagePreference")}

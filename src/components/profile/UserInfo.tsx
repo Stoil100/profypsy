@@ -27,11 +27,11 @@ export default function UserInfo({ profile, user, t }: UserInfoProps) {
     return (
         <div
             className={cn(
-                "relative flex max-h-[calc(100vh-(4rem+40px))] w-full flex-col items-center justify-between gap-8 bg-[#FEFFEC] px-2 py-4 drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:col-span-2 md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)]",
+                "relative flex w-full flex-col items-center justify-between gap-8 bg-[#FEFFEC] px-2 py-4 drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:col-span-2 md:max-h-[calc(100vh-(4rem+40px))] md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)]",
                 user.role !== "psychologist" && "w-full md:w-fit",
             )}
         >
-            {profile.variant && (
+            {user.role === "psychologist" && (
                 <Dialog open={isEditing} onOpenChange={setIsEditing}>
                     <DialogTrigger asChild>
                         <MainButton className="absolute left-2 top-2 z-10 cursor-pointer border-2 border-[#25BA9E] px-1 py-1">
@@ -58,12 +58,12 @@ interface UserAvatarProps {
 
 function UserAvatar({ profile }: UserAvatarProps) {
     return (
-        <div className="relative flex h-fit w-full flex-col items-center justify-center gap-1 text-center">
+        <div className="relative flex h-fit flex-col items-center justify-center gap-1 text-center">
             {profile.image ? (
                 <img
                     src={profile.image! || "/placeholder.svg"}
                     alt={profile.userName}
-                    className="aspect-square w-full max-w-72 rounded-full border-4 border-[#25BA9E] p-1 shadow-xl"
+                    className="aspect-square w-full rounded-full border-4 border-[#25BA9E] p-1 shadow-xl"
                 />
             ) : (
                 <div className="max-w-72 rounded-full border-2 p-4">
@@ -134,8 +134,7 @@ function UserDetails({ profile, user, t }: UserDetailsProps) {
                         >
                             <img
                                 src={
-                                    language === "bulgarian" ||
-                                    language === "български"
+                                    language === "bg"
                                         ? "/logic/bg.png"
                                         : "/logic/en.png"
                                 }

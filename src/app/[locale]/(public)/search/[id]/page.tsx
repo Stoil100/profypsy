@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 
 const Loader = ({ t }: { t: (args: string) => string }) => {
     return (
-        <div className="fixed top-0 flex h-screen w-full flex-col items-center justify-center gap-5">
+        <div className="fixed top-0 z-[9999] flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#FCFBF4]">
             <SearchCheck className="animate-bounce text-[#205041]" size={90} />
             <h2 className="font-playfairDSC text-5xl text-[#205041]">
                 {t("loadingSelection")}
@@ -103,7 +103,7 @@ export default function BookingIdPage({ params }: { params: { id: string } }) {
     }
 
     return (
-        <section className="relative flex h-full min-h-[calc(100vh-(1rem+40px))] w-full gap-4 text-[#205041] md:p-4 lg:p-8">
+        <section className="relative flex min-h-screen w-full gap-4 text-[#205041] md:p-4 lg:p-8">
             <div className="w-full space-y-4 p-4 font-playfairDSC shadow-xl md:w-2/3">
                 <ProfileHeader
                     t={(key) => t(`header.${key}`)}
@@ -121,7 +121,7 @@ export default function BookingIdPage({ params }: { params: { id: string } }) {
                     t={(key) => t(`articles.${key}`)}
                 />
             </div>
-            <div className="sticky top-[calc(1rem+72px)] hidden max-h-[calc(100vh-(1rem+100px))] w-1/3 items-center justify-center border-4 border-[#25BA9E] bg-[#FCFBF4] md:flex">
+            <div className="sticky top-[calc(var(--nav-height)+1rem)] hidden max-h-[calc(100vh-var(--nav-height)-2rem)] border-4 border-[#25BA9E] bg-[#FCFBF4] md:block md:w-1/3">
                 {user.uid && profile?.uid && (
                     <BookingCarousel
                         profile={profile}

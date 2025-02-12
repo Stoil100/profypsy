@@ -1,8 +1,8 @@
 import { CarouselItem } from "@/components/ui/carousel";
 
 import MainButton from "@/components/MainButton";
-import type { UseFormReturn } from "react-hook-form";
 import { FormField, FormItem } from "@/components/ui/form";
+import type { UseFormReturn } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
@@ -48,7 +48,7 @@ interface SupportOptionsProps {
 
 export function SupportSelector({ form, t, scrollNext }: SupportOptionsProps) {
     return (
-        <CarouselItem className="pb-2 w-screen">
+        <CarouselItem className="w-full">
             <div className="flex h-full w-full flex-col items-center justify-center gap-5 p-1 px-2">
                 <h2 className="text-center font-playfairDSC text-3xl capitalize text-[#205041] md:text-4xl">
                     {t("whoIsTheSupportFor")}

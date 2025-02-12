@@ -7,11 +7,17 @@ import { Trash2Icon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { deleteArticle, fetchArticles } from "./utils";
 
-export default function ArticlesList({ t }: { t: (args: string) => string }) {
+export default function ArticlesList({
+    t,
+    uid,
+}: {
+    t: (args: string) => string;
+    uid: string;
+}) {
     const [articles, setArticles] = useState<ArticleT[]>([]);
 
     useEffect(() => {
-        const unsubscribe = fetchArticles(setArticles);
+        const unsubscribe = fetchArticles(setArticles, uid);
         return () => unsubscribe();
     }, []);
 
