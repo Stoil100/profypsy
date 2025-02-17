@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "@/components/Loader";
 import MainButton from "@/components/MainButton";
 import { useAuth } from "@/components/Providers";
 import { ProfileCard } from "@/components/bookings/ProfileCard";
@@ -10,24 +11,11 @@ import { db } from "@/firebase/config";
 import type { PsychologistT } from "@/models/psychologist";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { SearchCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
-const Loader = ({ t }: { t: (args: string) => string }) => {
-    return (
-        <div className="fixed top-0 z-[9999] flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#FCFBF4]">
-            <SearchCheck className="animate-bounce text-[#205041]" size={90} />
-            <h2 className="font-playfairDSC text-5xl text-[#205041]">
-                {t("loadingSelection")}
-            </h2>
-            <p className="text-xl text-[#128665]">{t("tailoredSearch")}</p>
-        </div>
-    );
-};
 
 const BookingPage: React.FC = () => {
     const t = useTranslations("Pages.Search");
@@ -66,7 +54,7 @@ const BookingPage: React.FC = () => {
                       "array-contains",
                       searchValues.support,
                   )
-                : where("approved", "==", true), // No additional filter if no support selected
+                : where("approved", "==", true),
         );
 
         let unsubscribe: (() => void) | null = null;
@@ -79,7 +67,6 @@ const BookingPage: React.FC = () => {
                     tempValues.push(doc.data() as PsychologistT);
                 });
 
-                // **Apply language filtering AFTER fetching**
                 if (searchValues.languages.length > 0) {
                     tempValues = tempValues.filter((psychologist) =>
                         psychologist.languages?.some((lang: string) =>
@@ -97,8 +84,6 @@ const BookingPage: React.FC = () => {
             console.error("Error fetching items: ", error);
             setIsLoading(false);
         }
-
-        // Return function to unsubscribe from Firestore listeners
         return () => {
             if (unsubscribe) unsubscribe();
         };
@@ -122,7 +107,7 @@ const BookingPage: React.FC = () => {
                     </form>
                 </Form>
             )}
-            {isLoading && <Loader t={t} />}
+            {isLoading && <Loader />}
             {psychologists.length !== 0 ? (
                 <>
                     <section className="flex min-h-screen w-full flex-col items-center gap-7 px-6 pb-2 md:gap-14">

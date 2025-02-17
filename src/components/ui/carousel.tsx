@@ -207,7 +207,7 @@ const CarouselPrevious = React.forwardRef<
             variant={variant}
             size={size}
             className={cn(
-                "absolute  h-12 w-12 rounded-full opacity-50",
+                "absolute  h-12 w-12 rounded-full",
                 orientation === "horizontal"
                     ? "-left-20 top-1/2 -translate-y-1/2"
                     : "-top-20 left-1/2 -translate-x-1/2 rotate-90",
@@ -217,7 +217,7 @@ const CarouselPrevious = React.forwardRef<
             onClick={scrollPrev}
             {...props}
         >
-            <div className="h-full w-full rounded-full bg-gradient-to-t from-[#17914B] to-[#08BF6B] p-1">
+            <div className="h-full w-full rounded-full bg-gradient-to-t from-[#316146] to-[#088249] p-1">
                 <div className="flex h-full w-full items-center justify-center rounded-full bg-[#F7F4E0] text-[#52B788]">
                     <ArrowLeft strokeWidth={3} />
                     <span className="sr-only">Previous slide</span>

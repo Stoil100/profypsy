@@ -17,14 +17,14 @@ export function ArticlesList({ articles, t }: ArticlesListProps) {
                     <Link
                         key={article.id}
                         href={`/articles/${article.id}`}
-                        className="max-w-xs rounded-xl bg-gray-500/20 p-2 transition-transform hover:scale-105"
+                        className="flex max-w-xs flex-col rounded-lg bg-gray-500/20 p-2 transition-transform hover:scale-105"
                     >
                         <img
                             src={article.heroImage || "/placeholder.svg"}
                             alt={article.title}
                             width={320}
                             height={180}
-                            className="rounded-lg"
+                            className="h-full max-h-40 rounded object-cover object-center"
                         />
                         <h5 className="text-xl">{article.title}</h5>
                     </Link>

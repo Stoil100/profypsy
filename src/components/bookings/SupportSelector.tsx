@@ -6,7 +6,7 @@ import type { UseFormReturn } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
-import type React from "react"; // Added import for React
+import type React from "react";
 import { SearchSchemaType } from "../schemas/search";
 
 interface SupportOptionProps {

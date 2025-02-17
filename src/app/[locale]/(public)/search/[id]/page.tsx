@@ -5,6 +5,7 @@ import { BookingCarousel } from "@/components/bookings/id/Carousel";
 import { BookingDialog } from "@/components/bookings/id/Dialog";
 import { ProfileDetails } from "@/components/bookings/id/ProfileDetails";
 import { ProfileHeader } from "@/components/bookings/id/ProfileHeader";
+import Loader from "@/components/Loader";
 import { useAuth } from "@/components/Providers";
 import { db } from "@/firebase/config";
 import { ArticleT } from "@/models/article";
@@ -18,22 +19,9 @@ import {
     query,
     where,
 } from "firebase/firestore";
-import { SearchCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const Loader = ({ t }: { t: (args: string) => string }) => {
-    return (
-        <div className="fixed top-0 z-[9999] flex h-screen w-full flex-col items-center justify-center gap-5 bg-[#FCFBF4]">
-            <SearchCheck className="animate-bounce text-[#205041]" size={90} />
-            <h2 className="font-playfairDSC text-5xl text-[#205041]">
-                {t("loadingSelection")}
-            </h2>
-            <p className="text-xl text-[#128665]">{t("tailoredSearch")}</p>
-        </div>
-    );
-};
 
 export default function BookingIdPage({ params }: { params: { id: string } }) {
     const t = useTranslations("Pages.Search.Id");
@@ -95,7 +83,7 @@ export default function BookingIdPage({ params }: { params: { id: string } }) {
     }, [profile]);
 
     if (isLoading) {
-        return <Loader t={t} />;
+        return <Loader />;
     }
 
     if (!profile) {

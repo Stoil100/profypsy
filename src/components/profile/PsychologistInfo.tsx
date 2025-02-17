@@ -10,7 +10,7 @@ export default function PsychologistInfo({
     t,
 }: PsychologistInfoProps) {
     return (
-        <div className="row-start-2 flex max-h-[calc(100vh-(4rem+40px))] w-full flex-col justify-between gap-4 md:col-span-3 md:!col-start-3 md:row-start-1 xl:col-span-3">
+        <div className="row-start-2 flex max-h-screen w-full flex-col justify-between gap-4 md:col-span-3 md:!col-start-3 md:row-start-1 xl:col-span-3">
             <Overview profile={profile} t={t} />
             <Background profile={profile} t={t} />
         </div>

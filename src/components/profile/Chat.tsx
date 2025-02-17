@@ -150,7 +150,7 @@ export default function Chat({
         };
 
         const senderDocRef: DocumentReference = doc(db, "users", senderUid);
-        const receiverDocRef: DocumentReference = doc(db, "users", receiverUid); // Fixed line
+        const receiverDocRef: DocumentReference = doc(db, "users", receiverUid);
         batch.update(senderDocRef, userUpdate);
         batch.update(receiverDocRef, userUpdate);
 

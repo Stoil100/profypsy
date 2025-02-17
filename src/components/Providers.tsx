@@ -65,7 +65,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
             if (user) {
                 const userRef = doc(db, "users", user.uid);
-                setLoading(true); // Ensure loading state is true when starting to fetch user data
+                setLoading(true);
 
                 // Immediately fetch user document to ensure we have initial data
                 getDoc(userRef)
@@ -81,7 +81,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
                                 appointments: docSnap.data().appointments,
                                 admin: docSnap.data().admin,
                             });
-                            setLoading(false); // Set loading to false after initial data is fetched
+                            setLoading(false);
                         } else {
                             console.log("No such document!");
                             setLoading(false);
@@ -127,10 +127,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             }
         });
 
-        // Cleanup function
         return () => {
             unsubscribeAuth();
-            unsubscribeDoc(); // Unsubscribe from document listener when the component unmounts
+            unsubscribeDoc();
         };
     }, []);
 
@@ -161,7 +160,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             );
             if (userCredential.user) {
                 await sendEmailVerification(userCredential.user);
-                // Inform the user to check their email for a verification link
                 alert(
                     "Please verify your email before continuing to your profile.",
                 );

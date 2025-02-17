@@ -95,7 +95,13 @@ export default function ApplicationForm({
     const onSubmit = async (values: FormValues) => {
         if (!user) return;
         if (!!profile) {
-            await updateDoc(doc(db, "psychologists", user.uid!), { ...values });
+            await updateDoc(doc(db, "psychologists", user.uid!), {
+                ...values,
+                approved: false,
+                phone: values.phone.startsWith("+")
+                    ? values.phone
+                    : `+359${values.phone}`,
+            });
             toast({
                 title: t("upload.edit.title"),
                 description: t("upload.edit.description"),
@@ -105,6 +111,7 @@ export default function ApplicationForm({
             await submitApplicationData(
                 {
                     ...values,
+                    phone: `+359${values.phone}`,
                     email: user?.email || "",
                     duration: "Monthly",
                     rating: 0,
@@ -129,7 +136,7 @@ export default function ApplicationForm({
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className={cn(
-                    "z-10 w-full space-y-8 bg-white md:px-2 py-2",
+                    "z-10 w-full space-y-8 bg-white py-2 md:px-2",
                     className,
                 )}
             >
@@ -187,6 +194,7 @@ export default function ApplicationForm({
                             form={form}
                             setTab={setTab}
                             t={(key) => t(`form.fields.${key}`)}
+                            profile={profile}
                         />
                     </TabsContent>
                     <TabsContent value="education">
@@ -194,6 +202,7 @@ export default function ApplicationForm({
                             form={form}
                             setTab={setTab}
                             t={(key) => t(`form.fields.${key}`)}
+                            profile={profile}
                         />
                     </TabsContent>
                     <TabsContent value="experience">
@@ -203,6 +212,7 @@ export default function ApplicationForm({
                             setSelectedSubscription={setSelectedSubscription}
                             setTab={setTab}
                             t={(key) => t(`form.fields.${key}`)}
+                            profile={profile}
                         />
                     </TabsContent>
                 </Tabs>

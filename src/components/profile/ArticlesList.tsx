@@ -22,7 +22,7 @@ export default function ArticlesList({
     }, []);
 
     return (
-        <div className="flex flex-col pr-1">
+        <div className="flex flex-col gap-2 pr-1">
             {articles && articles.length > 0 ? (
                 articles.map((article, index) => (
                     <div

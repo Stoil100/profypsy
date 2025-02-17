@@ -71,6 +71,9 @@ export function ArticleForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             title: "",
+            heroImage: "",
+            footer: "",
+            type: "standard",
         },
     });
 
@@ -473,7 +476,7 @@ export function ArticleForm() {
                         </div>
                         <h5>{submitValues!.footer!}</h5>
                         <Button type="button" onClick={uploadContent}>
-                            Upload
+                            {t("upload")}
                         </Button>
                     </div>
                 </>

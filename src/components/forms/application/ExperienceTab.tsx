@@ -30,9 +30,15 @@ type ExperienceTabProps = {
     setSelectedSubscription: (subscription: PsychologistT["variant"]) => void;
     setTab: (tab: string) => void;
     t: (key: string) => string;
+    profile?: PsychologistT;
 };
 
-export function ExperienceTab({ form, setTab, t }: ExperienceTabProps) {
+export function ExperienceTab({
+    form,
+    setTab,
+    t,
+    profile,
+}: ExperienceTabProps) {
     const {
         fields: experienceFields,
         append: appendExperience,
@@ -60,9 +66,9 @@ export function ExperienceTab({ form, setTab, t }: ExperienceTabProps) {
     ] as const;
     type DateOption = (typeof dateOptions)[number]["id"];
     const specializationOptions = [
-        { label: t("specializations.you"),value:"you" },
-        { label: t("specializations.couples"),value:"couples" },
-        { label: t("specializations.families"),value:"family" },
+        { label: t("specializations.you"), value: "you" },
+        { label: t("specializations.couples"), value: "couples" },
+        { label: t("specializations.families"), value: "family" },
     ];
 
     return (
@@ -304,56 +310,57 @@ export function ExperienceTab({ form, setTab, t }: ExperienceTabProps) {
                     )}
                 />
             </div>
-
-            <div className="space-y-2 rounded-xl border-2 border-black p-4">
-                <h2 className="text-xl">{t("documents.letter")}</h2>
-                <hr className="w-full border-2 border-black" />
-                <div className="relative h-fit">
-                    {form.watch("letter") ? (
-                        <embed
-                            src={form.watch("letter")}
-                            className="absolute left-1/2 top-0 -z-10 h-[150px] -translate-x-1/2"
-                        />
-                    ) : (
-                        <div className="absolute left-0 top-0 -z-10 flex h-[150px] w-full flex-col items-center justify-center text-center">
-                            <Image
-                                src="/auth/upload.png"
-                                width={80}
-                                height={80}
-                                alt="Upload"
+            {!profile && (
+                <div className="space-y-2 rounded-xl border-2 border-black p-4">
+                    <h2 className="text-xl">{t("documents.letter")}</h2>
+                    <hr className="w-full border-2 border-black" />
+                    <div className="relative h-fit">
+                        {form.watch("letter") ? (
+                            <embed
+                                src={form.watch("letter")}
+                                className="absolute left-1/2 top-0 -z-10 h-[150px] -translate-x-1/2"
                             />
-                            <p>
-                                {t("dragDrop.text")}{" "}
-                                <span className="text-[#25BA9E]">
-                                    {t("dragDrop.description")}
-                                </span>
-                            </p>
-                        </div>
-                    )}
-                    <FormField
-                        control={form.control}
-                        name="letter"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input
-                                        type="file"
-                                        accept=".pdf,.doc,.docx"
-                                        className="h-[150px] border-2 border-dashed border-black bg-transparent text-transparent file:text-transparent"
-                                        onChangeCapture={async (event) => {
-                                            const res = await getImageData(
-                                                event as ChangeEvent<HTMLInputElement>,
-                                            );
-                                            form.setValue(field.name, res);
-                                        }}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                        ) : (
+                            <div className="absolute left-0 top-0 -z-10 flex h-[150px] w-full flex-col items-center justify-center px-1 text-center">
+                                <Image
+                                    src="/auth/upload.png"
+                                    width={80}
+                                    height={80}
+                                    alt="Upload"
+                                />
+                                <p>
+                                    {t("dragDrop.text")}{" "}
+                                    <span className="text-[#25BA9E]">
+                                        {t("dragDrop.description")}
+                                    </span>
+                                </p>
+                            </div>
                         )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="letter"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            accept=".pdf,.doc,.docx"
+                                            className="h-[150px] border-2 border-dashed border-black bg-transparent text-transparent file:text-transparent"
+                                            onChangeCapture={async (event) => {
+                                                const res = await getImageData(
+                                                    event as ChangeEvent<HTMLInputElement>,
+                                                );
+                                                form.setValue(field.name, res);
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* <SubscriptionComponent
         form={form}

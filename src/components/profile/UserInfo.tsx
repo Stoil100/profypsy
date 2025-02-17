@@ -27,7 +27,7 @@ export default function UserInfo({ profile, user, t }: UserInfoProps) {
     return (
         <div
             className={cn(
-                "relative flex w-full flex-col items-center justify-between gap-8 bg-[#FEFFEC] px-2 py-4 drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:col-span-2 md:max-h-[calc(100vh-(4rem+40px))] md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)]",
+                "relative flex w-full flex-col items-center justify-between gap-8 bg-[#FEFFEC] px-2 py-4 drop-shadow-lg transition duration-500 hover:drop-shadow-lg md:col-span-2 md:max-h-screen md:px-6 md:drop-shadow-[10px_10px_0_rgba(64,145,108,0.4)]",
                 user.role !== "psychologist" && "w-full md:w-fit",
             )}
         >

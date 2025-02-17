@@ -313,6 +313,7 @@
                 "newestPosts": "Newest Posts:"
             },
             "popularArticlesHeader": "Our most popular articles:",
+            "mission": "Our mission",
             "form": {
                 "title": "Title",
                 "heroImage": "Hero Image URL",
@@ -383,6 +384,7 @@
                         "important": "Important"
                     }
                 },
+                "upload":"Upload",
                 "submit": "Submit",
                 "preview": "Preview article before upload:",
                 "errors": {
@@ -462,8 +464,6 @@
             "showAllPsychologists": "Show all psychologists",
             "selectionOfChoices": "Selection of choices solely for you",
             "noMatchFound": "Oops! We couldn't find a match for you at the moment!",
-            "loadingSelection": "Selection is loading",
-            "tailoredSearch": "We are looking for people tailored to your needs",
             "card": {
                 "bestSuited": "Best suited",
                 "recommendedByUs": "Recommended by us",
@@ -571,25 +571,37 @@
         },
         "Admin": {
             "profile": {
+                "section": "Profiles section:",
+                "preview": "Preview profile before approval:",
                 "approve": "Approve",
+                "deny": "Deny",
                 "age": "Age:",
-                "educations": "Educations:",
-                "experiences": "Experiences:"
+                "overview": "Overview:",
+                "about": "About:",
+                "specializations": "Specializations",
+                "background": "Background:",
+                "education": "Educations:",
+                "experience": "Experiences:",
+                "documents": "Documents:"
             },
             "articles": {
                 "preview": "Preview article before upload:",
                 "approve": "Approve",
-                "upload": "Upload Article:",
-                "section": "Articles Section:",
+                "upload": "Upload article:",
+                "section": "Articles section:",
                 "delete": "Delete articles:",
                 "button": " Delete"
             }
         }
     },
     "Common": {
+        "loader": {
+            "loadingSelection": "Selection is loading",
+            "tailoredSearch": "We are looking for people tailored to your needs"
+        },
         "languages": {
-            "bg": "BG",
-            "en": "EN"
+            "en": "БГ",
+            "bg": "EN"
         }
     }
 }

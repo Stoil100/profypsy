@@ -38,7 +38,7 @@ export default function AppointmentsSection({
                 user.role !== "psychologist" && "max-w-3xl",
             )}
         >
-            <h3 className="font-playfairDSC text-5xl text-[#40916C]">
+            <h3 className="font-playfairDSC text-3xl text-[#40916C] lg:text-5xl">
                 {t("bookings")}
             </h3>
             <Accordion

@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import type React from "react"; // Added import for React
+import type React from "react";
 import { useEffect, useRef } from "react";
 import LanguageButton from "./LanguageButton";
 import { useAuth } from "./Providers";

@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { uploadImage } from "@/firebase/utils/upload";
+import { PsychologistT } from "@/models/psychologist";
 import { UserRound } from "lucide-react";
 import Image from "next/image";
 import type { ChangeEvent } from "react";
@@ -28,9 +29,10 @@ type InfoTabProps = {
     form: UseFormReturn<ApplicationFormT>;
     setTab: (tab: string) => void;
     t: (key: string) => string;
+    profile?: PsychologistT;
 };
 
-export function InfoTab({ form, setTab, t }: InfoTabProps) {
+export function InfoTab({ form, setTab, t, profile }: InfoTabProps) {
     async function getImageData(event: ChangeEvent<HTMLInputElement>) {
         return await uploadImage(
             event.target.files![0],
@@ -40,13 +42,13 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
 
     return (
         <div className="space-y-4">
-            <div className="relative flex items-center justify-center">
+            <div className="relative flex flex-col items-center justify-center text-center">
                 {form.watch("image") ? (
                     <img
                         src={form.watch("image") || "/placeholder.svg"}
                         width={150}
                         height={150}
-                        className="absolute -z-10 rounded-full"
+                        className="absolute -z-10 rounded-full text-transparent"
                         alt={t("imageAlt")}
                     />
                 ) : (
@@ -219,57 +221,57 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                     </FormItem>
                 )}
             />
-
-            <div className="space-y-2 rounded-xl border-2 border-black p-4">
-                <h2 className="text-xl">{t("documents.cv")}</h2>
-                <hr className="w-full border-2 border-black" />
-                <div className="relative h-fit">
-                    {form.watch("cv") ? (
-                        <embed
-                            src={form.watch("cv")}
-                            className="absolute left-1/2 top-0 -z-10 h-[150px] -translate-x-1/2"
-                        />
-                    ) : (
-                        <div className="absolute left-0 top-0 -z-10 flex h-[150px] w-full flex-col items-center justify-center text-center">
-                            <Image
-                                src="/auth/upload.png"
-                                width={80}
-                                height={80}
-                                alt="Upload"
+            {!profile && (
+                <div className="space-y-2 rounded-xl border-2 border-black p-4">
+                    <h2 className="text-xl">{t("documents.cv")}</h2>
+                    <hr className="w-full border-2 border-black" />
+                    <div className="relative h-fit">
+                        {form.watch("cv") ? (
+                            <embed
+                                src={form.watch("cv")}
+                                className="absolute left-1/2 top-0 -z-10 h-[150px] -translate-x-1/2"
                             />
-                            <p>
-                                {t("dragDrop.text")}{" "}
-                                <span className="text-[#25BA9E]">
-                                    {t("dragDrop.description")}
-                                </span>
-                            </p>
-                        </div>
-                    )}
-                    <FormField
-                        control={form.control}
-                        name="cv"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input
-                                        type="file"
-                                        accept=".pdf,.doc,.docx"
-                                        className="h-[150px] border-2 border-dashed border-black bg-transparent text-transparent file:text-transparent"
-                                        onChangeCapture={async (event) => {
-                                            const res = await getImageData(
-                                                event as ChangeEvent<HTMLInputElement>,
-                                            );
-                                            form.setValue(field.name, res);
-                                        }}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                        ) : (
+                            <div className="absolute left-0 top-0 -z-10 flex h-[150px] w-full flex-col items-center justify-center px-1 text-center">
+                                <Image
+                                    src="/auth/upload.png"
+                                    width={80}
+                                    height={80}
+                                    alt="Upload"
+                                />
+                                <p>
+                                    {t("dragDrop.text")}{" "}
+                                    <span className="text-[#25BA9E]">
+                                        {t("dragDrop.description")}
+                                    </span>
+                                </p>
+                            </div>
                         )}
-                    />
+                        <FormField
+                            control={form.control}
+                            name="cv"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            accept=".pdf,.doc,.docx"
+                                            className="h-[150px] border-2 border-dashed border-black bg-transparent text-transparent file:text-transparent"
+                                            onChangeCapture={async (event) => {
+                                                const res = await getImageData(
+                                                    event as ChangeEvent<HTMLInputElement>,
+                                                );
+                                                form.setValue(field.name, res);
+                                            }}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                 </div>
-            </div>
-
+            )}
             <FormField
                 control={form.control}
                 name="languages"
@@ -298,9 +300,7 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                     </SelectLabel>
                                     <SelectItem
                                         value="bg"
-                                        disabled={field.value.includes(
-                                            "bg",
-                                        )}
+                                        disabled={field.value.includes("bg")}
                                     >
                                         <div className="flex items-center gap-2">
                                             <Image
@@ -309,16 +309,12 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                                 height={24}
                                                 alt="Bulgarian flag"
                                             />
-                                            <span>
-                                                {t("languages.bg")}
-                                            </span>
+                                            <span>{t("languages.bg")}</span>
                                         </div>
                                     </SelectItem>
                                     <SelectItem
                                         value="en"
-                                        disabled={field.value.includes(
-                                            "en",
-                                        )}
+                                        disabled={field.value.includes("en")}
                                     >
                                         <div className="flex items-center gap-2">
                                             <Image
@@ -327,9 +323,7 @@ export function InfoTab({ form, setTab, t }: InfoTabProps) {
                                                 height={24}
                                                 alt="English flag"
                                             />
-                                            <span>
-                                                {t("languages.en")}
-                                            </span>
+                                            <span>{t("languages.en")}</span>
                                         </div>
                                     </SelectItem>
                                 </SelectGroup>

@@ -13,7 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import type React from "react"; // Added import for React
+import type React from "react";
 import type { UseFormReturn } from "react-hook-form";
 
 type AgeFieldProps = {

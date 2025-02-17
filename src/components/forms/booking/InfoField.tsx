@@ -6,7 +6,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import type React from "react"; // Import React
+import type React from "react";
 import type { UseFormReturn } from "react-hook-form";
 
 type InfoFieldProps = {

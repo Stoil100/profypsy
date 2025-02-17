@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import type { PsychologistT } from "@/models/psychologist";
 import { Pin, User } from "lucide-react";
 import Link from "next/link";
-import type React from "react"; // Import React
+import type React from "react";
 
 type ProfileCardProps = {
     psychologist: PsychologistT;

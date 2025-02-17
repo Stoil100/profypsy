@@ -6,7 +6,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type React from "react"; // Added import for React
+import type React from "react";
 import type { UseFormReturn } from "react-hook-form";
 
 type NameFieldProps = {

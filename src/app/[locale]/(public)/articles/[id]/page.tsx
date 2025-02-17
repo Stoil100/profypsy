@@ -1,5 +1,7 @@
 "use client";
+import Loader from "@/components/Loader";
 import MainButton from "@/components/MainButton";
+import { Button } from "@/components/ui/button";
 import {
     Carousel,
     CarouselApi,
@@ -14,29 +16,31 @@ import { db } from "@/firebase/config";
 import { cn } from "@/lib/utils";
 import { ArticleT } from "@/models/article";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function useArticles(articleId: string) {
     const [articles, setArticles] = useState<ArticleT[]>([]);
     const [currentArticle, setCurrentArticle] = useState<ArticleT | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
-
     useEffect(() => {
         const q = query(collection(db, "articles"), orderBy("createdAt"));
         const unsubscribe = onSnapshot(
             q,
             (querySnapshot) => {
-                const fetchedArticles: ArticleT[] = [];
-                querySnapshot.forEach((doc) => {
-                    fetchedArticles.push(doc.data() as ArticleT);
-                });
-                setArticles(fetchedArticles);
-                // After setting all articles, find the current article based on articleId
-                const foundArticle = fetchedArticles.find(
-                    (article) => article.id?.toString() === articleId,
+                const articlesList: ArticleT[] = querySnapshot.docs.map(
+                    (doc) =>
+                        ({
+                            id: doc.id,
+                            ...doc.data(),
+                        }) as ArticleT,
+                );
+
+                setArticles(articlesList);
+                const foundArticle = articlesList.find(
+                    (article) => article.id! === articleId,
                 );
                 setCurrentArticle(foundArticle || null);
                 setLoading(false);
@@ -48,14 +52,14 @@ function useArticles(articleId: string) {
             },
         );
 
-        return () => unsubscribe(); // Cleanup on unmount
-    }, [articleId]); // Depend on articleId to refetch everything if it changes
+        return () => unsubscribe();
+    }, [articleId]);
 
     return { articles, currentArticle, loading, error };
 }
 
 export default function Article({ params }: { params: { id: string } }) {
-    const t = useTranslations("Article.id");
+    const t = useTranslations("Pages.Article.id");
     const { articles, currentArticle, loading, error } = useArticles(params.id);
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>();
@@ -71,37 +75,21 @@ export default function Article({ params }: { params: { id: string } }) {
         });
     }, [api]);
 
-    const scrollTo = useCallback(
-        (index: number) => {
-            if (!api) return;
-            api.scrollTo(index);
-        },
-        [api],
-    );
+    if (loading) {
+        return <Loader />;
+    }
     return (
-        <main className="flex h-fit w-full pb-4 pt-20">
-            <div className="flex w-full flex-col gap-4 p-3 text-[#205041] md:w-3/4 md:p-8">
-                <h2 className="text-center text-4xl font-bold">
-                    {currentArticle?.title}
-                </h2>
-                <img
-                    src={currentArticle?.heroImage}
-                    alt={currentArticle?.title}
-                    className="self-center"
-                />
-                <div className="space-y-4 px-2">
-                    {currentArticle?.descriptions!.map((desc) => (
-                        <p className="px-4 text-lg" key={desc.id}>
-                            {desc.value}
-                        </p>
-                    ))}
-                </div>
-            </div>
-            <div className="max-w-2xl space-y-6 md:w-3/4 md:p-8">
-                <h1 className="text-5xl">{currentArticle!.title}</h1>
+        <main className="flex h-fit w-full">
+            <div className=" w-full space-y-6 p-2 md:w-3/4 md:p-8">
+                <h1 className="text-3xl md:text-5xl">
+                    {currentArticle!.title}
+                </h1>
                 <div className="space-y-2 px-2">
                     {currentArticle!.titleDescriptions!.map((desc, index) => (
-                        <p key={index} className="text-xl font-light">
+                        <p
+                            key={index}
+                            className="text-md font-light md:text-xl"
+                        >
                             {desc.value}
                         </p>
                     ))}
@@ -109,9 +97,9 @@ export default function Article({ params }: { params: { id: string } }) {
                 <img
                     src={currentArticle!.heroImage}
                     alt={currentArticle!.title}
-                    className="w-full rounded-2xl"
+                    className="w-full"
                 />
-                <div className="space-y-6 text-2xl font-light">
+                <div className="space-y-2 text-lg font-light md:space-y-6 md:text-2xl">
                     {currentArticle!.descriptions!.map((desc, index) => (
                         <p key={index}>{desc.value}</p>
                     ))}
@@ -119,7 +107,7 @@ export default function Article({ params }: { params: { id: string } }) {
                 {currentArticle!.lists!.map((list, listIndex) => (
                     <div
                         key={listIndex}
-                        className="space-y-2 text-2xl font-light"
+                        className="space-y-2 text-lg font-light md:text-2xl"
                     >
                         <h3>{list.title}</h3>
                         <ul className="list-disc space-y-1 px-6">
@@ -132,7 +120,9 @@ export default function Article({ params }: { params: { id: string } }) {
                 <div>
                     {currentArticle!.docs!.map((doc, docIndex) => (
                         <div key={docIndex} className="space-y-4">
-                            <h2 className="text-4xl">{doc.title}</h2>
+                            <h2 className="text-2xl md:text-4xl">
+                                {doc.title}
+                            </h2>
                             {doc!.images!.length <= 2 ? (
                                 <div className="flex gap-2">
                                     {doc!.images!.map((image, imageIndex) => (
@@ -145,31 +135,35 @@ export default function Article({ params }: { params: { id: string } }) {
                                 </div>
                             ) : (
                                 <div
-                                    className="flex w-full cursor-pointer gap-2"
+                                    className="flex w-full cursor-pointer items-center gap-2"
                                     onClick={() => {
                                         setActiveIndex(docIndex);
                                         setOpen(true);
                                     }}
                                 >
-                                    <img
-                                        src={doc!.images![0].value}
-                                        alt={`Doc ${docIndex} Image 0`}
-                                        className="w-3/4 rounded-2xl"
-                                    />
+                                    <div className="relative w-full overflow-hidden sm:w-3/4">
+                                        <img
+                                            src={doc!.images![0].value}
+                                            alt={`Doc ${docIndex} Image 0`}
+                                        />
+                                        <div className="absolute right-0 top-0 flex h-full w-1/12 items-center justify-center bg-black/70 text-white sm:hidden">
+                                            <ChevronRight />
+                                        </div>
+                                    </div>
                                     <div
                                         className={cn(
-                                            "flex w-full gap-2",
+                                            "hidden w-1/4 gap-2 sm:flex",
                                             docIndex % 2 === 0
                                                 ? "flex-col-reverse"
                                                 : "flex-col",
                                         )}
                                     >
-                                        <p className="flex aspect-square w-full items-center justify-center rounded-2xl border text-center text-5xl">
+                                        <p className="flex aspect-square w-full items-center justify-center border text-center text-5xl">
                                             {doc!.images!.length - 2}+
                                         </p>
                                         <img
                                             src={doc!.images![1].value}
-                                            className="h-full rounded-2xl object-cover"
+                                            className="h-full object-cover"
                                         />
                                     </div>
                                     {activeIndex !== undefined && (
@@ -177,7 +171,7 @@ export default function Article({ params }: { params: { id: string } }) {
                                             open={open}
                                             onOpenChange={setOpen}
                                         >
-                                            <DialogContent className="max-w-screen z-[999999] flex h-full max-h-screen flex-col items-center justify-center border-none bg-black/80 md:p-8">
+                                            <DialogContent className="max-w-screen z-[999999] flex h-full  flex-col items-center justify-center border-none bg-black/80 md:p-8">
                                                 <DialogTitle className="sr-only text-2xl font-light text-white">
                                                     {
                                                         currentArticle!.docs![
@@ -186,7 +180,7 @@ export default function Article({ params }: { params: { id: string } }) {
                                                     }
                                                 </DialogTitle>
                                                 <Carousel
-                                                    className="max-w-3xl 2xl:max-w-7xl"
+                                                    className="max-w-[85vw] md:max-w-[70vw]"
                                                     style={{
                                                         marginTop:
                                                             "var(--nav-height)",
@@ -204,7 +198,6 @@ export default function Article({ params }: { params: { id: string } }) {
                                                             (image, index) => (
                                                                 <CarouselItem
                                                                     key={index}
-                                                                    className=""
                                                                 >
                                                                     <div className="flex aspect-video h-min items-center justify-center">
                                                                         <img
@@ -219,61 +212,47 @@ export default function Article({ params }: { params: { id: string } }) {
                                                             ),
                                                         )}
                                                     </CarouselContent>
-                                                    <CarouselNext className="border-green bg-green hover:text-green hidden text-white hover:bg-transparent lg:flex" />
-                                                    <CarouselPrevious className="border-green bg-green hover:text-green hidden text-white hover:bg-transparent lg:flex" />
+                                                    <CarouselNext className="max-md:hidden" />
+                                                    <CarouselPrevious className="max-md:hidden" />
                                                 </Carousel>
-                                                <ScrollArea className="min-h-fit whitespace-nowrap max-sm:hidden">
-                                                    <div className="flex justify-center gap-8 p-4 2xl:gap-16">
-                                                        {currentArticle!.docs![
-                                                            activeIndex
-                                                        ].images!.map(
-                                                            (image, index) => (
-                                                                <div
-                                                                    key={index}
-                                                                    className={cn(
-                                                                        "aspect-video h-max min-w-48 cursor-pointer rounded-xl bg-cover bg-center transition-transform",
-                                                                        index ===
-                                                                            api?.selectedScrollSnap() &&
-                                                                            "scale-105 md:scale-110",
-                                                                    )}
-                                                                    style={{
-                                                                        backgroundImage: `url('${image.value}')`,
-                                                                    }}
-                                                                    onClick={() => {
-                                                                        scrollTo(
-                                                                            index,
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            ),
-                                                        )}
-                                                    </div>
-                                                    <ScrollBar orientation="horizontal" />
-                                                </ScrollArea>
-                                                <div className="flex gap-4 sm:hidden">
-                                                    <MainButton
-                                                        className="size-10"
+                                                <div className="flex gap-4 md:hidden">
+                                                    <Button
                                                         onClick={() => {
                                                             api?.scrollPrev();
                                                         }}
+                                                        className="size-10 rounded-full bg-gradient-to-t from-[#316146] to-[#088249] p-1 sm:size-12"
                                                     >
-                                                        <ArrowLeft />
-                                                    </MainButton>
-                                                    <MainButton
-                                                        className="size-10"
+                                                        <div className="flex h-full w-full items-center justify-center rounded-full bg-[#F7F4E0] text-[#52B788]">
+                                                            <ArrowLeft
+                                                                strokeWidth={3}
+                                                            />
+                                                            <span className="sr-only">
+                                                                Previous slide
+                                                            </span>
+                                                        </div>
+                                                    </Button>
+                                                    <Button
                                                         onClick={() => {
                                                             api?.scrollNext();
                                                         }}
+                                                        className="size-10 rounded-full bg-gradient-to-t from-[#40916C] to-[#52B788] p-1 sm:size-12"
                                                     >
-                                                        <ArrowRight />
-                                                    </MainButton>
+                                                        <div className="flex h-full w-full items-center justify-center rounded-full bg-[#F7F4E0] text-[#52B788]">
+                                                            <ArrowRight
+                                                                strokeWidth={3}
+                                                            />
+                                                            <span className="sr-only">
+                                                                Next slide
+                                                            </span>
+                                                        </div>
+                                                    </Button>
                                                 </div>
                                             </DialogContent>
                                         </Dialog>
                                     )}
                                 </div>
                             )}
-                            <div className="space-y-1 text-xl font-light">
+                            <div className="space-y-1 text-lg font-light md:text-xl">
                                 {doc!.texts!.map((text, textIndex) => {
                                     if ("value" in text) {
                                         return (
@@ -304,31 +283,45 @@ export default function Article({ params }: { params: { id: string } }) {
                     ))}
                 </div>
             </div>
-            <div className="hidden w-1/4 flex-col items-center gap-10 border-l-2 border-black pt-20 md:flex">
-                <div className="flex w-1/2 flex-col items-center gap-3">
+            <div className="hidden w-1/4 flex-col gap-10 border-l-2 border-[#40916C] px-4 py-4 md:flex xl:px-10">
+                <div className="flex flex-col items-center gap-3">
                     <h3 className="text-center text-xl">
                         {t("latestArticlesEmail")}
                     </h3>
-                    <MainButton>{t("subscribeNewsletter")}</MainButton>
+                    <MainButton className="text-wrap">
+                        {t("subscribeNewsletter")}
+                    </MainButton>
                 </div>
-                <div className="sticky top-20 flex w-2/3 flex-col items-center justify-center gap-2">
-                    <h2 className="self-start text-3xl">{t("newestPosts")}</h2>
-                    <hr className="w-full border border-black" />
-                    <div className="space-y-4 pt-4">
-                        {articles.slice(0, 6).map((article) => (
-                            <div
-                                className="flex cursor-pointer flex-col items-start justify-center gap-4 transition-transform hover:scale-105"
-                                key={article.id}
-                            >
-                                <img
-                                    src={article.heroImage}
-                                    alt={article.title}
-                                    className="h-auto w-full rounded-xl"
-                                />
-                                <h4 className="text-xl">{article.title}</h4>
-                            </div>
-                        ))}
-                    </div>
+                <div className="sticky top-20 w-full px-4">
+                    <h2 className="mb-2 self-start text-xl lg:text-3xl">
+                        {t("newestPosts")}
+                    </h2>
+                    <hr className="mb-4 w-full border border-black" />
+                    <ScrollArea className="flex h-[75vh] w-full flex-col justify-center gap-2 transition-all delay-500 hover:pr-4 hover:delay-0">
+                        <div className="w-full space-y-4">
+                            {articles.slice(0, 6).map((article) => (
+                                <div
+                                    className="group flex h-36 w-full cursor-pointer flex-col items-start justify-center overflow-hidden rounded-lg border border-gray-300 lg:h-48"
+                                    key={article.id}
+                                >
+                                    <img
+                                        src={article.heroImage}
+                                        alt={article.title}
+                                        className="h-full max-h-28 w-full rounded-lg object-cover object-center lg:max-h-40"
+                                    />
+                                    <div className="flex w-full items-center justify-between px-2 py-1 ">
+                                        <h4 className="md:text-lg lg:text-xl">
+                                            {article.title}
+                                        </h4>
+                                        <div className="drop-shadow-lg">
+                                            <ChevronRight className="rounded-full border bg-white transition-all group-hover:bg-[#25BA9E] group-hover:text-white md:size-5 xl:size-6" />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <ScrollBar orientation="vertical" />
+                    </ScrollArea>
                 </div>
             </div>
         </main>

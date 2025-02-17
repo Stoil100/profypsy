@@ -13,7 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import type React from "react"; // Import React
+import type React from "react";
 import type { UseFormReturn } from "react-hook-form";
 
 type SessionFieldProps = {
