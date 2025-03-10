@@ -68,14 +68,18 @@ export default function BookingIdPage({ params }: { params: { id: string } }) {
             const unsubscribe = onSnapshot(
                 q,
                 (querySnapshot) => {
-                    const tempValues: ArticleT[] = [];
-                    querySnapshot.forEach((doc) => {
-                        tempValues.push(doc.data() as ArticleT);
-                    });
-                    setArticles(tempValues);
+                    const articles: ArticleT[] = querySnapshot.docs.map(
+                        (doc) =>
+                            ({
+                                id: doc.id,
+                                ...doc.data(),
+                            }) as ArticleT,
+                    );
+
+                    setArticles(articles);
                 },
                 (error) => {
-                    console.error("Error fetching items: ", error);
+                    console.error("Error fetching items:", error);
                 },
             );
             return unsubscribe;
