@@ -3,6 +3,7 @@ import { db } from "@/firebase/config";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 export const updateAppointment = async (
+    t: (args: string) => string,
     psychologistUid: string,
     userUid: string,
     psychologistAppointment: any,
@@ -19,15 +20,15 @@ export const updateAppointment = async (
             appointments: arrayUnion(userAppointment),
         });
         toast({
-            title: "Appointment Scheduled",
+            title: t("success"),
             description: `${psychologistAppointment.selectedDate}`,
         });
         return true;
     } catch (error) {
         console.error("Error adding appointment: ", error);
         toast({
-            title: "Error",
-            description: "Failed to schedule appointment",
+            title: t("error.title"),
+            description: t("error.description"),
             variant: "destructive",
         });
         return false;

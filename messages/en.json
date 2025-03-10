@@ -384,7 +384,7 @@
                         "important": "Important"
                     }
                 },
-                "upload":"Upload",
+                "upload": "Upload",
                 "submit": "Submit",
                 "preview": "Preview article before upload:",
                 "errors": {
@@ -530,6 +530,13 @@
                         },
                         "previous": "Previous",
                         "submit": "Submit",
+                        "toast": {
+                            "success": "Appointment Scheduled",
+                            "error": {
+                                "title": "Error!",
+                                "description": "Failed to schedule appointment."
+                            }
+                        },
                         "errors": {
                             "validName": "Enter a valid name",
                             "infoRequired": "Enter some information about your case",

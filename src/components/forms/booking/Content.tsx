@@ -69,6 +69,7 @@ export default function BookingForm({
         };
 
         const success = await updateAppointment(
+            (key) => t(`toast.${key}`),
             profile.uid!,
             user.uid!,
             psychologistAppointment,
