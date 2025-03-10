@@ -17,8 +17,8 @@ export default function AppointmentDetails({
     t,
 }: AppointmentDetailsProps) {
     return (
-        <div className="space-y-4 break-all">
-            <div>
+        <div className="space-y-4">
+            <div className="space-y-2">
                 <h3 className="flex items-center space-x-2 text-lg font-semibold">
                     <User className="h-5 w-5" />
                     <span>
@@ -27,17 +27,17 @@ export default function AppointmentDetails({
                             : t("psychologist")}
                     </span>
                 </h3>
-                <div className="pl-8">
+                <div className="flex pl-2 max-sm:justify-center md:pl-8">
                     <h4 className="text-md text-2xl font-medium">
                         {appointment.userName}
                     </h4>
                 </div>
-                <div className="space-y-2 pl-8">
-                    <p className="flex items-center text-xl">
+                <div className="flex flex-col gap-2 max-sm:items-center md:pl-8">
+                    <p className="flex items-center text-lg max-sm:flex-col md:text-xl">
                         <Mail className="mr-2 h-4 w-4" />
                         {appointment.email}
                     </p>
-                    <p className="flex items-center text-xl">
+                    <p className="flex items-center break-all text-xl">
                         <Phone className="mr-2 h-4 w-4" />
                         {appointment.phone}
                     </p>
@@ -46,19 +46,19 @@ export default function AppointmentDetails({
                     </p>
                 </div>
             </div>
-            <div>
+            <div className="space-y-2">
                 <h3 className="flex items-center space-x-2 text-lg font-semibold">
                     <Calendar className="h-5 w-5" />
                     <span>{t("appointment")}</span>
                 </h3>
-                <div className="px-8">
-                    <div>
+                <div className="space-y-2 px-2 md:px-8">
+                    <div className="flex flex-col max-sm:items-center">
                         <p>{t("title")}</p>
-                        <p className="rounded-xl border-2 border-dashed p-2 text-center text-xl">
+                        <p className="w-full break-all rounded-xl border-2 border-dashed p-2 text-center text-xl">
                             {appointment.info}
                         </p>
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col gap-2 max-sm:items-center">
                         <p>{t("sessionType")}</p>
                         <h4 className="w-fit self-center rounded-full border-2 px-2 text-center text-xl">
                             {appointment.session}

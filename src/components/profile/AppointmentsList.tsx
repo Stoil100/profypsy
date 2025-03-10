@@ -29,7 +29,7 @@ export default function AppointmentsList({
         <Accordion
             type="single"
             collapsible
-            className="rounded-2xl border-2 border-[#40916C] bg-[#FCFBF4] p-4"
+            className="rounded-2xl border-2 border-[#40916C] bg-[#FCFBF4] p-2 md:p-4"
         >
             {user.appointments && user.appointments.length > 0 ? (
                 user.appointments.map((appointment, index) => (
@@ -53,7 +53,7 @@ export default function AppointmentsList({
                                 />
                             </div>
                         </AccordionTrigger>
-                        <AccordionContent className="p-4">
+                        <AccordionContent className="md:p-4">
                             <AppointmentDetails
                                 t={(key) => t(`info.${key}`)}
                                 appointment={appointment}

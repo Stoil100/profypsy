@@ -28,7 +28,7 @@ export default function SessionsList({
         <Accordion
             type="single"
             collapsible
-            className="rounded-2xl border-2 border-[#40916C] bg-[#FCFBF4] p-4"
+            className="rounded-2xl border-2 border-[#40916C] bg-[#FCFBF4] p-2 md:p-4"
         >
             {profile.appointments && profile.appointments.length > 0 ? (
                 profile.appointments.map((appointment, index) => (
@@ -56,7 +56,7 @@ export default function SessionsList({
                                 />
                             </div>
                         </AccordionTrigger>
-                        <AccordionContent className="p-4">
+                        <AccordionContent className="md:p-4">
                             <AppointmentDetails
                                 t={t}
                                 appointment={appointment}
