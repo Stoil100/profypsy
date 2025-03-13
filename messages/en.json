@@ -476,7 +476,12 @@
                 "tailoredSearch": "We are looking for people tailored to your needs",
                 "header": {
                     "bookNow": "Book Now",
-                    "specializations": "Specializations",
+                    "specializations": {
+                        "title": "Specializations",
+                        "you": "For you",
+                        "couples": "For couples",
+                        "family": "For families"
+                    },
                     "pricePerHour": "Price per hour:",
                     "price": "Lv"
                 },

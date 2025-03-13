@@ -74,7 +74,7 @@ export function ProfileHeader({ profile, onBookNow, t }: ProfileHeaderProps) {
                     </div>
                 </div>
                 <div className="space-y-2">
-                    <h4 className="text-2xl">{t("specializations")}:</h4>
+                    <h4 className="text-2xl">{t("specializations.title")}:</h4>
                     <div className="flex flex-wrap gap-2">
                         {profile.specializations?.map((speciality, index) => (
                             <Badge
@@ -82,7 +82,7 @@ export function ProfileHeader({ profile, onBookNow, t }: ProfileHeaderProps) {
                                 className="border-2 border-[#40916C] bg-[#FCFBF4] text-xl"
                             >
                                 <p className="h-full w-full text-nowrap bg-gradient-to-b from-[#40916C] to-[#52B788] bg-clip-text text-transparent">
-                                    {speciality}
+                                    {t(`specializations.${speciality}`)}
                                 </p>
                             </Badge>
                         ))}

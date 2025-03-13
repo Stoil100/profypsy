@@ -478,7 +478,12 @@
                 "tailoredSearch": "Търсим хора, съобразени с твоите нужди",
                 "header": {
                     "bookNow": "Запази сега",
-                    "specializations": "Специализации",
+                    "specializations": {
+                        "title": "Специализации",
+                        "you": "За теб",
+                        "couples": "За двойки",
+                        "family": "За семейства"
+                    },
                     "pricePerHour": "Цена на час:",
                     "price": "лв"
                 },
