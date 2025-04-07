@@ -29,7 +29,7 @@ export default function ProfileContent({ user }: ProfileContentProps) {
     return (
         <div
             className={cn(
-                "grid w-full grid-cols-1 grid-rows-3 gap-6 px-2 md:grid-cols-5 md:grid-rows-2 md:px-6 xl:grid-cols-8 xl:grid-rows-1",
+                "my-4 grid w-full grid-cols-1 grid-rows-3 gap-6 px-2 md:grid-cols-5 md:grid-rows-2 md:px-6 xl:grid-cols-8 xl:grid-rows-1",
                 user.role !== "psychologist" && "flex flex-wrap justify-center",
             )}
         >
