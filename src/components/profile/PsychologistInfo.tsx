@@ -31,14 +31,14 @@ function Overview({ profile, t }: PsychologistInfoProps) {
             </div>
             {profile.specializations && (
                 <div>
-                    <p>{t("specializations")}:</p>
+                    <p>{t("specializations.title")}</p>
                     <div className="flex w-full flex-wrap items-center justify-center gap-2 rounded-lg border-2 border-dashed border-black p-2">
                         {profile.specializations.map((specialization) => (
                             <p
                                 key={specialization}
                                 className="rounded bg-[#25BA9E] px-4 py-1 text-white"
                             >
-                                {specialization}
+                                {t(`specializations.${specialization}`)}
                             </p>
                         ))}
                     </div>

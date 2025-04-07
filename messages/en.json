@@ -43,7 +43,7 @@
                 "services": {
                     "you": "For you",
                     "couples": "For couples",
-                    "family": "For families"
+                    "families": "For families"
                 },
                 "mission": {
                     "readMore": "Read more",
@@ -213,7 +213,8 @@
                     },
                     "price": {
                         "label": "Price/h:",
-                        "placeholder": "Select price/h:"
+                        "placeholder": "Select price/h:",
+                        "currency": "Lv"
                     },
                     "dragDrop": {
                         "text": "Drag and drop,",
@@ -261,7 +262,12 @@
             "title": "Profile",
             "overview": "Overview:",
             "about": "About",
-            "specializations": "Specializations",
+            "specializations": {
+                "title": "Specializations:",
+                "you": "For you",
+                "couples": "For couples",
+                "families": "For families"
+            },
             "background": "Background:",
             "education": "Education",
             "experience": "Experience",
@@ -480,7 +486,7 @@
                         "title": "Specializations",
                         "you": "For you",
                         "couples": "For couples",
-                        "family": "For families"
+                        "families": "For families"
                     },
                     "pricePerHour": "Price per hour:",
                     "price": "Lv"

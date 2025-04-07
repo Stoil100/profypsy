@@ -43,7 +43,7 @@
                 "services": {
                     "you": "За теб",
                     "couples": "За двойки",
-                    "family": "За семейства"
+                    "families": "За семейства"
                 },
                 "mission": {
                     "readMore": "Прочети повече",
@@ -213,7 +213,8 @@
                     },
                     "price": {
                         "label": "Цена/ч:",
-                        "placeholder": "Избери цена/ч:"
+                        "placeholder": "Избери цена/ч:",
+                        "currency": "Лв"
                     },
                     "dragDrop": {
                         "text": "Плъзни и пусни,",
@@ -261,7 +262,12 @@
             "title": "Профил",
             "overview": "Преглед:",
             "about": "За мен",
-            "specializations": "Специализации",
+            "specializations": {
+                "title": "Специализации:",
+                "you": "За теб",
+                "couples": "За двойки",
+                "families": "За семейства"
+            },
             "background": "Биографични данни:",
             "education": "Образование",
             "experience": "Опит",
@@ -482,7 +488,7 @@
                         "title": "Специализации",
                         "you": "За теб",
                         "couples": "За двойки",
-                        "family": "За семейства"
+                        "families": "За семейства"
                     },
                     "pricePerHour": "Цена на час:",
                     "price": "лв"

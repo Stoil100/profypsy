@@ -68,7 +68,7 @@ export function ExperienceTab({
     const specializationOptions = [
         { label: t("specializations.you"), value: "you" },
         { label: t("specializations.couples"), value: "couples" },
-        { label: t("specializations.families"), value: "family" },
+        { label: t("specializations.families"), value: "families" },
     ];
 
     return (
@@ -171,7 +171,9 @@ export function ExperienceTab({
                                     key={index}
                                     className="flex items-center gap-2 rounded-full bg-[#25BA9E] px-3 py-1 text-white"
                                 >
-                                    <span>{specialization}</span>
+                                    <span>
+                                        {t(`specializations.${specialization}`)}
+                                    </span>
                                     <button
                                         type="button"
                                         onClick={() =>
@@ -298,7 +300,8 @@ export function ExperienceTab({
                                                     key={index}
                                                     value={`${index * 10}`}
                                                 >
-                                                    {index * 10}lv
+                                                    {index * 10}
+                                                    {t("price.currency")}
                                                 </SelectItem>
                                             ),
                                         )}
