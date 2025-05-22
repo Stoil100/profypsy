@@ -66,21 +66,23 @@ export default function AdminPage() {
                     <h2 className="text-center text-3xl">
                         {t("profile.section")}
                     </h2>
-                    <div className="space-y-2">
-                        <h2 className="text-4xl">{t("profile.preview")}</h2>
-                        {profilesToApprove?.map((profile, index) => (
-                            <ProfileInfo
-                                profile={profile}
-                                key={index}
-                                t={(key) => t(`profile.${key}`)}
-                            />
-                        ))}
-                    </div>
-                    {uploadedArticles?.length > 0 && (
+                    {profilesToApprove?.length > 0 && (
+                        <div className="space-y-2">
+                            <h2 className="text-4xl">{t("profile.preview")}</h2>
+                            {profilesToApprove.map((profile, index) => (
+                                <ProfileInfo
+                                    profile={profile}
+                                    key={index}
+                                    t={(key) => t(`profile.${key}`)}
+                                />
+                            ))}
+                        </div>
+                    )}
+                    {uploadedProfiles?.length > 0 && (
                         <div className="h-fit w-full space-y-4 border-b border-black p-2">
-                            <h2 className="text-4xl">{t("articles.delete")}</h2>
+                            <h2 className="text-4xl">{t("profile.edit")}</h2>
                             <div className="flex flex-wrap gap-4">
-                                {uploadedProfiles?.map((profile, index) => (
+                                {uploadedProfiles.map((profile, index) => (
                                     <ProfileInfo
                                         profile={profile}
                                         key={index}
@@ -96,17 +98,21 @@ export default function AdminPage() {
                     <h2 className="text-center text-3xl">
                         {t("articles.section")}
                     </h2>
-                    <div className="flex flex-col gap-4">
-                        <h2 className="text-4xl">{t("articles.preview")}</h2>
-                        {articlesToApprove?.map((article, index) => (
-                            <ArticleInfo
-                                setPreviewArticle={setPreviewArticle}
-                                article={article}
-                                key={index}
-                                t={(key) => t(`articles.${key}`)}
-                            />
-                        ))}
-                    </div>
+                    {articlesToApprove?.length > 0 && (
+                        <div className="flex flex-col gap-4">
+                            <h2 className="text-4xl">
+                                {t("articles.preview")}
+                            </h2>
+                            {articlesToApprove.map((article, index) => (
+                                <ArticleInfo
+                                    setPreviewArticle={setPreviewArticle}
+                                    article={article}
+                                    key={index}
+                                    t={(key) => t(`articles.${key}`)}
+                                />
+                            ))}
+                        </div>
+                    )}
 
                     {uploadedArticles?.length > 0 && (
                         <div className="h-fit w-full space-y-4 border-b border-black p-2">

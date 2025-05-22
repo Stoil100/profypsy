@@ -126,7 +126,9 @@ export default function ApplicationForm({
             );
             toast({
                 title: t("upload.success.title"),
-                description: t("upload.success.description"),
+                description: t("upload.success.description", {
+                    email: user.email!,
+                }),
             });
         }
     };

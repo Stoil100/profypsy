@@ -45,6 +45,15 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, t }) => {
         await batch.commit();
     };
 
+    const downloadFile = (url: string, filename: string) => {
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="flex h-fit w-full flex-col gap-4 rounded-lg bg-gray-400/20 p-2">
             <div className="flex h-fit w-full items-center gap-2 py-4 max-lg:flex-col">
@@ -182,9 +191,39 @@ export const ProfileInfo: React.FC<ProfileInfoProps> = ({ profile, t }) => {
                         {t("documents")}
                     </h3>
                     <div className="flex flex-wrap items-center justify-center gap-8">
-                        <iframe src={profile.cv} />
-                        <iframe src={profile.diploma} />
-                        <iframe src={profile.letter} />
+                        <div
+                            onClick={() => downloadFile(profile.cv, "CV.pdf")}
+                            className="cursor-pointer"
+                        >
+                            <iframe
+                                src={profile.cv}
+                                className="pointer-events-none"
+                            />
+                        </div>
+
+                        <div
+                            onClick={() =>
+                                downloadFile(profile.diploma, "Diploma.pdf")
+                            }
+                            className="cursor-pointer"
+                        >
+                            <iframe
+                                src={profile.diploma}
+                                className="pointer-events-none"
+                            />
+                        </div>
+
+                        <div
+                            onClick={() =>
+                                downloadFile(profile.letter, "Letter.pdf")
+                            }
+                            className="cursor-pointer"
+                        >
+                            <iframe
+                                src={profile.letter}
+                                className="pointer-events-none"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
