@@ -297,7 +297,7 @@ export default function Article({ params }: { params: { id: string } }) {
                         {t("newestPosts")}
                     </h2>
                     <hr className="mb-4 w-full border border-black" />
-                    <ScrollArea className="flex h-[75vh] w-full flex-col justify-center gap-2 transition-all delay-500 hover:pr-4 hover:delay-0">
+                    <ScrollArea className="flex h-[75vh] w-full flex-col justify-center gap-2 transition-all delay-500 hover:delay-0">
                         <div className="w-full space-y-4">
                             {articles.slice(0, 6).map(
                                 (article) =>
@@ -310,7 +310,7 @@ export default function Article({ params }: { params: { id: string } }) {
                                             <img
                                                 src={article.heroImage}
                                                 alt={article.title}
-                                                className="h-full max-h-28 w-full rounded-lg object-cover object-center lg:max-h-40"
+                                                className="h-full max-h-28 w-full  rounded-lg object-cover object-center transition-transform group-hover:scale-105 lg:max-h-40"
                                             />
                                             <div className="flex w-full items-center justify-between px-2 py-1 ">
                                                 <h4 className="md:text-lg lg:text-xl">
