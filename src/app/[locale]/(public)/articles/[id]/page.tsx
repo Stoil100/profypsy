@@ -282,6 +282,11 @@ export default function Article({ params }: { params: { id: string } }) {
                         </div>
                     ))}
                 </div>
+                {currentArticle?.footer && (
+                    <p className="text-lg font-light md:text-2xl">
+                        {currentArticle.footer}
+                    </p>
+                )}
             </div>
             <div className="hidden w-1/4 flex-col gap-10 border-l-2 border-[#40916C] px-4 py-4 md:flex xl:px-10">
                 <div className="flex flex-col items-center gap-3">
