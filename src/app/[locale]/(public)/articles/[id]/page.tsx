@@ -299,26 +299,30 @@ export default function Article({ params }: { params: { id: string } }) {
                     <hr className="mb-4 w-full border border-black" />
                     <ScrollArea className="flex h-[75vh] w-full flex-col justify-center gap-2 transition-all delay-500 hover:pr-4 hover:delay-0">
                         <div className="w-full space-y-4">
-                            {articles.slice(0, 6).map((article) => (
-                                <div
-                                    className="group flex h-36 w-full cursor-pointer flex-col items-start justify-center overflow-hidden rounded-lg border border-gray-300 lg:h-48"
-                                    key={article.id}
-                                >
-                                    <img
-                                        src={article.heroImage}
-                                        alt={article.title}
-                                        className="h-full max-h-28 w-full rounded-lg object-cover object-center lg:max-h-40"
-                                    />
-                                    <div className="flex w-full items-center justify-between px-2 py-1 ">
-                                        <h4 className="md:text-lg lg:text-xl">
-                                            {article.title}
-                                        </h4>
-                                        <div className="drop-shadow-lg">
-                                            <ChevronRight className="rounded-full border bg-white transition-all group-hover:bg-[#25BA9E] group-hover:text-white md:size-5 xl:size-6" />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                            {articles.slice(0, 6).map(
+                                (article) =>
+                                    article.id !== currentArticle!.id && (
+                                        <a
+                                            href={`/articles/${article.id}`}
+                                            className="group flex h-36 w-full cursor-pointer flex-col items-start justify-center overflow-hidden rounded-lg border border-gray-300 lg:h-48"
+                                            key={article.id}
+                                        >
+                                            <img
+                                                src={article.heroImage}
+                                                alt={article.title}
+                                                className="h-full max-h-28 w-full rounded-lg object-cover object-center lg:max-h-40"
+                                            />
+                                            <div className="flex w-full items-center justify-between px-2 py-1 ">
+                                                <h4 className="md:text-lg lg:text-xl">
+                                                    {article.title}
+                                                </h4>
+                                                <div className="drop-shadow-lg">
+                                                    <ChevronRight className="rounded-full border bg-white transition-all group-hover:bg-[#25BA9E] group-hover:text-white md:size-5 xl:size-6" />
+                                                </div>
+                                            </div>
+                                        </a>
+                                    ),
+                            )}
                         </div>
                         <ScrollBar orientation="vertical" />
                     </ScrollArea>
